@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\SSDDatingSite.txt" />
+    <Content Include="App_Data\test.txt" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
