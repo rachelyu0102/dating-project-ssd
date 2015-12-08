@@ -94,6 +94,8 @@
     <Content Include="App_Data\dbScript.txt" />
     <Content Include="App_Data\SSDDatingSite.txt" />
     <Content Include="App_Data\test.txt" />
+    <Content Include="CSS\bootstrap.css" />
+    <Content Include="CSS\Instadate.css" />
     <Content Include="Global.asax" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
