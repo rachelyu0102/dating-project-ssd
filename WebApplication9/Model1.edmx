@@ -144,7 +144,7 @@
           <End Role="Client" Type="Self.Client" Multiplicity="*" />
           <End Role="Interest" Type="Self.Interest" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="DatingDBEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DatingDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Clients" EntityType="Self.Client" />
           <EntitySet Name="Interests" EntityType="Self.Interest" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
@@ -162,7 +162,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DatingDBModelStoreContainer" CdmEntityContainer="DatingDBEntities1">
+        <EntityContainerMapping StorageEntityContainer="DatingDBModelStoreContainer" CdmEntityContainer="DatingDBEntities">
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="DatingDBModel.Client">
               <MappingFragment StoreEntitySet="Client">

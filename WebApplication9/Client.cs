@@ -14,6 +14,7 @@ namespace WebApplication9
     
     public partial class Client
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Client()
         {
             this.Interests = new HashSet<Interest>();
@@ -27,6 +28,7 @@ namespace WebApplication9
         public Nullable<int> locationID { get; set; }
     
         public virtual Location Location { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Interest> Interests { get; set; }
     }
 }

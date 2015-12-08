@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<WebApplication9.Models.ClientLocation>
 
 @{
-    
+    ViewBag.Title = "MyAccount";
     Layout = "~/Views/Shared/_LayoutPage1.cshtml";
 }
 
-<h2>Users near you!</h2>
+<h2>MyAccount</h2>
 
-
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
         <th>
