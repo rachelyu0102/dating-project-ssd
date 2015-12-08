@@ -13,10 +13,10 @@ namespace WebApplication9
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DatingDBEntities : DbContext
+    public partial class DatingDBEntities1 : DbContext
     {
-        public DatingDBEntities()
-            : base("name=DatingDBEntities")
+        public DatingDBEntities1()
+            : base("name=DatingDBEntities1")
         {
         }
     

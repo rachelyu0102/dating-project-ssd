@@ -14,7 +14,6 @@ namespace WebApplication9
     
     public partial class Interest
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Interest()
         {
             this.Clients = new HashSet<Client>();
@@ -22,7 +21,6 @@ namespace WebApplication9
     
         public string interest1 { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Client> Clients { get; set; }
     }
 }
