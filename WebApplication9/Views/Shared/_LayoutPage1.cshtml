@@ -71,10 +71,10 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@ViewBag.UserName <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    @Html.ActionLink("Profile", "Profile", new { email = @ViewBag.Email })
+                                    @Html.ActionLink("Profile", "Profile")
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Setting", "Update", new { email = @ViewBag.Email })
+                                    @Html.ActionLink("Setting", "Update")
                                 </li>
                                 <li><a href="~/Home">Log out</a></li>
                             </ul>

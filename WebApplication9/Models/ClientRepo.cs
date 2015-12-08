@@ -12,7 +12,7 @@ namespace WebApplication9.Models
 
         public Boolean clientExist(SignUp newClient)
         {
-            DatingDBEntities db = new DatingDBEntities();
+            DatingDBEntities1 db = new DatingDBEntities1();
             Client client = db.Clients.Where(c => c.email == newClient.Email).FirstOrDefault();
 
             if (client == null)
@@ -24,7 +24,7 @@ namespace WebApplication9.Models
 
         public Boolean LoginAuth(Login clientLogin)
         {
-            DatingDBEntities db = new DatingDBEntities();
+            DatingDBEntities1 db = new DatingDBEntities1();
             Client client = db.Clients.Where(c => c.email == clientLogin.email && c.password == clientLogin.password).FirstOrDefault();
             if (client == null)
             {
@@ -41,7 +41,7 @@ namespace WebApplication9.Models
             client.email = newClient.Email;
             client.password = newClient.Password;
             client.userName = newClient.UserName;
-            DatingDBEntities db = new DatingDBEntities();
+            DatingDBEntities1 db = new DatingDBEntities1();
             db.Clients.Add(client);
             db.SaveChanges();
 
@@ -49,7 +49,7 @@ namespace WebApplication9.Models
 
         public ClientDetails getClientDetail(string email)
         {
-            DatingDBEntities db = new DatingDBEntities();
+            DatingDBEntities1 db = new DatingDBEntities1();
             Client client = db.Clients.Where(c => c.email == email).FirstOrDefault();
             Location location = db.Locations.Where(d => d.locationID == client.locationID).FirstOrDefault();
 
@@ -122,7 +122,7 @@ namespace WebApplication9.Models
 
         public List<ClientLocation> GetClientsByLocation(string email)
         {
-            DatingDBEntities db = new DatingDBEntities();
+            DatingDBEntities1 db = new DatingDBEntities1();
             List<ClientLocation> LocationList = new List<ClientLocation>();
             Client client = db.Clients.Where(c => c.email == email).FirstOrDefault();
             string Email;

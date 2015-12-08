@@ -16,102 +16,37 @@ namespace WebApplication9.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Index(Login clientLogin)
-        {
-            if (ModelState.IsValid)
-            {
-                ClientRepo clientRepo = new ClientRepo();
-                if (clientRepo.LoginAuth(clientLogin))
-                {
-                    return RedirectToAction("MyAccount", new { email = clientLogin.email });
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = "The email and password you entered did not match our records. Please double-check and try again.";
-                }
-            }
-            else
-            {
-                ViewBag.ErrorMessage = "This entry is invalid.";
-            }
-
-            return View(clientLogin);
-        }
-
+    
 
         public ActionResult SignUp()
         {
             return View();
         }
 
-        [HttpPost]
-        public ActionResult SignUP(SignUp newClient)
+       
+      
+
+        public ActionResult MyAccount()
         {
-            ViewBag.ErrorMessage = "";
-            if (ModelState.IsValid)
-            {
-                ClientRepo clientRepo = new ClientRepo();
-                if (clientRepo.clientExist(newClient))
-                {
-                    ViewBag.ErrorMessage = "Welcome to Dating!";
-                    clientRepo.Create(newClient);
-                    return RedirectToAction("Welcome", new { email = newClient.Email });
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = "This email is already registered. Want to login or recover your password?!";
-                }
-                return View(newClient);
-            }
-            return View(newClient);
+          
+            return View();
         }
 
-        //public ActionResult MyAccount(string email, string password)
-        //{
-        //    ClientRepo clientRepo = new ClientRepo();
-        //    ViewBag.Email = email;
-        //    ViewBag.Password = password;
-        //    ViewBag.UserName = clientRepo.getClientProfile(email, password).UserName;
-        //    return View();
-        //}
-
-        public ActionResult MyAccount(string email)
+        public ActionResult Profile()
         {
-            ClientRepo clientRepo = new ClientRepo();
-            ViewBag.Email = email;
-            ViewBag.UserName = clientRepo.getClientDetail(email).UserName;
-            List<ClientLocation> LocationList = new List<ClientLocation>();
-            LocationList = clientRepo.GetClientsByLocation(email);
-            return View(LocationList);
-        }
-
-        public ActionResult Profile(string email)
-        {
-            ClientRepo clientRepo = new ClientRepo();
-            ClientProfile clientProfile = new ClientProfile();
-            ViewBag.Email = email;
-            ViewBag.UserName = clientRepo.getClientProfile(email).UserName;
-            clientProfile = clientRepo.getClientProfile(email);
-            return View(clientProfile);
+          return View();
         }
 
 
-        public ActionResult Update(string email)
+        public ActionResult Update()
         {
-            ClientRepo clientRepo = new ClientRepo();
-            ViewBag.Email = email;
-            ViewBag.UserName = clientRepo.getClientProfile(email).UserName;
-            ClientDetails clientDetails = new ClientDetails();
-            clientDetails = clientRepo.getClientDetail(email);
-            return View(clientDetails);
+          
+            return View();
         }
 
-        public ActionResult Welcome(string email)
+        public ActionResult Welcome()
         {
-            ClientRepo clientRepo = new ClientRepo();
-            ViewBag.Email = email;
-            ViewBag.UserName = clientRepo.getClientProfile(email).UserName;
+           
             return View();
 
         }

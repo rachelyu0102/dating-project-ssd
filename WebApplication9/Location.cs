@@ -14,7 +14,6 @@ namespace WebApplication9
     
     public partial class Location
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Location()
         {
             this.Clients = new HashSet<Client>();
@@ -25,7 +24,6 @@ namespace WebApplication9
         public string province { get; set; }
         public string country { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Client> Clients { get; set; }
     }
 }
