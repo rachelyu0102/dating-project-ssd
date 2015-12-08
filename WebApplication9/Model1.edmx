@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DatingDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="email" />
+          </Key>
+          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="userName" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="20" />
+          <Property Name="age" Type="int" />
+          <Property Name="gender" Type="varchar" MaxLength="20" />
+          <Property Name="locationID" Type="int" />
+        </EntityType>
+        <EntityType Name="ClientInterest">
+          <Key>
+            <PropertyRef Name="email" />
+            <PropertyRef Name="interest" />
+          </Key>
+          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="interest" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Interest">
+          <Key>
+            <PropertyRef Name="interest" />
+          </Key>
+          <Property Name="interest" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="locationID" />
+          </Key>
+          <Property Name="locationID" Type="int" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="20" />
+          <Property Name="province" Type="varchar" MaxLength="20" />
+          <Property Name="country" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__Client__location__1ED998B2">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="locationID" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="locationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientInt__email__239E4DCF">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientInterest" Type="Self.ClientInterest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="email" />
+            </Principal>
+            <Dependent Role="ClientInterest">
+              <PropertyRef Name="email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientInt__inter__24927208">
+          <End Role="Interest" Type="Self.Interest" Multiplicity="1" />
+          <End Role="ClientInterest" Type="Self.ClientInterest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Interest">
+              <PropertyRef Name="interest" />
+            </Principal>
+            <Dependent Role="ClientInterest">
+              <PropertyRef Name="interest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatingDBModelStoreContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientInterest" EntityType="Self.ClientInterest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Interest" EntityType="Self.Interest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Client__location__1ED998B2" Association="Self.FK__Client__location__1ED998B2">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientInt__email__239E4DCF" Association="Self.FK__ClientInt__email__239E4DCF">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientInterest" EntitySet="ClientInterest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientInt__inter__24927208" Association="Self.FK__ClientInt__inter__24927208">
+            <End Role="Interest" EntitySet="Interest" />
+            <End Role="ClientInterest" EntitySet="ClientInterest" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DatingDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="email" />
+          </Key>
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="age" Type="Int32" />
+          <Property Name="gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="locationID" Type="Int32" />
+          <NavigationProperty Name="Location" Relationship="Self.FK__Client__location__1ED998B2" FromRole="Client" ToRole="Location" />
+          <NavigationProperty Name="Interests" Relationship="Self.ClientInterest" FromRole="Client" ToRole="Interest" />
+        </EntityType>
+        <EntityType Name="Interest">
+          <Key>
+            <PropertyRef Name="interest1" />
+          </Key>
+          <Property Name="interest1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.ClientInterest" FromRole="Interest" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="locationID" />
+          </Key>
+          <Property Name="locationID" Type="Int32" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="province" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK__Client__location__1ED998B2" FromRole="Location" ToRole="Client" />
+        </EntityType>
+        <Association Name="FK__Client__location__1ED998B2">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="locationID" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="locationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ClientInterest">
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <End Role="Interest" Type="Self.Interest" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DatingDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="Interests" EntityType="Self.Interest" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <AssociationSet Name="FK__Client__location__1ED998B2" Association="Self.FK__Client__location__1ED998B2">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="ClientInterest" Association="Self.ClientInterest">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Interest" EntitySet="Interests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatingDBModelStoreContainer" CdmEntityContainer="DatingDBEntities">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="DatingDBModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="locationID" ColumnName="locationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Interests">
+            <EntityTypeMapping TypeName="DatingDBModel.Interest">
+              <MappingFragment StoreEntitySet="Interest">
+                <ScalarProperty Name="interest1" ColumnName="interest" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="DatingDBModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="locationID" ColumnName="locationID" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="province" ColumnName="province" />
+                <ScalarProperty Name="country" ColumnName="country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ClientInterest" TypeName="DatingDBModel.ClientInterest" StoreEntitySet="ClientInterest">
+            <EndProperty Name="Client">
+              <ScalarProperty Name="email" ColumnName="email" />
+            </EndProperty>
+            <EndProperty Name="Interest">
+              <ScalarProperty Name="interest1" ColumnName="interest" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

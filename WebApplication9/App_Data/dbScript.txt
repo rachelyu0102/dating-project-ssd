@@ -1,0 +1,90 @@
+-- Create a database named DatingDB and use this script to build it.
+DROP TABLE ClientInterest;
+DROP TABLE Client;
+DROP TABLE Location;
+DROP TABLE Interest;
+
+GO
+
+CREATE TABLE Location
+(
+	locationID INT,
+	city VARCHAR(20),
+	province VARCHAR(20),
+	country VARCHAR(20),
+	PRIMARY KEY(locationID)
+)
+
+INSERT INTO Location VALUES (001,'Richmond', 'BC', 'Canada');
+INSERT INTO LOcation VALUES (002, 'Vancouver', 'BC', 'Canada');
+INSERT INTO LOcation VALUES (003, 'Burnaby', 'BC', 'Canada');
+
+
+GO
+CREATE TABLE Client(
+	email VARCHAR(255), 
+	userName VARCHAR(50),
+	password VARCHAR(20),
+	age INT,
+	gender VARCHAR(20),
+	locationID INT,
+	PRIMARY KEY(email),
+	CHECK(  gender IN ('male', 'female')),
+	FOREIGN KEY (locationID) REFERENCES Location(locationID)
+);
+INSERT INTO Client VALUES ('Appleby@gmail.com','Appleby', 'A0001',30, 'female',1);
+INSERT INTO Client VALUES ('Barr@gmail.com','Barr', '0001',25, 'male', 2);
+INSERT INTO Client VALUES ('Steve@gmail.com','Steve', '0003',21, 'male', 2);
+INSERT INTO Client VALUES ('John@hotmail.com','John', 'A0004',45, 'male', 3);
+INSERT INTO Client VALUES ('Mary@hotmail.com','Mary', 'A0005',35, 'female', 1);
+INSERT INTO Client VALUES ('Linda@hotmail.com','Linda', 'A0005',30, 'female', 1);
+
+GO
+
+
+CREATE TABLE Interest
+(
+	interest VARCHAR (20),
+	PRIMARY KEY(interest)
+)
+
+INSERT INTO Interest VALUES('Movie');
+INSERT INTO Interest VALUES('Sports');
+INSERT INTO Interest VALUES('Travel');
+INSERT INTO Interest VALUES('Reading');
+INSERT INTO Interest VALUES('Food');
+INSERT INTO Interest VALUES('Game');
+GO
+
+CREATE TABLE ClientInterest
+(
+	email VARCHAR(255) FOREIGN KEY REFERENCES Client(email),
+	interest VARCHAR(20) FOREIGN KEY REFERENCES Interest(interest),
+	PRIMARY KEY(email, interest)
+)
+
+INSERT INTO ClientInterest VALUES('Appleby@gmail.com','Movie');
+INSERT INTO ClientInterest VALUES('Appleby@gmail.com','Sports');
+INSERT INTO ClientInterest VALUES('Appleby@gmail.com','Food');
+INSERT INTO ClientInterest VALUES('Barr@gmail.com', 'Movie')
+INSERT INTO ClientInterest VALUES('Barr@gmail.com', 'Travel');
+INSERT INTO ClientInterest VALUES('Barr@gmail.com', 'Game');
+INSERT INTO ClientInterest VALUES('Mary@hotmail.com', 'Game');
+INSERT INTO ClientInterest VALUES('Mary@hotmail.com', 'Reading');
+INSERT INTO ClientInterest VALUES('Mary@hotmail.com', 'Movie');
+INSERT INTO ClientInterest VALUES('John@hotmail.com', 'Movie');
+INSERT INTO ClientInterest VALUES('John@hotmail.com', 'Sports');
+INSERT INTO ClientInterest VALUES('John@hotmail.com', 'Game');
+INSERT INTO ClientInterest VALUES('Steve@gmail.com', 'travel');
+INSERT INTO ClientInterest VALUES('Steve@gmail.com', 'food');
+INSERT INTO ClientInterest VALUES('Steve@gmail.com', 'Reading');
+INSERT INTO ClientInterest VALUES('Linda@hotmail.com', 'Reading');
+INSERT INTO ClientInterest VALUES('Linda@hotmail.com', 'Food');
+INSERT INTO ClientInterest VALUES('Linda@hotmail.com', 'Travel');
+GO
+
+SELECT * FROM Client;
+SELECT * FROM Location;
+SELECT * FROM Interest;
+SELECT * FROM ClientInterest;
+GO
