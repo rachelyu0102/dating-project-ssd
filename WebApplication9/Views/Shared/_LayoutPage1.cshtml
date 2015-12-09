@@ -46,35 +46,27 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>
-                    @*<a class="navbar-brand" href="~/Home/MyAccount">Instadate</a>*@
-
-                    @*<a id="Instadate">@Html.ActionLink("Instadate", "MyAccount", new { email = @ViewBag.Email }) </a>*@
-                    <a id="instaDate" href="~/Home/MyAccount?email=@ViewBag.Email">Instadate</a>
-
-                    @*<a id="homelink">@Html.ActionLink("Instadate", "MyAccount", new { email = @ViewBag.Email }, new { @style = "color: #FFF;"} ) </a>*@
-
-                    @*@Html.ActionLink("Instadate", "MyAccount", new { email = @ViewBag.Email })*@
+                    </button>  
+                    <a  class="navbar-brand" href="~/Home/MyAccount">Instadate</a>
+                   
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-
-
-                        <li><a id="homelink">@Html.ActionLink("Home", "MyAccount", new { email = @ViewBag.Email }, new { @id = "action-link" })</a></li>
+                        <li><a href="~/Home/MyAccount">Home</a></li>
                         <li><a href="#">About</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@ViewBag.UserName <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">UserName <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    @Html.ActionLink("Profile", "Profile")
+                                    <a href="~/Home/Profile">Profile</a>
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Setting", "Update")
+                                    <a href="~/Home/Update">Setting</a>
                                 </li>
                                 <li><a href="~/Home">Log out</a></li>
                             </ul>
