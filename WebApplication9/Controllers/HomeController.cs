@@ -23,7 +23,10 @@ namespace WebApplication9.Controllers
             return View();
         }
 
-       
+        public ActionResult About()
+        {
+            return View();
+        }
       
 
         public ActionResult MyAccount()
