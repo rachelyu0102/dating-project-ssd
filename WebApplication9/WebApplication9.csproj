@@ -168,7 +168,6 @@
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Home\Update.cshtml" />
     <Content Include="Views\Home\Welcome.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
