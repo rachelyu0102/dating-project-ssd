@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "FindADate";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<ul class="nav nav-pills">
+    <li role="presentation" class="active"><a id="myAccount" href="#">Choose a Date!</a></li>
+</ul>
+<form action="~/Home/blindDateProfiles" method="get">
+   <h3> Pick a date!</h3>
+    <input type="date" name="date" />
+    <h3> Pick a time!</h3>
+<input type="time" name="time" />
+    <h3> Pick a place!</h3>
+<select>
+    <option>
+        Restaurant
+    </option>
+    <option>
+        Movies
+    </option>
+    <option>
+        Theme Park
+    </option>
+    <option>
+        we'll see
+    </option>
+</select>
+    <br/>
+    <br />
+    <input type="submit" name="submit" value="Submit" />
+          
+ </form>

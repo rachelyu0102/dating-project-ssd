@@ -53,5 +53,23 @@ namespace WebApplication9.Controllers
             return View();
 
         }
+        public ActionResult findADate()
+        {
+
+            return View();
+
+        }
+        public ActionResult blindDateProfiles()
+        {
+
+            return View();
+
+        }
+        public ActionResult dateSummary()
+        {
+
+            return View();
+
+        }
     }
 }
