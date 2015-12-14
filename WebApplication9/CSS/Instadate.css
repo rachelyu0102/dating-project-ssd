@@ -3,3 +3,23 @@ form{
     padding:20px
 
 }
+
+main{
+    margin: 2%;
+}
+
+.thumbnail{
+    width: 300px; 
+}
+
+.thumbnail img{
+    height: 230px; 
+}
+
+.row{
+    margin-top:20px;
+}
+
+#myAccount{
+    background-color: #31B0D5;
+}

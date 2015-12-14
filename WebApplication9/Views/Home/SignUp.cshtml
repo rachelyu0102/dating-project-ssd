@@ -1,27 +1,25 @@
 ﻿
 @{
     ViewBag.Title = "SignUp";
-    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+    Layout = "~/Views/Shared/HomePage.cshtml";
 }
-
 
 <form action="~/Home/Welcome" class="col-md-3 col-md-offset-4">
     <div class="page-header">
         <h4>Join Instadate Today.</h4>
     </div>
     <div class="form-group">
-        <label for="InputUsername"></label>
-        <input type="text" class="form-control" id="InputUsername" placeholder="Username">
+        <label for="exampleInputUserName">Username</label>
+        <input type="text" class="form-control" id="exampleUserName" placeholder="Username">
     </div>
     <div class="form-group">
-        <label for="InputEmail1"></label>
-        <input type="email" class="form-control" id="InputEmail1" placeholder="Email">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
     </div>
     <div class="form-group">
-        <label for="InputPassword"></label>
-        <input type="password" class="form-control" id="InputPassword" placeholder="Password">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
     </div>
-
-    <button type="submit" class="btn btn-info col-md-12">Sign up</button>
+    <button type="submit" class="btn btn-info">Sign up</button>
     <p class="col-md-10 col-md-offset-2">Have an account? <a href="~/Home">Log in</a></p>
 </form>
