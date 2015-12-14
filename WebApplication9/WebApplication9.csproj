@@ -109,6 +109,9 @@
     <Content Include="Images\image1.jpg" />
     <Content Include="Images\image2.jpg" />
     <Content Include="Images\image3.jpg" />
+    <Content Include="Images\image4.jpg" />
+    <Content Include="Images\image5.jpg" />
+    <Content Include="Images\image6.jpg" />
     <Content Include="Images\Koala.jpg" />
     <Content Include="Images\profilePic.jpg" />
     <Content Include="Model1.Context.tt">
