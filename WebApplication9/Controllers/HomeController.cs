@@ -71,5 +71,9 @@ namespace WebApplication9.Controllers
             return View();
 
         }
+        public ActionResult prototype()
+        {
+            return View();
+        }
     }
 }
