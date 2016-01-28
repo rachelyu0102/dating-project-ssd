@@ -106,7 +106,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Images\ERD.PNG" />
+    <Content Include="Images\DatingERD.PNG" />
     <Content Include="Images\image1.jpg" />
     <Content Include="Images\image2.jpg" />
     <Content Include="Images\image3.jpg" />
