@@ -12,18 +12,13 @@ namespace WebApplication9
     using System;
     using System.Collections.Generic;
     
-    public partial class Client
+    public partial class ClientInterest
     {
         public string ID { get; set; }
-        public string email { get; set; }
         public string userName { get; set; }
-        public Nullable<System.DateTime> birthdate { get; set; }
-        public string gender { get; set; }
-        public Nullable<int> locationID { get; set; }
-        public Nullable<System.DateTime> availableDate { get; set; }
+        public string interest { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual Available Available { get; set; }
-        public virtual Location Location { get; set; }
+        public virtual Interest Interest1 { get; set; }
     }
 }

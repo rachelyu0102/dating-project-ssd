@@ -17,12 +17,12 @@ namespace WebApplication9
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Interest()
         {
-            this.Clients = new HashSet<Client>();
+            this.ClientInterests = new HashSet<ClientInterest>();
         }
     
         public string interest1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Client> Clients { get; set; }
+        public virtual ICollection<ClientInterest> ClientInterests { get; set; }
     }
 }

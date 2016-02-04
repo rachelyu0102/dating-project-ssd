@@ -67,7 +67,11 @@ namespace WebApplication9.Controllers
 
         }
 
+        public ActionResult Home()
+        {
 
+            return View();
+        }
 
         public ActionResult SignUp()
         {
@@ -185,7 +189,7 @@ namespace WebApplication9.Controllers
             [HttpPost]
             public ActionResult AddRole(AspNetRole role)
             {
-                SSDDatingEntities1 context = new SSDDatingEntities1();
+                SSDDatingEntities3 context = new SSDDatingEntities3();
                 context.AspNetRoles.Add(role);
                 context.SaveChanges();
                 return View();
@@ -199,7 +203,7 @@ namespace WebApplication9.Controllers
             [HttpPost]
             public ActionResult AddUserToRole(string userName, string roleName)
             {
-                SSDDatingEntities1 context = new SSDDatingEntities1();
+                SSDDatingEntities3 context = new SSDDatingEntities3();
                 AspNetUser user = context.AspNetUsers
                                  .Where(u => u.UserName == userName).FirstOrDefault();
                 AspNetRole role = context.AspNetRoles
