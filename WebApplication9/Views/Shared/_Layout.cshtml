@@ -22,6 +22,12 @@
                 </button>
                 @Html.ActionLink("InstaDate", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+
+@if(Request.IsAuthenticated)
+    {
+      <a href="~/Home/findADate?username=@User.Identity.Name">@User.Identity.Name</a>
+    }
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                 </ul>
