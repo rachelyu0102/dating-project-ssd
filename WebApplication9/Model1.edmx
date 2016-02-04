@@ -68,22 +68,24 @@
         </EntityType>
         <EntityType Name="Available">
           <Key>
-            <PropertyRef Name="username" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="availableDate" Type="date" />
           <Property Name="timeStart" Type="time" Precision="7" />
           <Property Name="timeEnd" Type="time" Precision="7" />
           <Property Name="country" Type="varchar" MaxLength="50" />
           <Property Name="province" Type="varchar" MaxLength="50" />
           <Property Name="city" Type="varchar" MaxLength="50" />
-          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="256" />
         </EntityType>
         <EntityType Name="Client">
           <Key>
-            <PropertyRef Name="userName" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="email" Type="varchar" MaxLength="255" />
-          <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="256" />
+          <Property Name="userName" Type="nvarchar" MaxLength="256" />
           <Property Name="birthdate" Type="date" />
           <Property Name="gender" Type="varchar" MaxLength="20" />
           <Property Name="locationID" Type="int" />
@@ -91,10 +93,11 @@
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
-            <PropertyRef Name="userName" />
+            <PropertyRef Name="ID" />
             <PropertyRef Name="interest" />
           </Key>
-          <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="256" />
           <Property Name="interest" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Interest">
@@ -112,19 +115,31 @@
           <Property Name="province" Type="varchar" MaxLength="20" />
           <Property Name="country" Type="varchar" MaxLength="20" />
         </EntityType>
-        <Association Name="FK__Available__usern__61F08603">
+        <Association Name="FK__Available__ID__0D99FE17">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
           <End Role="Available" Type="Self.Available" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Client">
-              <PropertyRef Name="userName" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Available">
-              <PropertyRef Name="username" />
+              <PropertyRef Name="ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Client__location__5F141958">
+        <Association Name="FK__Client__ID__0ABD916C">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Client__location__09C96D33">
           <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
           <End Role="Client" Type="Self.Client" Multiplicity="*" />
           <ReferentialConstraint>
@@ -136,7 +151,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ClientInt__inter__67A95F59">
+        <Association Name="FK__ClientInt__inter__125EB334">
           <End Role="Interest" Type="Self.Interest" Multiplicity="1" />
           <End Role="ClientInterest" Type="Self.ClientInterest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -148,15 +163,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ClientInt__userN__66B53B20">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+        <Association Name="FK__ClientIntere__ID__1352D76D">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="ClientInterest" Type="Self.ClientInterest" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="userName" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ClientInterest">
-              <PropertyRef Name="userName" />
+              <PropertyRef Name="ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -228,20 +243,24 @@
           <EntitySet Name="ClientInterest" EntityType="Self.ClientInterest" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="Interest" EntityType="Self.Interest" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="ssdDating" store:Type="Tables" />
-          <AssociationSet Name="FK__Available__usern__61F08603" Association="Self.FK__Available__usern__61F08603">
+          <AssociationSet Name="FK__Available__ID__0D99FE17" Association="Self.FK__Available__ID__0D99FE17">
             <End Role="Client" EntitySet="Client" />
             <End Role="Available" EntitySet="Available" />
           </AssociationSet>
-          <AssociationSet Name="FK__Client__location__5F141958" Association="Self.FK__Client__location__5F141958">
+          <AssociationSet Name="FK__Client__ID__0ABD916C" Association="Self.FK__Client__ID__0ABD916C">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Client__location__09C96D33" Association="Self.FK__Client__location__09C96D33">
             <End Role="Location" EntitySet="Location" />
             <End Role="Client" EntitySet="Client" />
           </AssociationSet>
-          <AssociationSet Name="FK__ClientInt__inter__67A95F59" Association="Self.FK__ClientInt__inter__67A95F59">
+          <AssociationSet Name="FK__ClientInt__inter__125EB334" Association="Self.FK__ClientInt__inter__125EB334">
             <End Role="Interest" EntitySet="Interest" />
             <End Role="ClientInterest" EntitySet="ClientInterest" />
           </AssociationSet>
-          <AssociationSet Name="FK__ClientInt__userN__66B53B20" Association="Self.FK__ClientInt__userN__66B53B20">
-            <End Role="Client" EntitySet="Client" />
+          <AssociationSet Name="FK__ClientIntere__ID__1352D76D" Association="Self.FK__ClientIntere__ID__1352D76D">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="ClientInterest" EntitySet="ClientInterest" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -323,41 +342,56 @@
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__Client__ID__0ABD916C" FromRole="AspNetUsers" ToRole="Client" />
+          <NavigationProperty Name="ClientInterests" Relationship="Self.FK__ClientIntere__ID__1352D76D" FromRole="AspNetUsers" ToRole="ClientInterest" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="Available">
           <Key>
-            <PropertyRef Name="username" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="availableDate" Type="DateTime" Precision="0" />
           <Property Name="timeStart" Type="Time" Precision="7" />
           <Property Name="timeEnd" Type="Time" Precision="7" />
           <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="province" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="Self.FK__Available__usern__61F08603" FromRole="Available" ToRole="Client" />
+          <Property Name="userName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__Available__ID__0D99FE17" FromRole="Available" ToRole="Client" />
         </EntityType>
         <EntityType Name="Client">
           <Key>
-            <PropertyRef Name="userName" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="userName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="birthdate" Type="DateTime" Precision="0" />
           <Property Name="gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="locationID" Type="Int32" />
           <Property Name="availableDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Available" Relationship="Self.FK__Available__usern__61F08603" FromRole="Client" ToRole="Available" />
-          <NavigationProperty Name="Location" Relationship="Self.FK__Client__location__5F141958" FromRole="Client" ToRole="Location" />
-          <NavigationProperty Name="Interests" Relationship="Self.ClientInterest" FromRole="Client" ToRole="Interest" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Client__ID__0ABD916C" FromRole="Client" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Available" Relationship="Self.FK__Available__ID__0D99FE17" FromRole="Client" ToRole="Available" />
+          <NavigationProperty Name="Location" Relationship="Self.FK__Client__location__09C96D33" FromRole="Client" ToRole="Location" />
+        </EntityType>
+        <EntityType Name="ClientInterest">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="interest" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="userName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="interest" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK__ClientIntere__ID__1352D76D" FromRole="ClientInterest" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Interest1" Relationship="Self.FK__ClientInt__inter__125EB334" FromRole="ClientInterest" ToRole="Interest" />
         </EntityType>
         <EntityType Name="Interest">
           <Key>
             <PropertyRef Name="interest1" />
           </Key>
           <Property Name="interest1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Clients" Relationship="Self.ClientInterest" FromRole="Interest" ToRole="Client" />
+          <NavigationProperty Name="ClientInterests" Relationship="Self.FK__ClientInt__inter__125EB334" FromRole="Interest" ToRole="ClientInterest" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -367,7 +401,7 @@
           <Property Name="city" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="province" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Clients" Relationship="Self.FK__Client__location__5F141958" FromRole="Location" ToRole="Client" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK__Client__location__09C96D33" FromRole="Location" ToRole="Client" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -397,19 +431,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Available__usern__61F08603">
+        <Association Name="FK__Client__ID__0ABD916C">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientIntere__ID__1352D76D">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="ClientInterest" Type="Self.ClientInterest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientInterest">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Available__ID__0D99FE17">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
           <End Role="Available" Type="Self.Available" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Client">
-              <PropertyRef Name="userName" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Available">
-              <PropertyRef Name="username" />
+              <PropertyRef Name="ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Client__location__5F141958">
+        <Association Name="FK__Client__location__09C96D33">
           <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
           <End Role="Client" Type="Self.Client" Multiplicity="*" />
           <ReferentialConstraint>
@@ -421,15 +479,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__ClientInt__inter__125EB334">
+          <End Role="Interest" Type="Self.Interest" Multiplicity="1" />
+          <End Role="ClientInterest" Type="Self.ClientInterest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Interest">
+              <PropertyRef Name="interest1" />
+            </Principal>
+            <Dependent Role="ClientInterest">
+              <PropertyRef Name="interest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="AspNetUserRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
         </Association>
-        <Association Name="ClientInterest">
-          <End Role="Interest" Type="Self.Interest" Multiplicity="*" />
-          <End Role="Client" Type="Self.Client" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="SSDDatingEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SSDDatingEntities3" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
@@ -437,6 +503,7 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Availables" EntityType="Self.Available" />
           <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="ClientInterests" EntityType="Self.ClientInterest" />
           <EntitySet Name="Interests" EntityType="Self.Interest" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -447,21 +514,29 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__Available__usern__61F08603" Association="Self.FK__Available__usern__61F08603">
+          <AssociationSet Name="FK__Client__ID__0ABD916C" Association="Self.FK__Client__ID__0ABD916C">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientIntere__ID__1352D76D" Association="Self.FK__ClientIntere__ID__1352D76D">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="ClientInterest" EntitySet="ClientInterests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Available__ID__0D99FE17" Association="Self.FK__Available__ID__0D99FE17">
             <End Role="Client" EntitySet="Clients" />
             <End Role="Available" EntitySet="Availables" />
           </AssociationSet>
-          <AssociationSet Name="FK__Client__location__5F141958" Association="Self.FK__Client__location__5F141958">
+          <AssociationSet Name="FK__Client__location__09C96D33" Association="Self.FK__Client__location__09C96D33">
             <End Role="Location" EntitySet="Locations" />
             <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientInt__inter__125EB334" Association="Self.FK__ClientInt__inter__125EB334">
+            <End Role="Interest" EntitySet="Interests" />
+            <End Role="ClientInterest" EntitySet="ClientInterests" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="ClientInterest" Association="Self.ClientInterest">
-            <End Role="Interest" EntitySet="Interests" />
-            <End Role="Client" EntitySet="Clients" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -469,7 +544,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities1">
+        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities3">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="SSDDatingModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -528,25 +603,36 @@
           <EntitySetMapping Name="Availables">
             <EntityTypeMapping TypeName="SSDDatingModel.Available">
               <MappingFragment StoreEntitySet="Available">
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="availableDate" ColumnName="availableDate" />
                 <ScalarProperty Name="timeStart" ColumnName="timeStart" />
                 <ScalarProperty Name="timeEnd" ColumnName="timeEnd" />
                 <ScalarProperty Name="country" ColumnName="country" />
                 <ScalarProperty Name="province" ColumnName="province" />
                 <ScalarProperty Name="city" ColumnName="city" />
-                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="SSDDatingModel.Client">
               <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="userName" ColumnName="userName" />
                 <ScalarProperty Name="birthdate" ColumnName="birthdate" />
                 <ScalarProperty Name="gender" ColumnName="gender" />
                 <ScalarProperty Name="locationID" ColumnName="locationID" />
                 <ScalarProperty Name="availableDate" ColumnName="availableDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientInterests">
+            <EntityTypeMapping TypeName="SSDDatingModel.ClientInterest">
+              <MappingFragment StoreEntitySet="ClientInterest">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="interest" ColumnName="interest" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -573,14 +659,6 @@
             </EndProperty>
             <EndProperty Name="AspNetUsers">
               <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ClientInterest" TypeName="SSDDatingModel.ClientInterest" StoreEntitySet="ClientInterest">
-            <EndProperty Name="Interest">
-              <ScalarProperty Name="interest1" ColumnName="interest" />
-            </EndProperty>
-            <EndProperty Name="Client">
-              <ScalarProperty Name="userName" ColumnName="userName" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

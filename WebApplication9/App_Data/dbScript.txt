@@ -1,7 +1,7 @@
     -- Create a database named DatingDB and use this script to build it.
-    DROP TABLE Available;
+	DROP TABLE Available;
     DROP TABLE ClientInterest;
-    DROP TABLE Client;
+	DROP TABLE Client;
     DROP TABLE Interest;
     DROP TABLE Location;
     GO
@@ -14,41 +14,33 @@
     country VARCHAR(20),
     )
 
-    INSERT INTO Location VALUES ('Richmond', 'BC', 'Canada');
-    INSERT INTO LOcation VALUES ( 'Vancouver', 'BC', 'Canada');
-    INSERT INTO LOcation VALUES ( 'Burnaby', 'BC', 'Canada');
-
-
     GO
     CREATE TABLE Client(
-    email VARCHAR(255),
-    userName VARCHAR(50),
+	ID NVARCHAR(128) PRIMARY KEY,
+    email NVARCHAR(256),
+    userName NVARCHAR(256),
     birthdate DATE,
     gender VARCHAR(20),
     locationID INT,
     availableDate DATE NULL,
-    PRIMARY KEY(userName),
     CHECK(  gender IN ('male', 'female')),
-    FOREIGN KEY (locationID) REFERENCES Location(locationID)
+    FOREIGN KEY (locationID) REFERENCES Location(locationID),
+	FOREIGN KEY (ID) REFERENCES AspNetUsers(ID)
     );
     GO
-    INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('Appleby@gmail.com','Appleby', '1990-01-01', 'female',1);
-    INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('Barr@gmail.com','Barr', '1990-01-01', 'male', 2);
-    INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('Steve@gmail.com','Steve','1990-01-01',  'male', 2);
-    INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('John@hotmail.com','John','1990-01-01', 'male', 3);
-    INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('Mary@hotmail.com','Mary','1990-01-01', 'female', 1);
-    INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('Linda@hotmail.com','Linda','1990-01-01', 'female', 1);
+    
 
 
-    CREATE TABLE Available(
+    CREATE TABLE Available( 
+	ID NVARCHAR(128) PRIMARY KEY,
     availableDate DATE NULL,
     timeStart TIME NULL,
     timeEnd TIME NULL,
 	country VARCHAR(50) NULL,
 	province VARCHAR(50) NULL,
 	city VARCHAR(50) NULL,
-    username VARCHAR(50) PRIMARY KEY,
-    FOREIGN KEY (userName) REFERENCES Client(userName)
+    userName NVARCHAR(256),
+    FOREIGN KEY (ID) REFERENCES Client(ID)
     );
     GO
 
@@ -61,39 +53,18 @@
     PRIMARY KEY(interest)
     )
 
-    INSERT INTO Interest VALUES('Movie');
-    INSERT INTO Interest VALUES('Sports');
-    INSERT INTO Interest VALUES('Travel');
-    INSERT INTO Interest VALUES('Reading');
-    INSERT INTO Interest VALUES('Food');
-    INSERT INTO Interest VALUES('Game');
     GO
 
     CREATE TABLE ClientInterest
     (
-    userName VARCHAR(50) FOREIGN KEY REFERENCES Client(userName),
+	ID NVARCHAR(128),
+    userName NVARCHAR(256),
     interest VARCHAR(20) FOREIGN KEY REFERENCES Interest(interest),
-    PRIMARY KEY(userName, interest)
+	FOREIGN KEY (ID) REFERENCES AspNetUsers(ID), 
+	PRIMARY KEY (ID, interest)
     )
 
-    INSERT INTO ClientInterest VALUES('Appleby','Movie');
-    INSERT INTO ClientInterest VALUES('Appleby','Sports');
-    INSERT INTO ClientInterest VALUES('Appleby','Food');
-    INSERT INTO ClientInterest VALUES('Barr', 'Movie')
-    INSERT INTO ClientInterest VALUES('Barr', 'Travel');
-    INSERT INTO ClientInterest VALUES('Barr', 'Game');
-    INSERT INTO ClientInterest VALUES('Mary', 'Game');
-    INSERT INTO ClientInterest VALUES('Mary', 'Reading');
-    INSERT INTO ClientInterest VALUES('Mary', 'Movie');
-    INSERT INTO ClientInterest VALUES('John', 'Movie');
-    INSERT INTO ClientInterest VALUES('John', 'Sports');
-    INSERT INTO ClientInterest VALUES('John', 'Game');
-    INSERT INTO ClientInterest VALUES('Steve', 'travel');
-    INSERT INTO ClientInterest VALUES('Steve', 'food');
-    INSERT INTO ClientInterest VALUES('Steve', 'Reading');
-    INSERT INTO ClientInterest VALUES('Linda', 'Reading');
-    INSERT INTO ClientInterest VALUES('Linda', 'Food');
-    INSERT INTO ClientInterest VALUES('Linda', 'Travel');
+    
     GO
 
     SELECT * FROM Client;
