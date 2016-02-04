@@ -16,6 +16,7 @@ namespace WebApplication9.Controllers
     {
 
         Repository repo = new Repository();
+        SSDDatingEntities5 context = new SSDDatingEntities5();
 
         // GET: Home
         public ActionResult Index()
@@ -174,17 +175,18 @@ namespace WebApplication9.Controllers
                                     + callbackUrl + "\">Confirm Registration</a>";
                     ViewBag.FakeConfirmation = email;
 
-                return RedirectToAction("CompleteInfo", new { userName= identityUser.UserName });
+                return RedirectToAction("CompleteInfo", new { userName= identityUser.UserName, email= identityUser.Email });
 
                 // return RedirectToAction("SecureArea", "Home");
             }
                 return View();
             }
-        public ActionResult CompleteInfo(string userName)
+        public ActionResult CompleteInfo(string userName, string email)
         {
 
-            ViewBag.userName = userName;
 
+            ViewBag.email = email;
+            ViewBag.username = userName;        
             return View();
 
 
@@ -203,13 +205,13 @@ namespace WebApplication9.Controllers
         }
 
 
-        public ActionResult UserProfile(string UserName)
+        public ActionResult UserProfile(string userName)
         {
           
-            repo.getUserProfile(UserName);
+            repo.getUserProfile(userName);
 
 
-            return View(repo.getUserProfile(UserName));
+            return View(repo.getUserProfile(userName));
         }
             public ActionResult Logout()
             {

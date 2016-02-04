@@ -41,7 +41,12 @@
     interest VARCHAR (20),
     PRIMARY KEY(interest)
     )
-
+	INSERT INTO Interest(interest) VALUES ('1')
+INSERT INTO Interest(interest) VALUES ('2')
+INSERT INTO Interest(interest) VALUES ('3')
+INSERT INTO Interest(interest) VALUES ('4')
+INSERT INTO Interest(interest) VALUES ('5')
+INSERT INTO Interest(interest) VALUES ('6')
     GO
 
     CREATE TABLE ClientInterest
