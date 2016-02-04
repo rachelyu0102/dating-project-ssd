@@ -40,6 +40,37 @@ namespace WebApplication9
             return savedClients;
         }
 
+
+
+        public void saveClientInfo(Client clientInfo, string interest1, string interest2, string interest3)
+        {
+
+            db.Clients.Add(clientInfo);
+
+
+            ClientInterest clientInterest1 = new ClientInterest();
+            clientInterest1.UserName = clientInfo.UserName;
+            clientInterest1.interest = interest1;
+            db.ClientInterests.Add(clientInterest1);
+
+            ClientInterest clientInterest2 = new ClientInterest();
+            clientInterest2.UserName = clientInfo.UserName;
+            clientInterest2.interest = interest2;
+            db.ClientInterests.Add(clientInterest2);
+
+            ClientInterest clientInterest3 = new ClientInterest();
+            clientInterest3.UserName = clientInfo.UserName;
+            clientInterest3.interest = interest3;
+            db.ClientInterests.Add(clientInterest3);
+
+            db.SaveChanges();
+
+
+
+        }
+       
+
+
         //get one client
 
         public Client getUserProfile(string id)
@@ -57,20 +88,22 @@ namespace WebApplication9
             return client;
         }
 
-        public void updatgeProfile(Client clientUpdate, List<ClientInterest> clientInterestUpdate)
+        public void updatgeProfile(Client clientUpdate, string interest1, string interest2, string interest3)
         {
 
             //udpate client table
-            Client client = db.Clients.Find(clientUpdate.ID);
-            client.locationID = clientUpdate.locationID;
+            Client client = db.Clients.Find(clientUpdate.UserName);
             client.email = clientUpdate.email;
             client.gender = clientUpdate.gender;
-            client.userName = clientUpdate.userName;
+            client.UserName = clientUpdate.UserName;
             client.birthdate = clientUpdate.birthdate;
+            client.country = clientUpdate.country;
+            client.province = clientUpdate.province;
+            client.city = clientUpdate.city;
 
 
             //delete old clientInterest info, insert new clientInterest info
-            var queryInterests = from c_i in db.ClientInterests where c_i.ID == clientUpdate.ID select c_i;
+            var queryInterests = from c_i in db.ClientInterests where c_i.UserName == clientUpdate.UserName select c_i;
 
             if (queryInterests != null)
             {
@@ -81,12 +114,22 @@ namespace WebApplication9
                 }
             }
 
-            foreach (var interest in clientInterestUpdate)
-            {
 
-                db.ClientInterests.Add(interest);
+            ClientInterest clientInterest1 = new ClientInterest();
+            clientInterest1.UserName = clientUpdate.UserName;
+            clientInterest1.interest = interest1;
 
-            }
+
+            ClientInterest clientInterest2 = new ClientInterest();
+            clientInterest2.UserName = clientUpdate.UserName;
+            clientInterest2.interest = interest2;
+
+            ClientInterest clientInterest3 = new ClientInterest();
+            clientInterest3.UserName = clientUpdate.UserName;
+            clientInterest3.interest = interest3;
+
+
+
 
             db.SaveChanges();
 
