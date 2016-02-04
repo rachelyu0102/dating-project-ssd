@@ -202,7 +202,7 @@ namespace WebApplication9.Controllers
 
 
         [Authorize]
-            public ActionResult SecureArea()
+            public ActionResult SecureArea(Login login)
             {
                 return View();
             }
