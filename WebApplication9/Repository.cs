@@ -50,16 +50,19 @@ namespace WebApplication9
 
             ClientInterest clientInterest1 = new ClientInterest();
             clientInterest1.UserName = clientInfo.UserName;
+          
             clientInterest1.interest = interest1;
             db.ClientInterests.Add(clientInterest1);
 
             ClientInterest clientInterest2 = new ClientInterest();
             clientInterest2.UserName = clientInfo.UserName;
+           
             clientInterest2.interest = interest2;
             db.ClientInterests.Add(clientInterest2);
 
             ClientInterest clientInterest3 = new ClientInterest();
             clientInterest3.UserName = clientInfo.UserName;
+          
             clientInterest3.interest = interest3;
             db.ClientInterests.Add(clientInterest3);
 
