@@ -14,6 +14,9 @@ namespace WebApplication9.Controllers
 {
     public class HomeController : Controller
     {
+
+        Repository repo = new Repository();
+
         // GET: Home
         public ActionResult Index()
         {
@@ -95,10 +98,7 @@ namespace WebApplication9.Controllers
             return View();
         }
 
-        public ActionResult Profile()
-        {
-          return View();
-        }
+       
 
 
         public ActionResult Update()
@@ -189,15 +189,22 @@ namespace WebApplication9.Controllers
     [HttpPost]
         public ActionResult CompleteInfo(Client clientInfo, string interest1, string interest2, string interest3)
         {
-            Repository repo = new Repository();
-            //var clientRepo = repo.saveAllClients().ToList();
 
 
+            repo.saveClientInfo(clientInfo, interest1, interest2, interest3);
 
-
-            return RedirectToAction("Profile", new { userName = clientInfo.UserName});
+            return RedirectToAction("UserProfile", new { userName = clientInfo.UserName});
         }
 
+
+        public ActionResult UserProfile(string UserName)
+        {
+          
+            repo.getUserProfile(UserName);
+
+
+            return View(repo.getUserProfile(UserName));
+        }
 
 
 
