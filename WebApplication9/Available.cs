@@ -12,17 +12,16 @@ namespace WebApplication9
     using System;
     using System.Collections.Generic;
     
-    public partial class Interest
+    public partial class Available
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Interest()
-        {
-            this.Clients = new HashSet<Client>();
-        }
+        public Nullable<System.DateTime> availableDate { get; set; }
+        public Nullable<System.TimeSpan> timeStart { get; set; }
+        public Nullable<System.TimeSpan> timeEnd { get; set; }
+        public string country { get; set; }
+        public string province { get; set; }
+        public string city { get; set; }
+        public string username { get; set; }
     
-        public string interest1 { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Client> Clients { get; set; }
+        public virtual Client Client { get; set; }
     }
 }

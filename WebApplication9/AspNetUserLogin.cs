@@ -12,17 +12,12 @@ namespace WebApplication9
     using System;
     using System.Collections.Generic;
     
-    public partial class Interest
+    public partial class AspNetUserLogin
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Interest()
-        {
-            this.Clients = new HashSet<Client>();
-        }
+        public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
+        public string UserId { get; set; }
     
-        public string interest1 { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Client> Clients { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace WebApplication9
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DatingDBEntities1 : DbContext
+    public partial class SSDDatingEntities1 : DbContext
     {
-        public DatingDBEntities1()
-            : base("name=DatingDBEntities1")
+        public SSDDatingEntities1()
+            : base("name=SSDDatingEntities1")
         {
         }
     
@@ -25,6 +25,12 @@ namespace WebApplication9
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Available> Availables { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Interest> Interests { get; set; }
         public virtual DbSet<Location> Locations { get; set; }

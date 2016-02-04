@@ -12,24 +12,18 @@ namespace WebApplication9
     using System;
     using System.Collections.Generic;
     
-    public partial class Client
+    public partial class AspNetRole
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Client()
+        public AspNetRole()
         {
-            this.Interests = new HashSet<Interest>();
+            this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
-        public string email { get; set; }
-        public string userName { get; set; }
-        public Nullable<System.DateTime> birthdate { get; set; }
-        public string gender { get; set; }
-        public Nullable<int> locationID { get; set; }
-        public Nullable<System.DateTime> availableDate { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
     
-        public virtual Available Available { get; set; }
-        public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Interest> Interests { get; set; }
+        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
     }
 }
