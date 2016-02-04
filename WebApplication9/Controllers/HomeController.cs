@@ -53,6 +53,19 @@ namespace WebApplication9.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public ActionResult findADate(AspNetUser User)
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult findADate()
+        {
+
+            return View();
+
+        }
 
 
 
@@ -88,12 +101,6 @@ namespace WebApplication9.Controllers
         public ActionResult Welcome()
         {
            
-            return View();
-
-        }
-        public ActionResult findADate()
-        {
-
             return View();
 
         }
