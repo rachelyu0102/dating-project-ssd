@@ -40,6 +40,15 @@ namespace WebApplication9
             return client;
         }
 
+        //Get Asp USER
+        public AspNetUser GetUser(string username)
+        {
+            AspNetUser client = (from i in db.AspNetUsers
+                            where i.UserName == username
+                            select i).FirstOrDefault();
+            return client;
+        }
+
         public void updatgeProfile(Client clientUpdate, List<ClientInterest> clientInterestUpdate)
         {
 
