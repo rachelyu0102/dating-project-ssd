@@ -40,6 +40,59 @@ namespace WebApplication9
             return savedClients;
         }
 
+        //get one client
+
+        public Client getUserProfile(string id)
+        {
+            Client client = db.Clients.Find(id);
+            return client;
+        }
+
+        //Get Asp USER
+        public AspNetUser GetUser(string username)
+        {
+            AspNetUser client = (from i in db.AspNetUsers
+                            where i.UserName == username
+                            select i).FirstOrDefault();
+            return client;
+        }
+
+        public void updatgeProfile(Client clientUpdate, List<ClientInterest> clientInterestUpdate)
+        {
+
+            //udpate client table
+            Client client = db.Clients.Find(clientUpdate.ID);
+            client.locationID = clientUpdate.locationID;
+            client.email = clientUpdate.email;
+            client.gender = clientUpdate.gender;
+            client.userName = clientUpdate.userName;
+            client.birthdate = clientUpdate.birthdate;
+
+
+            //delete old clientInterest info, insert new clientInterest info
+            var queryInterests = from c_i in db.ClientInterests where c_i.ID == clientUpdate.ID select c_i;
+
+            if (queryInterests != null)
+            {
+                foreach (var interest in queryInterests)
+                {
+                    db.ClientInterests.Remove(interest);
+
+                }
+            }
+
+            foreach (var interest in clientInterestUpdate)
+            {
+
+                db.ClientInterests.Add(interest);
+
+            }
+
+            db.SaveChanges();
+
+        }
+
+
       
 
     }

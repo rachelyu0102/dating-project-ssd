@@ -53,6 +53,22 @@ namespace WebApplication9.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public ActionResult findADate(string username)
+        {
+            Repository Repo = new Repository();
+            AspNetUser user = Repo.GetUser(username);
+            ViewBag.UserName = user.UserName;
+            ViewBag.Id = user.Id;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult findADate()
+        {
+
+            return View();
+
+        }
 
         public ActionResult Home()
         {
@@ -94,12 +110,6 @@ namespace WebApplication9.Controllers
         public ActionResult Welcome()
         {
            
-            return View();
-
-        }
-        public ActionResult findADate()
-        {
-
             return View();
 
         }
