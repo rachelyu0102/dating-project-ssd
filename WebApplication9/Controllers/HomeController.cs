@@ -54,9 +54,12 @@ namespace WebApplication9.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult findADate(AspNetUser User)
+        public ActionResult findADate(string username)
         {
-
+            Repository Repo = new Repository();
+            AspNetUser user = Repo.GetUser(username);
+            ViewBag.UserName = user.UserName;
+            ViewBag.Id = user.Id;
             return View();
         }
         [HttpPost]
