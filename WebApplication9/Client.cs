@@ -14,16 +14,15 @@ namespace WebApplication9
     
     public partial class Client
     {
-        public string ID { get; set; }
         public string email { get; set; }
-        public string userName { get; set; }
+        public string UserName { get; set; }
         public Nullable<System.DateTime> birthdate { get; set; }
         public string gender { get; set; }
-        public Nullable<int> locationID { get; set; }
+        public string city { get; set; }
+        public string province { get; set; }
+        public string country { get; set; }
         public Nullable<System.DateTime> availableDate { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
         public virtual Available Available { get; set; }
-        public virtual Location Location { get; set; }
     }
 }

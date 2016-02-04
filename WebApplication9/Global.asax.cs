@@ -22,7 +22,7 @@ namespace WebApplication9
             {
                 var name = User.Identity.Name; // Get current user name.
 
-                SSDDatingEntities3 context = new SSDDatingEntities3();
+                SSDDatingEntities5 context = new SSDDatingEntities5();
                 var user = context.AspNetUsers.Where(u => u.UserName == name).FirstOrDefault();
                 IQueryable<string> roleQuery = from u in context.AspNetUsers
                                                from r in u.AspNetRoles

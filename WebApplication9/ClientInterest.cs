@@ -14,11 +14,9 @@ namespace WebApplication9
     
     public partial class ClientInterest
     {
-        public string ID { get; set; }
-        public string userName { get; set; }
+        public string UserName { get; set; }
         public string interest { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
         public virtual Interest Interest1 { get; set; }
     }
 }

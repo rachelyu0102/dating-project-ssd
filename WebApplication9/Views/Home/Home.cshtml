@@ -1,4 +1,4 @@
-﻿@model List<WebApplication9.Client>
+﻿@model IEnumerable<WebApplication9.Client>
 
 @{
     ViewBag.Title = "Home";
@@ -6,26 +6,16 @@
 
 <h2>Home</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table col-lg-1">
+<table class="table">
     <tr>
-
         <th>
-            @Html.DisplayNameFor(model => model.userName)
+            @Html.DisplayNameFor(model => model.UserName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.birthdate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.locationID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.availableDate)
         </th>
         <th></th>
     </tr>
@@ -34,7 +24,7 @@
     <tr>
 
         <td>
-            @Html.DisplayFor(modelItem => item.userName)
+            @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.birthdate)
@@ -42,6 +32,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.gender)
         </td>
+
     </tr>
 }
 

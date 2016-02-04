@@ -14,14 +14,13 @@ namespace WebApplication9
     
     public partial class Available
     {
-        public string ID { get; set; }
         public Nullable<System.DateTime> availableDate { get; set; }
         public Nullable<System.TimeSpan> timeStart { get; set; }
         public Nullable<System.TimeSpan> timeEnd { get; set; }
         public string country { get; set; }
         public string province { get; set; }
         public string city { get; set; }
-        public string userName { get; set; }
+        public string UserName { get; set; }
     
         public virtual Client Client { get; set; }
     }

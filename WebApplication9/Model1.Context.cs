@@ -13,10 +13,10 @@ namespace WebApplication9
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class SSDDatingEntities3 : DbContext
+    public partial class SSDDatingEntities5 : DbContext
     {
-        public SSDDatingEntities3()
-            : base("name=SSDDatingEntities3")
+        public SSDDatingEntities5()
+            : base("name=SSDDatingEntities5")
         {
         }
     
@@ -34,6 +34,5 @@ namespace WebApplication9
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<ClientInterest> ClientInterests { get; set; }
         public virtual DbSet<Interest> Interests { get; set; }
-        public virtual DbSet<Location> Locations { get; set; }
     }
 }

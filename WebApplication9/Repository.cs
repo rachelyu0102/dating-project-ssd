@@ -7,7 +7,7 @@ namespace WebApplication9
 {
     public class Repository
     {
-        SSDDatingEntities3 db = new SSDDatingEntities3();
+        SSDDatingEntities5 db = new SSDDatingEntities5();
 
         public List<AspNetUser> getAllUsers() //Get all users
         {
@@ -31,6 +31,14 @@ namespace WebApplication9
             return roles;
         }
       
+        public List<Client> saveAllClients()
+        {
+            List<Client> savedClients = new List<Client>();
+            
+            savedClients = db.Clients.ToList();
+            db.SaveChanges();
+            return savedClients;
+        }
 
       
 

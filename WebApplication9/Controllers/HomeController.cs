@@ -56,9 +56,11 @@ namespace WebApplication9.Controllers
 
         public ActionResult Home()
         {
-
-            return View();
+            Repository repo = new Repository();
+            var clientRepo = repo.getAllClients().ToList();
+            return View(clientRepo);
         }
+
 
         public ActionResult SignUp()
         {
@@ -156,11 +158,40 @@ namespace WebApplication9.Controllers
                                     + callbackUrl + "\">Confirm Registration</a>";
                     ViewBag.FakeConfirmation = email;
 
-                    return RedirectToAction("SecureArea", "Home");
-                }
+                return RedirectToAction("CompleteInfo", new { userName= identityUser.UserName });
+
+                // return RedirectToAction("SecureArea", "Home");
+            }
                 return View();
             }
-            [Authorize]
+        public ActionResult CompleteInfo(string userName)
+        {
+
+            ViewBag.userName = userName;
+
+            return View();
+
+
+
+            //return RedirectToAction("Profile", new { userName = userName });
+        }
+
+    [HttpPost]
+        public ActionResult CompleteInfo(Client clientInfo, string interest1, string interest2, string interest3)
+        {
+            Repository repo = new Repository();
+            //var clientRepo = repo.saveAllClients().ToList();
+
+
+
+
+            return RedirectToAction("Profile", new { userName = clientInfo.UserName});
+        }
+
+
+
+
+        [Authorize]
             public ActionResult SecureArea()
             {
                 return View();
@@ -182,7 +213,7 @@ namespace WebApplication9.Controllers
             [HttpPost]
             public ActionResult AddRole(AspNetRole role)
             {
-                SSDDatingEntities3 context = new SSDDatingEntities3();
+                SSDDatingEntities5 context = new SSDDatingEntities5();
                 context.AspNetRoles.Add(role);
                 context.SaveChanges();
                 return View();
@@ -196,7 +227,7 @@ namespace WebApplication9.Controllers
             [HttpPost]
             public ActionResult AddUserToRole(string userName, string roleName)
             {
-                SSDDatingEntities3 context = new SSDDatingEntities3();
+                SSDDatingEntities5 context = new SSDDatingEntities5();
                 AspNetUser user = context.AspNetUsers
                                  .Where(u => u.UserName == userName).FirstOrDefault();
                 AspNetRole role = context.AspNetRoles

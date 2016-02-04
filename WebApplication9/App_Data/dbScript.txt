@@ -3,47 +3,36 @@
     DROP TABLE ClientInterest;
 	DROP TABLE Client;
     DROP TABLE Interest;
-    DROP TABLE Location;
     GO
 
-    CREATE TABLE Location
-    (
-    locationID INTEGER PRIMARY KEY IDENTITY(1,1),
-    city VARCHAR(20),
-    province VARCHAR(20),
-    country VARCHAR(20),
-    )
 
     GO
-    CREATE TABLE Client(
-	ID NVARCHAR(128) PRIMARY KEY,
+    CREATE TABLE Client(	
     email NVARCHAR(256),
-    userName NVARCHAR(256),
+    UserName NVARCHAR(256) PRIMARY KEY,
     birthdate DATE,
     gender VARCHAR(20),
-    locationID INT,
+    city VARCHAR(20),
+    province VARCHAR(20),
+    country VARCHAR(20), 
     availableDate DATE NULL,
     CHECK(  gender IN ('male', 'female')),
-    FOREIGN KEY (locationID) REFERENCES Location(locationID),
-	FOREIGN KEY (ID) REFERENCES AspNetUsers(ID)
+	FOREIGN KEY (userName) REFERENCES AspNetUsers(UserName)
     );
     GO
     
 
 
     CREATE TABLE Available( 
-	ID NVARCHAR(128) PRIMARY KEY,
     availableDate DATE NULL,
     timeStart TIME NULL,
     timeEnd TIME NULL,
 	country VARCHAR(50) NULL,
 	province VARCHAR(50) NULL,
 	city VARCHAR(50) NULL,
-    userName NVARCHAR(256),
-    FOREIGN KEY (ID) REFERENCES Client(ID)
+    UserName NVARCHAR(256) PRIMARY KEY,
+    FOREIGN KEY (userName) REFERENCES Client(UserName)
     );
-    GO
-
     GO
 
 
@@ -57,18 +46,16 @@
 
     CREATE TABLE ClientInterest
     (
-	ID NVARCHAR(128),
-    userName NVARCHAR(256),
+    UserName NVARCHAR(256),
     interest VARCHAR(20) FOREIGN KEY REFERENCES Interest(interest),
-	FOREIGN KEY (ID) REFERENCES AspNetUsers(ID), 
-	PRIMARY KEY (ID, interest)
+	FOREIGN KEY (UserName) REFERENCES AspNetUsers(UserName), 
+	PRIMARY KEY (UserName, interest)
     )
 
     
     GO
 
     SELECT * FROM Client;
-    SELECT * FROM Location;
     SELECT * FROM Interest;
     SELECT * FROM ClientInterest;
 	SELECT * FROM Available;
