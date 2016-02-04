@@ -1,29 +1,22 @@
 ﻿@model WebApplication9.Available
-
 @{
     ViewBag.Title = "findADate";
 }
+    <h2>findADate</h2>
 
-<h2>findADate</h2>
 
-
-@using (Html.BeginForm()) 
-{
+    @using (Html.BeginForm())
+    {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Available</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-10">
-                @Html.HiddenFor(model => model.ID, htmlAttributes: new { @value = ViewBag.Id, @class = "control-label col-md-2" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.HiddenFor(model => model.userName, htmlAttributes: new { @value = ViewBag.UserName, @class = "control-label col-md-2" })
+                <h1>@ViewBag.UserName</h1>
+                @Html.HiddenFor(model => model.UserName, htmlAttributes: new { @value = ViewBag.UserName, @class = "control-label col-md-2" })
             </div>
         </div>
 
@@ -80,12 +73,12 @@
             </div>
         </div>
     </div>
-}
+    }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

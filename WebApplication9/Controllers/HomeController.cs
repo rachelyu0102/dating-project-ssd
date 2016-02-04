@@ -56,6 +56,12 @@ namespace WebApplication9.Controllers
             }
             return View();
         }
+        [Authorize]
+        public ActionResult SecureArea(Login login)
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult findADate(string username)
         {
@@ -205,15 +211,6 @@ namespace WebApplication9.Controllers
 
             return View(repo.getUserProfile(UserName));
         }
-
-
-
-        [Authorize]
-            public ActionResult SecureArea(Login login)
-            {
-                return View();
-            }
-
             public ActionResult Logout()
             {
                 var ctx = Request.GetOwinContext();
@@ -280,8 +277,7 @@ namespace WebApplication9.Controllers
                     return false;
 
                 // Validated user was locked out but now can be reset.
-                if (userManager.CheckPassword(user, login.Password)
-    && userManager.IsEmailConfirmed(user.Id))
+                if (userManager.CheckPassword(user, login.Password))
 
                 {
                     if (userManager.SupportsUserLockout
