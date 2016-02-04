@@ -231,6 +231,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repository.cs" />
     <Compile Include="Startup1.cs" />
     <Compile Include="ViewModels\Login.cs" />
     <Compile Include="ViewModels\RegisteredUser.cs" />
