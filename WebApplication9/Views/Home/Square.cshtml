@@ -13,6 +13,7 @@
     var interestString = "";
     var genderString = "";
     var sortOrder = "";
+    var UserName = User.Identity.Name;
 
     if (ViewBag.CurrentSearchString != null)
     {
@@ -20,7 +21,7 @@
     }
 
     if (ViewBag.CurrentSortOrder!=null)
-    {      
+    {
         sortOrder = ViewBag.CurrentSortOrder;
     }
 
@@ -62,9 +63,9 @@
                     }   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="~/Home/Square/?interestString=@interestString&sortOrder=@sortOrder">All</a></li>
-                    <li><a href="~/Home/Square/?interestString=@interestString&genderString=male&sortOrder=@sortOrder">Male</a></li>
-                    <li><a href="~/Home/Square/?interestString=@interestString&genderString=female&sortOrder=@sortOrder">Female</a></li>
+                    <li><a href="~/Home/Square/?UserName=@UserName&interestString=@interestString&sortOrder=@sortOrder">All</a></li>
+                    <li><a href="~/Home/Square/?UserName=@UserName&interestString=@interestString&genderString=male&sortOrder=@sortOrder">Male</a></li>
+                    <li><a href="~/Home/Square/?UserName=@UserName&interestString=@interestString&genderString=female&sortOrder=@sortOrder">Female</a></li>
                 </ul>
             </div>
 
@@ -88,10 +89,10 @@
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="~/Home/Square/?genderString=@genderString&sortOrder=@sortOrder">All interest</a></li>
+                    <li><a href="~/Home/Square/?UserName=@UserName&genderString=@genderString&sortOrder=@sortOrder">All interest</a></li>
                     @foreach (var interest in ViewBag.interests)
                     {
-                        <li><a href="~/Home/Square/?interestString=@interest.interest1&genderString=@genderString&sortOrder=@sortOrder">@interest.interest1</a></li>
+                        <li><a href="~/Home/Square/?UserName=@UserName&interestString=@interest.interest1&genderString=@genderString&sortOrder=@sortOrder">@interest.interest1</a></li>
                     }
                 </ul>
             </div>
@@ -139,9 +140,9 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="~/Home/Square/?interestString=@interestString&genderString=@genderString&sortOrder=Name">Name</a></li>
-                    <li><a href="~/Home/Square/?interestString=@interestString&genderString=@genderString&sortOrder=Age_Desc">Age:young-old</a></li>
-                    <li><a href="~/Home/Square/?interestString=@interestString&genderString=@genderString&sortOrder=Age">Age:old-young</a></li>
+                    <li><a href="~/Home/Square/?UserName=@UserName&interestString=@interestString&genderString=@genderString&sortOrder=Name">Name</a></li>
+                    <li><a href="~/Home/Square/?UserName=@UserName&interestString=@interestString&genderString=@genderString&sortOrder=Age_Desc">Age:young-old</a></li>
+                    <li><a href="~/Home/Square/?UserName=@UserName&interestString=@interestString&genderString=@genderString&sortOrder=Age">Age:old-young</a></li>
 
                 </ul>
             </div>       
@@ -210,6 +211,6 @@
 
 </div>
 <div class="paginationList col-md-10 col-md-offset-1">
-    @Html.PagedListPager(Model, page => Url.Action("Square", new { page, searchString = ViewBag.CurrentSearchString, interestString = ViewBag.CurrentInterestString, genderString = ViewBag.CurrentGenderString, sortOrder = ViewBag.CurrentSortOrder })
+    @Html.PagedListPager(Model, page => Url.Action("Square", new { page,searchString = ViewBag.CurrentSearchString, interestString = ViewBag.CurrentInterestString, genderString = ViewBag.CurrentGenderString, sortOrder = ViewBag.CurrentSortOrder })
     )
 </div>
