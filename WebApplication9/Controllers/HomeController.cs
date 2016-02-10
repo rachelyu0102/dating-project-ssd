@@ -171,7 +171,7 @@ namespace WebApplication9.Controllers
 
             repo.saveAvailableDate(userName, availableDate, timepicker1);
 
-            return RedirectToAction("foundDates", new { UserName = userName, Gender = gender, Location = location });
+            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Location = location});
             
         }
 

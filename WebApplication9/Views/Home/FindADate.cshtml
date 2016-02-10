@@ -17,7 +17,7 @@
     {
     //@Html.AntiForgeryToken()
          
-    <div class="form-horizontal">
+    <div class="form-horizontal" id="myform" ng-app="">
         <h4>Available</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -27,11 +27,11 @@
         </div>
    
 
-        <div class="form-group col-md-10">
+        <div class="form-group col-md-10" >
         
             <div class="col-md-10">
                 <label>Available Date</label>
-                <input type="date" name="availableDate" />               
+                <input ng-model="date" required type="date" name="availableDate" class="form-control" />               
             </div>
         </div>
 
@@ -39,24 +39,22 @@
         <div class="form-group bootstrap-timepicker timepicker">
             <div class="col-md-10">
                 <label>Start time</label>
-                <input id="timepicker1" name="timepicker1" type="text" class="form-control input-small">              
+                <input ng-model="time" required id="timepicker1" name="timepicker1" type="text" class="form-control input-small">              
             </div>
         </div>
         <div class="form-group col-md-10">
             <div class="col-md-10">
                 <label>What gender are you looking for?</label>
-                <select>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
+                <label class="radio-inline"><input type="radio" name="gender" value="male" checked>Male</label>
+                <label class="radio-inline"><input type="radio" name="gender" value="female">Female</label><br />
             </div>
         </div>
         <div class="form-group col-md-10">
             <label for="Location">Location:</label><br />
-            <select name="country" class="countries" id="countryId">
+            <select ng-model="country" required name="country" class="countries" id="countryId">
                 <option value="">Select Country</option>
             </select>
-            <select name="state" class="states" id="stateId">
+            <select ng-model="province" required name="state" class="states" id="stateId">
                 <option value="">Select State</option>
             </select>
         </div>
@@ -71,12 +69,13 @@
     }
 
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back home", "Index")
     </div>
 <script type="text/javascript">
     $('#timepicker1').timepicker({
         minuteStep: 30
     });
+
 </script>
 
 

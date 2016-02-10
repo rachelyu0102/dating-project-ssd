@@ -200,7 +200,7 @@ namespace WebApplication9
         {
             Client client = db.Clients.Find(userName);
             client.availableDate = availableDate;
-        //   client.timeStart = (TimeSpan) timepicker1;
+           client.timeStart = timepicker1;
             //client.availableDate.Value.Add(availableDate);
             //client.timeStart.Value.Add((DateTime)timepicker1);
             db.SaveChanges();
