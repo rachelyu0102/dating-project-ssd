@@ -169,8 +169,16 @@ namespace WebApplication9
        
         public void saveAvailableDate(String userName, DateTime availableDate, DateTime timepicker1)
         {
+            string sqlFormattedAvailableDate = availableDate.ToString();
+            string sqlFormattedTimePicker = timepicker1.ToString();
+
             Client client = db.Clients.Find(userName);
-            //   client.availableDate;
+
+
+            client.availableDate = availableDate;
+        //   client.timeStart = (TimeSpan) timepicker1;
+            //client.availableDate.Value.Add(availableDate);
+            //client.timeStart.Value.Add((DateTime)timepicker1);
             db.SaveChanges();
         }
 

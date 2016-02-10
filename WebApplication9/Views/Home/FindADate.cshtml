@@ -1,4 +1,4 @@
-﻿@model WebApplication9.Available
+﻿
 @{
     ViewBag.Title = "findADate";
 }
@@ -21,27 +21,23 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div>
-        <input type="text" name="userName" value="@User.Identity.Name" hidden/>
-        </div>
         <div class="form-group">
-            <div class="col-md-10">
-                <h1>@ViewBag.UserName</h1>
-                @Html.HiddenFor(model => model.UserName, htmlAttributes: new { @value = ViewBag.UserName, @class = "control-label col-md-2" })
-            </div>
+        <input type="text" name="userName" value="@User.Identity.Name" class="form-control" hidden/>
         </div>
+   
 
         <div class="form-group col-md-10">
-            @Html.LabelFor(model => model.availableDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        
             <div class="col-md-10">
+                <label>Available Date</label>
                 <input type="date" name="availableDate" />               
             </div>
         </div>
 
 
         <div class="form-group bootstrap-timepicker timepicker">
-            @Html.LabelFor(model => model.timeStart, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                <label>Start time</label>
                 <input id="timepicker1" name="timepicker1" type="text" class="form-control input-small">              
             </div>
         </div>
