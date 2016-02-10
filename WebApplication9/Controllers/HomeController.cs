@@ -21,7 +21,7 @@ namespace WebApplication9.Controllers
     {
 
         Repository repo = new Repository();
-        SSDDatingEntities8 context = new SSDDatingEntities8();
+        SSDDatingEntities9 context = new SSDDatingEntities9();
 
         // GET: Home
         public ActionResult Index()

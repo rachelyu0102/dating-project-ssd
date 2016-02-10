@@ -18,7 +18,6 @@ namespace WebApplication9
         public string UserName { get; set; }
         public Nullable<System.DateTime> birthdate { get; set; }
         public string gender { get; set; }
-        public string city { get; set; }
         public string province { get; set; }
         public string country { get; set; }
         public Nullable<System.DateTime> availableDate { get; set; }
