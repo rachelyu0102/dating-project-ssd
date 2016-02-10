@@ -169,15 +169,17 @@ namespace WebApplication9.Controllers
         public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String location )
         {
             repo.saveAvailableDate(userName, availableDate, timepicker1);
-            return RedirectToAction("foundDates", new { UserName = userName, Gender = gender, Location = location });            
-        }
-        
 
+            return RedirectToAction("foundDates", new { UserName = userName, Gender = gender, Location = location });
+            
+        }
+
+        
         public ActionResult About()
         {
             return View();
         }
-     
+      
 
         public ActionResult MyAccount()
         {
@@ -187,7 +189,7 @@ namespace WebApplication9.Controllers
 
        
         public ActionResult Update()
-        {          
+        {
             return View();
         }
 
@@ -259,21 +261,22 @@ namespace WebApplication9.Controllers
         }
             return View();
         }
-
+        [HttpGet]
         public ActionResult CompleteInfo(string userName, string email, string id)
         {
             ViewBag.email = email;
             ViewBag.username = userName;
             ViewBag.id = id;       
-            return View();
+            ClientDetailInfo user = repo.getUserDetailInfo(id);
+            return View(user);
           
         }
 
         [HttpPost]
-        public ActionResult CompleteInfo(Client clientInfo, string interest1, string interest2, string interest3)
+        public ActionResult CompleteInfo(Client Client, string[] interests)
         {
-            repo.saveClientInfo(clientInfo, interest1, interest2, interest3);
-            return RedirectToAction("UserProfile", new { userName = clientInfo.UserName});
+            //repo.saveClientInfo(Client.client, Client.interests,Client.interests,Client.interests);
+            return RedirectToAction("UserProfile", new { userName = Client.UserName});
         }
 
 
@@ -286,9 +289,6 @@ namespace WebApplication9.Controllers
             return RedirectToAction("UserProfile", new { userName = updateClientInfo.client
                 .UserName });
         }
-
-       
-
 
         [HttpGet]
             public ActionResult AddRole()

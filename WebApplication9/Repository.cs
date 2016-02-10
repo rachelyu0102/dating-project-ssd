@@ -124,14 +124,24 @@ namespace WebApplication9
         {
             Client client = db.Clients.Find(id);
             List<string> interests = new List<string>();
-            interests = (from c_i in db.ClientInterests where c_i.UserName == client.UserName select c_i.Interest1.interest1).ToList();
+            interests = (from c_i in db.ClientInterests where c_i.UserName == client.UserName
+                         select c_i.Interest1.interest1).ToList();
 
             ClientDetailInfo ClientDetailinfo = new ClientDetailInfo(client, interests);
             return ClientDetailinfo;
         }
+        public ClientDetailInfo getUserDetailInfo(string id)
+        {
+            Client client = (from i in db.Clients
+                            where i.UserId == id
+                            select i).FirstOrDefault();
+            List < string > interests = new List<string>();
+            interests = (from i in db.Interests
+                         select i.interest1).ToList() ;
 
-
-
+            ClientDetailInfo ClientDetailinfo = new ClientDetailInfo(client, interests);
+            return ClientDetailinfo;
+        }
         //get all clients in one province
         public IEnumerable<ClientDetailInfo> getAllClientsInOneLocation(string UserName, string searchString, string interestringString, string genderString, string sortOrder)
         {
@@ -156,18 +166,12 @@ namespace WebApplication9
             return AllClientDetailsInfo;
         }
 
-
-
-
-
         public List<AspNetRole> getUserRole()
         {
             List<AspNetRole> roles = new List<AspNetRole>();
             roles = db.AspNetRoles.ToList();
             return roles;
         }
-      
-
 
         public void saveClientInfo(Client clientInfo, string interest1, string interest2, string interest3)
         {
@@ -197,7 +201,7 @@ namespace WebApplication9
         {
             Client client = db.Clients.Find(userName);
             client.availableDate = availableDate;
-        //   client.timeStart = (TimeSpan) timepicker1;
+           client.timeStart = timepicker1;
             //client.availableDate.Value.Add(availableDate);
             //client.timeStart.Value.Add((DateTime)timepicker1);
             db.SaveChanges();
@@ -206,10 +210,6 @@ namespace WebApplication9
         {
 
         }
-
-       
-       
-
 
         //Get Asp USER
         public AspNetUser GetUser(string username)
@@ -268,18 +268,11 @@ namespace WebApplication9
             clientInterests = (from c_i in db.ClientInterests where c_i.UserName == userName select c_i).ToList();
             return clientInterests;           
         }     
-
-
        //get all interests
        public IEnumerable<Interest> getAllInterests()
         {
             IEnumerable<Interest> interests = db.Interests.ToList();
             return interests;
         } 
-
-
-
-       
-
     }
 }
