@@ -14,6 +14,7 @@ using PagedList;
 
 
 using WebApplication9.ViewModels;
+using System.Data;
 
 namespace WebApplication9.Controllers
 {
@@ -100,11 +101,32 @@ namespace WebApplication9.Controllers
             return View(AllClients);
           
         }
+        public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder)
+        {
+           IEnumerable <ClientDetailInfo> clients= repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder);
+
+            List<ClientDetailInfo> clientsHasAvail = new List<ClientDetailInfo> ();
+            Client getClient = context.Clients.Find(UserName);
+
+
+            foreach(ClientDetailInfo client in clients)
+            {
+
+                if (client.client.availableDate!=null)
+                {
+                    clientsHasAvail.Add(client);
+                }
+            }
+
+            return View(clientsHasAvail);
+        }
 
         //UserProfile page
         public ActionResult UserProfile(string userName)
         {
             ClientDetailInfo clientDetailInfo = repo.getOneUserDetailInfo(userName);
+
+            
             ViewBag.interests = repo.getAllInterests();
             return View(clientDetailInfo);
         }
@@ -143,11 +165,13 @@ namespace WebApplication9.Controllers
         }
 
         [HttpPost]
-        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1 )
+        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String location )
         {
 
             repo.saveAvailableDate(userName, availableDate, timepicker1);
-            return View();
+
+            return RedirectToAction("foundDates", new { UserName = userName, Gender = gender, Location = location });
+            
         }
 
         

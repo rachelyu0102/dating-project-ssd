@@ -195,16 +195,17 @@ namespace WebApplication9
        
         public void saveAvailableDate(String userName, DateTime availableDate, DateTime timepicker1)
         {
-            string sqlFormattedAvailableDate = availableDate.ToString();
-            string sqlFormattedTimePicker = timepicker1.ToString();
-
             Client client = db.Clients.Find(userName);
-
-
             client.availableDate = availableDate;
+        //   client.timeStart = (TimeSpan) timepicker1;
+            //client.availableDate.Value.Add(availableDate);
+            //client.timeStart.Value.Add((DateTime)timepicker1);
             db.SaveChanges();
         }
+        public void foundDates()
+        {
 
+        }
 
        
        
@@ -225,12 +226,12 @@ namespace WebApplication9
             Client client = db.Clients.Find(clientUpdate.UserName);
             if (client.gender != null)
             {
-                client.gender = clientUpdate.gender;
+            client.gender = clientUpdate.gender;
             }
 
             if(client.birthdate != null)
             {
-                client.birthdate = clientUpdate.birthdate;
+            client.birthdate = clientUpdate.birthdate;
             }
 
             client.country = country;

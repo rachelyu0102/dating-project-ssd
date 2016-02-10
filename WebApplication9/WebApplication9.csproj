@@ -327,6 +327,7 @@
     <Content Include="Views\Home\UserProfile.cshtml" />
     <Content Include="Views\Home\Square.cshtml" />
     <Content Include="Views\Home\CompleteInfo.cshtml" />
+    <Content Include="Views\Home\foundDates.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
