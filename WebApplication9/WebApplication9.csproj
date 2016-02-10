@@ -180,6 +180,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="CSS\bootstrap-timepicker.min.css" />
     <Content Include="CSS\bootstrap.css" />
     <Content Include="CSS\Instadate.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -222,6 +223,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\bootstrap-timepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
