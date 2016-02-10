@@ -11,7 +11,33 @@
     <title>foundDates</title>
 </head>
 <body>
+    @{
+        var searchString = "";
+        var interestString = "";
+        var genderString = "";
+        var sortOrder = "";
 
+        if (ViewBag.CurrentSearchString != null)
+        {
+            searchString = ViewBag.CurrentSearchString;
+        }
+
+        if (ViewBag.CurrentSortOrder != null)
+        {
+            sortOrder = ViewBag.CurrentSortOrder;
+        }
+
+        if (ViewBag.CurrentGenderString != null)
+        {
+            genderString = ViewBag.CurrentGenderString;
+        }
+
+        if (ViewBag.CurrentInterestString != null)
+        {
+            interestString = ViewBag.CurrentInterestString;
+        }
+
+    }
 
     <h1> People looking for dates around you! </h1>
     
