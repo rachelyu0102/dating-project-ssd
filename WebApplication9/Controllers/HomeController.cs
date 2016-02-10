@@ -191,7 +191,7 @@ namespace WebApplication9.Controllers
 
 
         [HttpPost]
-      //  [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(RegisteredUser newUser)
         {
             var userStore = new UserStore<IdentityUser>();
