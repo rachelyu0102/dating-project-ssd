@@ -272,9 +272,8 @@ namespace WebApplication9.Controllers
             ViewBag.email = email;
             ViewBag.username = userName;
             ViewBag.id = id;
-            ClientDetailInfo user = repo.getUserDetailInfo(id);
+            ClientInterestViewModel user = repo.getClientInterest(id);
             return View(user);
-          
         }
 
         [HttpPost]

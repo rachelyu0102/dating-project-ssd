@@ -305,6 +305,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ClientDetailInfo.cs" />
+    <Compile Include="ViewModels\ClientInterestViewModel.cs" />
     <Compile Include="ViewModels\Login.cs" />
     <Compile Include="ViewModels\RegisteredUser.cs" />
     <Compile Include="ViewModels\UserRole.cs" />
