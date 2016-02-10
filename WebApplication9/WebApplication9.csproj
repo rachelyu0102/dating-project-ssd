@@ -180,6 +180,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="CSS\bootstrap-timepicker.min.css" />
     <Content Include="CSS\bootstrap.css" />
     <Content Include="CSS\Instadate.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -193,8 +194,11 @@
     <Content Include="Images\image6.jpg" />
     <Content Include="Images\Koala.jpg" />
     <Content Include="Images\LoginBg.jpg" />
+    <Content Include="Images\profileDefaultBg1.jpg" />
     <Content Include="Images\profileDefulatBg.jpg" />
     <Content Include="Images\profilePic.jpg" />
+    <Content Include="Images\Uploads\UserProfile\default-profile-female.jpg" />
+    <Content Include="Images\Uploads\UserProfile\default-profile-male.jpg" />
     <Content Include="Images\userDefaultProfile.PNG" />
     <Content Include="Images\use_case.PNG" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -222,6 +226,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\bootstrap-timepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DatePicker.js" />
@@ -254,9 +259,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="AspNetUserRole.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Available.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="BusinessLogic\ChatHub.cs" />
@@ -334,7 +336,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\UserProfile\" />
-    <Folder Include="Images\Uploads\UserProfile\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

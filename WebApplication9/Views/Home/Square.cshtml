@@ -177,7 +177,7 @@
                                     var date = DateTime.Now.Date.Subtract((DateTime)item.client.birthdate);
                                     int year = (int)date.TotalDays / 365;
 
-                                    <h4>@year , @item.client.city , @item.client.province </h4>
+                                    <h4>@year, @item.client.province </h4>
                                     <p><a href="~/Home/UserProfile/?UserName=@item.client.UserName" class="btn btn-info btn-sm">Quick View</a></p>
 
 

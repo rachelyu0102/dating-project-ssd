@@ -12,7 +12,9 @@
 
 <div class="col-md-12 profile" style="position:relative">
     <div class="profileHeaderImg col-md-12 w3-card-2">
-        <img src="~/Images/profileDefaultBg1.jpg" style="width:100%" />
+        
+       
+        <img src="~/Images/profileDefaultBg1.jpg"  style="width:100%"/>
         <div class="w3-container w3-padding-24">
         </div>
 
@@ -46,7 +48,7 @@
    
     @*<div>@Model.client.email</div>*@
     <div style="margin-top:16px">@Model.client.gender, @year</div>
-    <div style="margin-top:5px">@Model.client.city, @Model.client.province, @Model.client.country</div>
+    <div style="margin-top:5px"> @Model.client.province, @Model.client.country</div>
     <div style="margin-top:5px">
         <span >Like: </span>
         @if (Model.interests != null)
@@ -80,34 +82,10 @@
 
 
 
-
-
-@*<div>
-    <form action="/Home/UploadProfileImage" method="post" enctype="multipart/form-data">
-      
-        <div class="form-group">
-            <input type="text" name="updateClientInfo.client.UserName" value="@Model.client.UserName" hidden>
-        </div>
-
-        <div class="form-group">
-            <label class="radio-inline"><input type="radio" name="updateClientInfo.client.gender" value="male">Male</label>
-            <label class="radio-inline"><input type="radio" name="updateClientInfo.client.gender">Female</label><br />
-        </div>
-        
-          <div class="form-group">
-
-            <label for="photo">Photo:</label>
-            <input type="text" name="UserName" value="@Model.client.UserName" hidden>
-            <input type="file" name="photo" id="photo" />
-            <input type="submit" class="btn btn-default btn-sm w3-margin" value="Upload" />
-        </div>
-    </form>
-</div>*@
-
    
-    <div class="modal fade w3-padding" tabindex="-1" role="dialog" id="updateFormModal">
+    <div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="updateFormModal" style="margin:20px!important">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-content w3-margin w3-padding">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Update</h4>
@@ -115,22 +93,35 @@
                 <div class="modal-body">
                     <form action="~/Home/UserProfile" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group">
-                            <input type="text" name="client.UserName" value="@Model.client.UserName">
-                        </div>
-
-                     
+                            <input type="text" name="client.UserName" value="@Model.client.UserName" class="form-control" disabled>
+                        </div>                                   
 
                         <div class="form-group">
-                            <label class="radio-inline"><input type="radio" name="client.gender" value="male">Male</label>
-                            <label class="radio-inline"><input type="radio" name="client.gender" value="famale">Female</label><br />
+                            <label for="Gender">Gender:</label><br />
+                            @if (Model.client.gender == "male")
+                            {
+                                <label class="radio-inline"><input type="radio" name="client.gender" value="male" checked>Male</label>
+                                <label class="radio-inline"><input type="radio" name="client.gender" value="female">Female</label><br />
+                            }
+                            else
+                            {
+                                <label class="radio-inline"><input type="radio" name="client.gender" value="male">Male</label>
+                                    <label class="radio-inline"><input type="radio" name="client.gender" value="female" checked>Female</label><br />
+
+                            }
+
+
+
+
                         </div>
 
                         <div class="form-group">
                             <label for="photo">Photo:</label>
-                            <input type="file" name="photo" id="photo" />
+                            <input type="file" name="photo" class="form-control" id="photo" />
                         </div>
 
                         <div class="form-group">
+                            <label for="Location">Location:</label><br />
                             <select name="country" class="countries" id="countryId">
                                 <option value="">Select Country</option>
                             </select>
@@ -144,14 +135,11 @@
 
                         <div class="form-group">
                             <label for="interests">Interests (hold shift to select more than one):</label>
-                            <select multiple class="form-control" id="interests" name="interests[]">
-                                @*<option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>*@
+                            <select multiple class="form-control" id="interests" name="interests[]">                             
                                 @{ 
                                     var counter1 = 0;
+
+
                                 }
                                 @foreach (var interest in ViewBag.interests)
                                 {
@@ -159,8 +147,7 @@
                                     counter1++;
                                 }
                             </select>
-                        </div>
-                    
+                        </div>                   
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <input type="submit" class="btn btn-primary" value="Upload">

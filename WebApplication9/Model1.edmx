@@ -76,18 +76,6 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <EntityType Name="Available">
-          <Key>
-            <PropertyRef Name="UserName" />
-          </Key>
-          <Property Name="availableDate" Type="date" />
-          <Property Name="timeStart" Type="time" Precision="7" />
-          <Property Name="timeEnd" Type="time" Precision="7" />
-          <Property Name="country" Type="varchar" MaxLength="50" />
-          <Property Name="province" Type="varchar" MaxLength="50" />
-          <Property Name="city" Type="varchar" MaxLength="50" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
-        </EntityType>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="UserName" />
@@ -96,13 +84,13 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="birthdate" Type="date" />
           <Property Name="gender" Type="varchar" MaxLength="20" />
-          <Property Name="city" Type="varchar" MaxLength="20" />
           <Property Name="province" Type="varchar" MaxLength="20" />
           <Property Name="country" Type="varchar" MaxLength="20" />
           <Property Name="availableDate" Type="date" />
           <Property Name="RoleId" Type="nvarchar" MaxLength="128" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="profile" Type="nvarchar" MaxLength="128" />
+          <Property Name="timeStart" Type="time" Precision="7" />
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
@@ -129,18 +117,6 @@
             <Dependent Role="Client">
               <PropertyRef Name="UserId" />
               <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Available__UserN__131DCD43">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
-          <End Role="Available" Type="Self.Available" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="UserName" />
-            </Principal>
-            <Dependent Role="Available">
-              <PropertyRef Name="UserName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -226,17 +202,12 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Available" EntityType="Self.Available" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="Client" EntityType="Self.Client" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="ClientInterest" EntityType="Self.ClientInterest" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="Interest" EntityType="Self.Interest" Schema="ssdDating" store:Type="Tables" />
           <AssociationSet Name="clientFk" Association="Self.clientFk">
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
             <End Role="Client" EntitySet="Client" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Available__UserN__131DCD43" Association="Self.FK__Available__UserN__131DCD43">
-            <End Role="Client" EntitySet="Client" />
-            <End Role="Available" EntitySet="Available" />
           </AssociationSet>
           <AssociationSet Name="FK__ClientInt__inter__17E28260" Association="Self.FK__ClientInt__inter__17E28260">
             <End Role="Interest" EntitySet="Interest" />
@@ -344,19 +315,6 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="Available">
-          <Key>
-            <PropertyRef Name="UserName" />
-          </Key>
-          <Property Name="availableDate" Type="DateTime" Precision="0" />
-          <Property Name="timeStart" Type="Time" Precision="7" />
-          <Property Name="timeEnd" Type="Time" Precision="7" />
-          <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="province" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="Self.FK__Available__UserN__131DCD43" FromRole="Available" ToRole="Client" />
-        </EntityType>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="UserName" />
@@ -365,15 +323,14 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="birthdate" Type="DateTime" Precision="0" />
           <Property Name="gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="city" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="province" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="availableDate" Type="DateTime" Precision="0" />
           <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="profile" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="timeStart" Type="Time" Precision="7" />
           <NavigationProperty Name="AspNetUserRole" Relationship="Self.clientFk" FromRole="Client" ToRole="AspNetUserRoles" />
-          <NavigationProperty Name="Available" Relationship="Self.FK__Available__UserN__131DCD43" FromRole="Client" ToRole="Available" />
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
@@ -461,18 +418,6 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Available__UserN__131DCD43">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
-          <End Role="Available" Type="Self.Available" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="UserName" />
-            </Principal>
-            <Dependent Role="Available">
-              <PropertyRef Name="UserName" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__ClientInt__inter__17E28260">
           <End Role="Interest" Type="Self.Interest" Multiplicity="1" />
           <End Role="ClientInterest" Type="Self.ClientInterest" Multiplicity="*" />
@@ -485,7 +430,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SSDDatingEntities8" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SSDDatingEntities10" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
@@ -493,7 +438,6 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRole" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="Availables" EntityType="Self.Available" />
           <EntitySet Name="Clients" EntityType="Self.Client" />
           <EntitySet Name="ClientInterests" EntityType="Self.ClientInterest" />
           <EntitySet Name="Interests" EntityType="Self.Interest" />
@@ -517,10 +461,6 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__Available__UserN__131DCD43" Association="Self.FK__Available__UserN__131DCD43">
-            <End Role="Client" EntitySet="Clients" />
-            <End Role="Available" EntitySet="Availables" />
-          </AssociationSet>
           <AssociationSet Name="FK__ClientInt__inter__17E28260" Association="Self.FK__ClientInt__inter__17E28260">
             <End Role="Interest" EntitySet="Interests" />
             <End Role="ClientInterest" EntitySet="ClientInterests" />
@@ -531,7 +471,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities8">
+        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities10">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="SSDDatingModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -606,19 +546,6 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Availables">
-            <EntityTypeMapping TypeName="SSDDatingModel.Available">
-              <MappingFragment StoreEntitySet="Available">
-                <ScalarProperty Name="availableDate" ColumnName="availableDate" />
-                <ScalarProperty Name="timeStart" ColumnName="timeStart" />
-                <ScalarProperty Name="timeEnd" ColumnName="timeEnd" />
-                <ScalarProperty Name="country" ColumnName="country" />
-                <ScalarProperty Name="province" ColumnName="province" />
-                <ScalarProperty Name="city" ColumnName="city" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="SSDDatingModel.Client">
               <MappingFragment StoreEntitySet="Client">
@@ -626,13 +553,13 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="birthdate" ColumnName="birthdate" />
                 <ScalarProperty Name="gender" ColumnName="gender" />
-                <ScalarProperty Name="city" ColumnName="city" />
                 <ScalarProperty Name="province" ColumnName="province" />
                 <ScalarProperty Name="country" ColumnName="country" />
                 <ScalarProperty Name="availableDate" ColumnName="availableDate" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="profile" ColumnName="profile" />
+                <ScalarProperty Name="timeStart" ColumnName="timeStart" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

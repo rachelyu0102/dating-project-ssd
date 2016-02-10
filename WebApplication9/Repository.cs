@@ -10,7 +10,7 @@ namespace WebApplication9
 {
     public class Repository
     {
-        SSDDatingEntities8 db = new SSDDatingEntities8();
+        SSDDatingEntities10 db = new SSDDatingEntities10();
 
         public const string NAME = "Name";
         public const string AGE = "Age";
@@ -131,6 +131,9 @@ namespace WebApplication9
 
 
 
+
+
+
         public List<AspNetRole> getUserRole()
         {
             List<AspNetRole> roles = new List<AspNetRole>();
@@ -189,8 +192,7 @@ namespace WebApplication9
             client.birthdate = clientUpdate.birthdate;
             client.country = clientUpdate.country;
             client.province = clientUpdate.province;
-            client.city = clientUpdate.city;
-
+        
             //delete old clientInterest info, insert new clientInterest info
             var queryInterests = from c_i in db.ClientInterests where c_i.UserName == clientUpdate.UserName select c_i;
 

@@ -21,7 +21,7 @@ namespace WebApplication9.Controllers
     {
 
         Repository repo = new Repository();
-        SSDDatingEntities8 context = new SSDDatingEntities8();
+        SSDDatingEntities10 context = new SSDDatingEntities10();
 
         // GET: Home
         public ActionResult Index()
@@ -53,6 +53,7 @@ namespace WebApplication9.Controllers
                                         },
                                         DefaultAuthenticationTypes.ApplicationCookie,
                                         ClaimTypes.Name, ClaimTypes.Role);
+
                     // SignIn() accepts ClaimsIdentity and issues logged in cookie. 
                     authenticationManager.SignIn(new AuthenticationProperties
                     {
@@ -61,6 +62,7 @@ namespace WebApplication9.Controllers
 
                     return RedirectToAction("Square", "Home");
                 }
+
             }
             return View();
         }
@@ -189,6 +191,7 @@ namespace WebApplication9.Controllers
 
 
         [HttpPost]
+      //  [ValidateAntiForgeryToken]
         public ActionResult Register(RegisteredUser newUser)
         {
             var userStore = new UserStore<IdentityUser>();
