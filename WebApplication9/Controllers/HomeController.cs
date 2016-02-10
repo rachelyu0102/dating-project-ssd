@@ -72,6 +72,8 @@ namespace WebApplication9.Controllers
         [Authorize]
         public ActionResult Square(string UserName, string searchString, string interestString, string genderString, string sortOrder, int? page)
         {
+            
+
             IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsInOneLocation(UserName, searchString, interestString, genderString, sortOrder);
            
             ViewBag.CurrentSearchString = searchString;
