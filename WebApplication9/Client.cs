@@ -24,8 +24,8 @@ namespace WebApplication9
         public string RoleId { get; set; }
         public string UserId { get; set; }
         public string profile { get; set; }
+        public Nullable<System.TimeSpan> timeStart { get; set; }
     
         public virtual AspNetUserRole AspNetUserRole { get; set; }
-        public virtual Available Available { get; set; }
     }
 }
