@@ -142,9 +142,6 @@ namespace WebApplication9
             ClientDetailInfo ClientDetailinfo = new ClientDetailInfo(client, interests);
             return ClientDetailinfo;
         }
-
-
-
         //get all clients in one province
         public IEnumerable<ClientDetailInfo> getAllClientsInOneLocation(string UserName, string searchString, string interestringString, string genderString, string sortOrder)
         {
@@ -169,18 +166,12 @@ namespace WebApplication9
             return AllClientDetailsInfo;
         }
 
-
-
-
-
         public List<AspNetRole> getUserRole()
         {
             List<AspNetRole> roles = new List<AspNetRole>();
             roles = db.AspNetRoles.ToList();
             return roles;
         }
-      
-
 
         public void saveClientInfo(Client clientInfo, string interest1, string interest2, string interest3)
         {
@@ -219,10 +210,6 @@ namespace WebApplication9
         {
 
         }
-
-       
-       
-
 
         //Get Asp USER
         public AspNetUser GetUser(string username)
@@ -281,18 +268,11 @@ namespace WebApplication9
             clientInterests = (from c_i in db.ClientInterests where c_i.UserName == userName select c_i).ToList();
             return clientInterests;           
         }     
-
-
        //get all interests
        public IEnumerable<Interest> getAllInterests()
         {
             IEnumerable<Interest> interests = db.Interests.ToList();
             return interests;
         } 
-
-
-
-       
-
     }
 }
