@@ -167,6 +167,12 @@ namespace WebApplication9
             db.SaveChanges();
         }
        
+        public void saveAvailableDate(String userName, DateTime availableDate, DateTime timepicker1)
+        {
+            Client client = db.Clients.Find(userName);
+            //   client.availableDate;
+            db.SaveChanges();
+        }
 
 
        

@@ -129,11 +129,11 @@ namespace WebApplication9.Controllers
         }
 
         [HttpPost]
-        public ActionResult findADate()
+        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1 )
         {
 
+            repo.saveAvailableDate(userName, availableDate, timepicker1);
             return View();
-
         }
 
         
