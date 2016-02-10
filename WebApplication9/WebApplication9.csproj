@@ -194,8 +194,11 @@
     <Content Include="Images\image6.jpg" />
     <Content Include="Images\Koala.jpg" />
     <Content Include="Images\LoginBg.jpg" />
+    <Content Include="Images\profileDefaultBg1.jpg" />
     <Content Include="Images\profileDefulatBg.jpg" />
     <Content Include="Images\profilePic.jpg" />
+    <Content Include="Images\Uploads\UserProfile\default-profile-female.jpg" />
+    <Content Include="Images\Uploads\UserProfile\default-profile-male.jpg" />
     <Content Include="Images\userDefaultProfile.PNG" />
     <Content Include="Images\use_case.PNG" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -334,7 +337,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\UserProfile\" />
-    <Folder Include="Images\Uploads\UserProfile\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
