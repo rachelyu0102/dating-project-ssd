@@ -142,8 +142,9 @@ namespace WebApplication9.Controllers
             if(client == null || interests== null || country == null || state == null)
             {
                 ViewBag.message = "Please fill or select all the input!";
-                return View();
-               
+                // return RedirectToAction("Square", "Home", new { UserName = client.UserName });
+                return RedirectToAction("UserProfile", new { userName = client.UserName });
+
             }
             else
             {
@@ -265,21 +266,22 @@ namespace WebApplication9.Controllers
         }
             return View();
         }
-
+        [HttpGet]
         public ActionResult CompleteInfo(string userName, string email, string id)
         {
             ViewBag.email = email;
             ViewBag.username = userName;
-            ViewBag.id = id;       
-            return View();
+            ViewBag.id = id;
+            ClientDetailInfo user = repo.getUserDetailInfo(id);
+            return View(user);
           
         }
 
         [HttpPost]
-        public ActionResult CompleteInfo(Client clientInfo, string interest1, string interest2, string interest3)
+        public ActionResult CompleteInfo(Client Client, string[] interests)
         {
-            repo.saveClientInfo(clientInfo, interest1, interest2, interest3);
-            return RedirectToAction("UserProfile", new { userName = clientInfo.UserName});
+            //repo.saveClientInfo(Client.client, Client.interests,Client.interests,Client.interests);
+            return RedirectToAction("UserProfile", new { userName = Client.UserName});
         }
 
 
@@ -292,9 +294,6 @@ namespace WebApplication9.Controllers
             return RedirectToAction("UserProfile", new { userName = updateClientInfo.client
                 .UserName });
         }
-
-       
-
 
         [HttpGet]
             public ActionResult AddRole()
