@@ -78,6 +78,7 @@ namespace WebApplication9.Controllers
             ViewBag.CurrentSortOrder = sortOrder;
             ViewBag.CurrentGenderString = genderString;
             ViewBag.CurrentInterestString = interestString;
+            ViewBag.UserName = UserName;
 
             if (sortOrder == null || sortOrder == "Name")
             {
@@ -142,7 +143,6 @@ namespace WebApplication9.Controllers
             if(client == null || interests== null || country == null || state == null)
             {
                 ViewBag.message = "Please fill or select all the input!";
-                // return RedirectToAction("Square", "Home", new { UserName = client.UserName });
                 return RedirectToAction("UserProfile", new { userName = client.UserName });
 
             }
@@ -168,15 +168,13 @@ namespace WebApplication9.Controllers
         [HttpPost]
         public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String location )
         {
-
             repo.saveAvailableDate(userName, availableDate, timepicker1);
 
-            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Location = location});
+            return RedirectToAction("foundDates", new { UserName = userName, Gender = gender, Location = location });
             
         }
 
         
-
         public ActionResult About()
         {
             return View();
@@ -190,11 +188,8 @@ namespace WebApplication9.Controllers
         }
 
        
-
-
         public ActionResult Update()
         {
-          
             return View();
         }
 
@@ -204,9 +199,9 @@ namespace WebApplication9.Controllers
             return View();
 
         }
+
         public ActionResult blindDateProfiles()
         {
-
             return View();
 
         }

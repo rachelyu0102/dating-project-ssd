@@ -83,7 +83,7 @@
 
 
    
-    <div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="updateFormModal" style="margin:20px!important">
+    <div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="updateFormModal" style="margin:20px!important" ng-app="">
         <div class="modal-dialog modal-lg">
             <div class="modal-content w3-margin w3-padding">
                 <div class="modal-header">
@@ -117,20 +117,20 @@
 
                         <div class="form-group">
                             <label for="photo">Photo:</label>
-                            <input type="file" name="photo" class="form-control" id="photo" />
+                            <input type="file" name="photo" class="form-control" id="photo" ng-model="phote"  required/>
                         </div>
 
                         <div class="form-group">
                            <label for="birthDay"></label>
-                            <input type="date" name="client.birthdate" class="form-control"/>
+                            <input type="date" name="client.birthdate" class="form-control" ng-model="birthdate" required/>
                         </div>
 
                         <div class="form-group">
                             <label for="Location">Location:</label><br />
-                            <select name="country" class="countries" id="countryId">
+                            <select name="country" class="countries" id="countryId" ng-model="country" required>
                                 <option value="">Select Country</option>
                             </select>
-                            <select name="state" class="states" id="stateId">
+                            <select name="state" class="states" id="stateId" ng-model="state" required>
                                 <option value="">Select State</option>
                             </select>
                             @*<select name="city" class="cities" id="cityId">
@@ -140,7 +140,7 @@
 
                         <div class="form-group">
                             <label for="interests">Interests (hold shift to select more than one，you can select 3 interests):</label>
-                            <select multiple class="form-control" id="interests" name="interests[]">                             
+                            <select multiple class="form-control" id="interests" name="interests[]" ng-model="interests" required>                             
                                 @{ 
                                     var counter1 = 0;
                                 }
@@ -179,7 +179,7 @@ $(document).ready(function(){
 <script src="http://lab.iamrohit.in/js/location.js"></script>
 <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
 <script src="~/signalr/hubs"></script>
-   
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>   
 
     <script>
         $(function () {

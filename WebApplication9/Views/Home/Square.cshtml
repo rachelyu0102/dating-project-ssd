@@ -211,6 +211,6 @@
 
 </div>
 <div class="paginationList col-md-10 col-md-offset-1">
-    @Html.PagedListPager(Model, page => Url.Action("Square", new { page,searchString = ViewBag.CurrentSearchString, interestString = ViewBag.CurrentInterestString, genderString = ViewBag.CurrentGenderString, sortOrder = ViewBag.CurrentSortOrder })
+    @Html.PagedListPager(Model, page => Url.Action("Square", new { page,UserName= ViewBag.UserName,searchString = ViewBag.CurrentSearchString, interestString = ViewBag.CurrentInterestString, genderString = ViewBag.CurrentGenderString, sortOrder = ViewBag.CurrentSortOrder })
     )
 </div>
