@@ -122,7 +122,20 @@ namespace WebApplication9
         {
             Client client = db.Clients.Find(id);
             List<string> interests = new List<string>();
-            interests = (from c_i in db.ClientInterests where c_i.UserName == client.UserName select c_i.Interest1.interest1).ToList();
+            interests = (from c_i in db.ClientInterests where c_i.UserName == client.UserName
+                         select c_i.Interest1.interest1).ToList();
+
+            ClientDetailInfo ClientDetailinfo = new ClientDetailInfo(client, interests);
+            return ClientDetailinfo;
+        }
+        public ClientDetailInfo getUserDetailInfo(string id)
+        {
+            Client client = (from i in db.Clients
+                            where i.UserId == id
+                            select i).FirstOrDefault();
+            List < string > interests = new List<string>();
+            interests = (from i in db.Interests
+                         select i.interest1).ToList() ;
 
             ClientDetailInfo ClientDetailinfo = new ClientDetailInfo(client, interests);
             return ClientDetailinfo;
