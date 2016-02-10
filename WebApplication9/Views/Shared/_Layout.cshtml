@@ -31,7 +31,7 @@
                     <li><a href="~/Home/About">About</a></li>
                     @if (Request.IsAuthenticated)
                     {
-                        <li><a href="~/Home/Square">Square</a></li>
+                        <li><a href="~/Home/Square/?UserName=@User.Identity.Name">Square</a></li>
                         <li><a href="~/Home/findADate?username=@User.Identity.Name">Find a date</a></li>
 
                         if(User.IsInRole("PaidUser"))

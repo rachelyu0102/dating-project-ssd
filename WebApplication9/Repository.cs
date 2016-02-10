@@ -117,6 +117,8 @@ namespace WebApplication9
             return AllClientDetailsInfo;
         }
 
+
+
         //get one client Detial Info, including interests
         public ClientDetailInfo getOneUserDetailInfo(string id)
         {
@@ -142,6 +144,30 @@ namespace WebApplication9
         }
 
 
+
+        //get all clients in one province
+        public IEnumerable<ClientDetailInfo> getAllClientsInOneLocation(string UserName, string searchString, string interestringString, string genderString, string sortOrder)
+        {
+            List<ClientDetailInfo> AllClientsDetailsInfoList = new List<ClientDetailInfo>();
+
+            Client getClient = db.Clients.Find(UserName);
+
+            IEnumerable<Client> clients = (from c in db.Clients where c.province == getClient.province select c).ToList();
+
+            List<string> interests = new List<string>();
+            foreach (Client client in clients)
+            {
+                interests = (from c_i in db.ClientInterests where c_i.UserName == client.UserName select c_i.Interest1.interest1).ToList();
+
+                AllClientsDetailsInfoList.Add(new ClientDetailInfo(client, interests));
+            }
+
+            IEnumerable<ClientDetailInfo> AllClientDetailsInfo = AllClientsDetailsInfoList.ToList();
+            AllClientDetailsInfo = FilterClients(AllClientDetailsInfo, searchString, interestringString, genderString);
+            AllClientDetailsInfo = SortClient(AllClientDetailsInfo, sortOrder);
+
+            return AllClientDetailsInfo;
+        }
 
 
 
@@ -182,19 +208,17 @@ namespace WebApplication9
        
         public void saveAvailableDate(String userName, DateTime availableDate, DateTime timepicker1)
         {
-            string sqlFormattedAvailableDate = availableDate.ToString();
-            string sqlFormattedTimePicker = timepicker1.ToString();
-
             Client client = db.Clients.Find(userName);
-
-
             client.availableDate = availableDate;
         //   client.timeStart = (TimeSpan) timepicker1;
             //client.availableDate.Value.Add(availableDate);
             //client.timeStart.Value.Add((DateTime)timepicker1);
             db.SaveChanges();
         }
+        public void foundDates()
+        {
 
+        }
 
        
        
@@ -209,18 +233,23 @@ namespace WebApplication9
             return client;
         }
 
-        public void updatgeProfile(Client clientUpdate, string interest1, string interest2, string interest3)
+        public void updatgeProfile(Client clientUpdate, string[] interests, string country, string state)
         {
             //udpate client table
             Client client = db.Clients.Find(clientUpdate.UserName);
-            client.email = clientUpdate.email;
+            if (clientUpdate.gender != null)
+            {
             client.gender = clientUpdate.gender;
-            client.UserName = clientUpdate.UserName;
+            }
+
+            if(clientUpdate.birthdate != null)
+            {
             client.birthdate = clientUpdate.birthdate;
-            client.country = clientUpdate.country;
-            client.province = clientUpdate.province;
+            }
+
+            client.country = country;
+            client.province = state;
         
-            //delete old clientInterest info, insert new clientInterest info
             var queryInterests = from c_i in db.ClientInterests where c_i.UserName == clientUpdate.UserName select c_i;
 
             if (queryInterests != null)
@@ -231,17 +260,15 @@ namespace WebApplication9
                 }
             }
 
-            ClientInterest clientInterest1 = new ClientInterest();
-            clientInterest1.UserName = clientUpdate.UserName;
-            clientInterest1.interest = interest1;
+          
+            foreach(string interest in interests)
+            {
+                ClientInterest clientInterest = new ClientInterest();
+                clientInterest.UserName = clientUpdate.UserName;
+                clientInterest.interest = interest;
 
-            ClientInterest clientInterest2 = new ClientInterest();
-            clientInterest2.UserName = clientUpdate.UserName;
-            clientInterest2.interest = interest2;
-
-            ClientInterest clientInterest3 = new ClientInterest();
-            clientInterest3.UserName = clientUpdate.UserName;
-            clientInterest3.interest = interest3;
+                db.ClientInterests.Add(clientInterest);
+            }
 
             db.SaveChanges();
 

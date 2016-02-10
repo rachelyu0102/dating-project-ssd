@@ -14,6 +14,7 @@ using PagedList;
 
 
 using WebApplication9.ViewModels;
+using System.Data;
 
 namespace WebApplication9.Controllers
 {
@@ -60,7 +61,7 @@ namespace WebApplication9.Controllers
                         IsPersistent = false
                     }, identity);
 
-                    return RedirectToAction("Square", "Home");
+                    return RedirectToAction("Square", "Home", new {UserName=login.UserName});
                 }
 
             }
@@ -69,9 +70,9 @@ namespace WebApplication9.Controllers
 
         //show all the clients in square page
         [Authorize]
-        public ActionResult Square(Login login, string searchString, string interestString, string genderString, string sortOrder, int? page)
+        public ActionResult Square(string UserName, string searchString, string interestString, string genderString, string sortOrder, int? page)
         {
-            IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsDetailsInfo(searchString, interestString, genderString, sortOrder);
+            IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsInOneLocation(UserName, searchString, interestString, genderString, sortOrder);
            
             ViewBag.CurrentSearchString = searchString;
             ViewBag.CurrentSortOrder = sortOrder;
@@ -100,11 +101,32 @@ namespace WebApplication9.Controllers
             return View(AllClients);
           
         }
+        public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder)
+        {
+           IEnumerable <ClientDetailInfo> clients= repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder);
+
+            List<ClientDetailInfo> clientsHasAvail = new List<ClientDetailInfo> ();
+            Client getClient = context.Clients.Find(UserName);
+
+
+            foreach(ClientDetailInfo client in clients)
+            {
+
+                if (client.client.availableDate!=null)
+                {
+                    clientsHasAvail.Add(client);
+                }
+            }
+
+            return View(clientsHasAvail);
+        }
 
         //UserProfile page
         public ActionResult UserProfile(string userName)
         {
             ClientDetailInfo clientDetailInfo = repo.getOneUserDetailInfo(userName);
+
+            
             ViewBag.interests = repo.getAllInterests();
             return View(clientDetailInfo);
         }
@@ -114,12 +136,21 @@ namespace WebApplication9.Controllers
         {
             if(photo!=null)
             {
-                string message = updateUserProfile(photo, client.UserName);
+                updateUserProfile(photo, client.UserName);
             }
          
-            repo.updatgeProfile(client, interests[0], interests[1], interests[2]);
-           
+            if(client == null || interests== null || country == null || state == null)
+            {
+                ViewBag.message = "Please fill or select all the input!";
+                // return RedirectToAction("Square", "Home", new { UserName = client.UserName });
+                return RedirectToAction("UserProfile", new { userName = client.UserName });
 
+            }
+            else
+            {
+                repo.updatgeProfile(client, interests, country, state);
+
+            }         
             
             return RedirectToAction("UserProfile", new { userName= client.UserName});
         }
@@ -135,11 +166,13 @@ namespace WebApplication9.Controllers
         }
 
         [HttpPost]
-        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1 )
+        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String location )
         {
 
             repo.saveAvailableDate(userName, availableDate, timepicker1);
-            return View();
+
+            return RedirectToAction("foundDates", new { UserName = userName, Gender = gender, Location = location });
+            
         }
 
         
