@@ -11,33 +11,7 @@
     <title>foundDates</title>
 </head>
 <body>
-    @{
-        var searchString = "";
-        var interestString = "";
-        var genderString = "";
-        var sortOrder = "";
 
-        if (ViewBag.CurrentSearchString != null)
-        {
-            searchString = ViewBag.CurrentSearchString;
-        }
-
-        if (ViewBag.CurrentSortOrder != null)
-        {
-            sortOrder = ViewBag.CurrentSortOrder;
-        }
-
-        if (ViewBag.CurrentGenderString != null)
-        {
-            genderString = ViewBag.CurrentGenderString;
-        }
-
-        if (ViewBag.CurrentInterestString != null)
-        {
-            interestString = ViewBag.CurrentInterestString;
-        }
-
-    }
 
     <h1> People looking for dates around you! </h1>
     
@@ -66,11 +40,12 @@
                     <div class="caption">
                         <h4>@item.client.UserName</h4>
                         <h4>@item.client.gender</h4>
-                        @{ 
-                            var dateAndTime = item.client.availableDate;
-                            var dateOnly = dateAndTime.Value.Date;
+                        @{                          
+                           var dateAndTime = item.client.availableDate.Value.ToString("MMMM dd, yyyy");
+                            var time = item.client.timeStart.Value.ToString("h:mm tt");
                         }
-                        <h4>Looking for a date on: @dateOnly</h4>
+                        <h4>Looking for a date on: @dateAndTime at @time</h4>
+                      
                         @{
                             var date = DateTime.Now.Date.Subtract((DateTime)item.client.birthdate);
                             int year = (int)date.TotalDays / 365;
@@ -112,3 +87,6 @@
 
 </body>
 </html>
+<script>
+    
+</script>
