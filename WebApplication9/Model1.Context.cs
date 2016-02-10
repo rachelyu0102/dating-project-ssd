@@ -13,10 +13,10 @@ namespace WebApplication9
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class SSDDatingEntities10 : DbContext
+    public partial class SSDDatingEntities11 : DbContext
     {
-        public SSDDatingEntities10()
-            : base("name=SSDDatingEntities10")
+        public SSDDatingEntities11()
+            : base("name=SSDDatingEntities11")
         {
         }
     

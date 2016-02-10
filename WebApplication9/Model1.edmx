@@ -86,11 +86,11 @@
           <Property Name="gender" Type="varchar" MaxLength="20" />
           <Property Name="province" Type="varchar" MaxLength="20" />
           <Property Name="country" Type="varchar" MaxLength="20" />
-          <Property Name="availableDate" Type="date" />
           <Property Name="RoleId" Type="nvarchar" MaxLength="128" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="profile" Type="nvarchar" MaxLength="128" />
-          <Property Name="timeStart" Type="time" Precision="7" />
+          <Property Name="availableDate" Type="datetime" />
+          <Property Name="timeStart" Type="datetime" />
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
@@ -325,11 +325,11 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="province" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="availableDate" Type="DateTime" Precision="0" />
           <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="profile" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="timeStart" Type="Time" Precision="7" />
+          <Property Name="availableDate" Type="DateTime" Precision="3" />
+          <Property Name="timeStart" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AspNetUserRole" Relationship="Self.clientFk" FromRole="Client" ToRole="AspNetUserRoles" />
         </EntityType>
         <EntityType Name="ClientInterest">
@@ -430,7 +430,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SSDDatingEntities10" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SSDDatingEntities11" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
@@ -471,7 +471,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities10">
+        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities11">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="SSDDatingModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -555,10 +555,10 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
                 <ScalarProperty Name="gender" ColumnName="gender" />
                 <ScalarProperty Name="province" ColumnName="province" />
                 <ScalarProperty Name="country" ColumnName="country" />
-                <ScalarProperty Name="availableDate" ColumnName="availableDate" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="profile" ColumnName="profile" />
+                <ScalarProperty Name="availableDate" ColumnName="availableDate" />
                 <ScalarProperty Name="timeStart" ColumnName="timeStart" />
               </MappingFragment>
             </EntityTypeMapping>

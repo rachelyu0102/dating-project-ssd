@@ -20,11 +20,11 @@ namespace WebApplication9
         public string gender { get; set; }
         public string province { get; set; }
         public string country { get; set; }
-        public Nullable<System.DateTime> availableDate { get; set; }
         public string RoleId { get; set; }
         public string UserId { get; set; }
         public string profile { get; set; }
-        public Nullable<System.TimeSpan> timeStart { get; set; }
+        public Nullable<System.DateTime> availableDate { get; set; }
+        public Nullable<System.DateTime> timeStart { get; set; }
     
         public virtual AspNetUserRole AspNetUserRole { get; set; }
     }
