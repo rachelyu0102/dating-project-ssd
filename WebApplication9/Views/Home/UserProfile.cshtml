@@ -101,12 +101,12 @@
                             @if (Model.client.gender == "male")
                             {
                                 <label class="radio-inline"><input type="radio" name="client.gender" value="male" checked>Male</label>
-                                <label class="radio-inline"><input type="radio" name="client.gender" value="famale">Female</label><br />
+                                <label class="radio-inline"><input type="radio" name="client.gender" value="female">Female</label><br />
                             }
                             else
                             {
                                 <label class="radio-inline"><input type="radio" name="client.gender" value="male">Male</label>
-                                    <label class="radio-inline"><input type="radio" name="client.gender" value="famale" checked>Female</label><br />
+                                    <label class="radio-inline"><input type="radio" name="client.gender" value="female" checked>Female</label><br />
 
                             }
 
@@ -138,6 +138,8 @@
                             <select multiple class="form-control" id="interests" name="interests[]">                             
                                 @{ 
                                     var counter1 = 0;
+
+
                                 }
                                 @foreach (var interest in ViewBag.interests)
                                 {
