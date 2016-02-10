@@ -224,12 +224,12 @@ namespace WebApplication9
         {
             //udpate client table
             Client client = db.Clients.Find(clientUpdate.UserName);
-            if (client.gender != null)
+            if (clientUpdate.gender != null)
             {
             client.gender = clientUpdate.gender;
             }
 
-            if(client.birthdate != null)
+            if(clientUpdate.birthdate != null)
             {
             client.birthdate = clientUpdate.birthdate;
             }
@@ -247,9 +247,10 @@ namespace WebApplication9
                 }
             }
 
-            ClientInterest clientInterest = new ClientInterest();
+          
             foreach(string interest in interests)
             {
+                ClientInterest clientInterest = new ClientInterest();
                 clientInterest.UserName = clientUpdate.UserName;
                 clientInterest.interest = interest;
 

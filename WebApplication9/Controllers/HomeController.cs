@@ -142,8 +142,9 @@ namespace WebApplication9.Controllers
             if(client == null || interests== null || country == null || state == null)
             {
                 ViewBag.message = "Please fill or select all the input!";
-                return View();
-               
+                // return RedirectToAction("Square", "Home", new { UserName = client.UserName });
+                return RedirectToAction("UserProfile", new { userName = client.UserName });
+
             }
             else
             {
