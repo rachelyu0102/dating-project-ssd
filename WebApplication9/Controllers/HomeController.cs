@@ -114,12 +114,20 @@ namespace WebApplication9.Controllers
         {
             if(photo!=null)
             {
-                string message = updateUserProfile(photo, client.UserName);
+                updateUserProfile(photo, client.UserName);
             }
          
-            repo.updatgeProfile(client, interests[0], interests[1], interests[2]);
-           
+            if(client == null || interests== null || country == null || state == null)
+            {
+                ViewBag.message = "Please fill or select all the input!";
+                return View();
+               
+            }
+            else
+            {
+                repo.updatgeProfile(client, interests, country, state)
 
+            }         
             
             return RedirectToAction("UserProfile", new { userName= client.UserName});
         }
