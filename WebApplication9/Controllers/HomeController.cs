@@ -14,6 +14,7 @@ using PagedList;
 
 
 using WebApplication9.ViewModels;
+using System.Data;
 
 namespace WebApplication9.Controllers
 {
@@ -100,6 +101,12 @@ namespace WebApplication9.Controllers
             return View(AllClients);
           
         }
+        public ActionResult foundDates(String userName, DateTime availableDate, DateTime timepicker1)
+        {
+            
+
+            return View();
+        }
 
         //UserProfile page
         public ActionResult UserProfile(string userName)
@@ -141,12 +148,7 @@ namespace WebApplication9.Controllers
             repo.saveAvailableDate(userName, availableDate, timepicker1);
             return View();
         }
-        public ActionResult foundDates()
-        {
 
-
-            return View();
-        }
         
 
         public ActionResult About()
