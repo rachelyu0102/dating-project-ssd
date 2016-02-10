@@ -1,81 +1,72 @@
-﻿@model WebApplication9.ViewModels.ClientDetailInfo
+﻿@model WebApplication9.ViewModels.ClientInterestViewModel
 
 @{
     ViewBag.Title = "CompleteInfo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Complete Your Info</h2>
+
+<h2>CompleteInfo</h2>
+
+
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
+    
     <div class="form-horizontal">
+        <h4>ClientInterestViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            <div class="col-md-6">
-                @Html.HiddenFor(model => model.client.UserId,  new { Value = ViewBag.id } )
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-6">
-                @Html.HiddenFor(model => model.client.email, new { Value = ViewBag.email } )
+            @Html.LabelFor(model => model.userId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.userId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.userId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-6">
-                @Html.HiddenFor(model => model.client.UserName, new { Value = ViewBag.username } )
+            @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <h4 class="control-label col-md-3 col-sm-3">Birth Date</h4>
-            <div class="col-md-10 col-sm-10">
-                <input type="date" name="birthdate" class="form-control" value=@DateTime.Now.AddYears(-18) />
-                @Html.ValidationMessageFor(model => model.client.birthdate, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.userName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            <fieldset class="col-sm-3 col-md-3">
-                <legend>Gender</legend>
-                <label for="male">Male</label>
-                <input type="radio" value="male" name="gender" id="male" />
-                <label for="female">Female</label>
-                <input type="radio" value="female" name="gender" id="female" />
-            </fieldset>
+            @Html.LabelFor(model => model.interests, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select multiple class="form-control">
+                    @foreach (var x in Model.interests)
+                    {
+                        <option name="interest" value="x">
+                            @x
+                        </option>
+
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <h4 class="control-label col-md-3 col-sm-3">Location</h4>
-        <select name="country" class="countries" id="countryId">
-            <option value="">Select Country</option>
-        </select>
-        <select name="province" class="states" id="stateId">
-            <option value="">Select State</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="interests">Interests (hold shift to select more than one，you can select 3 interests):</label>
-        <select multiple class="form-control" id="interests" name="Model.interests[]">
-            @foreach (var interest in Model.interests)
-            {
-                <option name="Model.interests" value="@interest">@interest</option>
-            }
-        </select>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
-                }
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="http://lab.iamrohit.in/js/location.js"></script>
-<script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
-<script src="~/signalr/hubs"></script>
+}
+
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
