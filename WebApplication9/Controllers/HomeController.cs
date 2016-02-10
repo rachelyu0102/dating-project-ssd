@@ -61,7 +61,7 @@ namespace WebApplication9.Controllers
                         IsPersistent = false
                     }, identity);
 
-                    return RedirectToAction("Square", "Home");
+                    return RedirectToAction("Square", "Home", new {UserName=login.UserName});
                 }
 
             }
@@ -70,9 +70,9 @@ namespace WebApplication9.Controllers
 
         //show all the clients in square page
         [Authorize]
-        public ActionResult Square(Login login, string searchString, string interestString, string genderString, string sortOrder, int? page)
+        public ActionResult Square(string UserName, string searchString, string interestString, string genderString, string sortOrder, int? page)
         {
-            IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsDetailsInfo(searchString, interestString, genderString, sortOrder);
+            IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsInOneLocation(UserName, searchString, interestString, genderString, sortOrder);
            
             ViewBag.CurrentSearchString = searchString;
             ViewBag.CurrentSortOrder = sortOrder;
