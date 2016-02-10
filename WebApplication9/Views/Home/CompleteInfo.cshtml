@@ -4,14 +4,8 @@
     ViewBag.Title = "CompleteInfo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="~/Scripts/DatePicker.js"></script>
 <h2>Complete Your Info</h2>
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     <div class="form-horizontal">
         <hr />
@@ -23,9 +17,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @readonly="read-only"} })
+            <h4 class="control-label col-md-3 col-sm-3">User Name</h4>   
+                     <div class="col-md-6">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @readonly = "read-only" } })
                 @Html.HiddenFor(model => model.UserName)
             </div>
         </div>
@@ -33,8 +27,8 @@
         <div class="form-group">
             <h4 class="control-label col-md-3 col-sm-3">Birth Date</h4>
             <div class="col-md-10 col-sm-10">
-               <input type="date" name="birthdate" class="form-control" value=@DateTime.Now.AddYears(-18)/>
-                 @Html.ValidationMessageFor(model => model.birthdate, "", new { @class = "text-danger" })
+                <input type="date" name="birthdate" class="form-control" value=@DateTime.Now.AddYears(-18) />
+                @Html.ValidationMessageFor(model => model.birthdate, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
@@ -46,57 +40,35 @@
                 <input type="radio" value="female" name="gender" id="female" />
             </fieldset>
         </div>
-        <br />
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.city, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.province, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.province, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.province, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.country, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.country, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.country, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.availableDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.availableDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.availableDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.profile, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.profile, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.profile, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
+    </div>
+    <div class="form-group">
+        <h4 class="control-label col-md-3 col-sm-3">Location</h4>
+        <select name="country" class="countries" id="countryId">
+            <option value="">Select Country</option>
+        </select>
+        <select name="state" class="states" id="stateId">
+            <option value="">Select State</option>
+        </select>
+    </div>
+    <div class="form-control">
+        <h4 class="control-label col-md-3 col-sm-3">Interests</h4>
+        <select>
+        </select>
+    </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
 }
-
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="http://lab.iamrohit.in/js/location.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+<script src="~/signalr/hubs"></script>
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
