@@ -21,7 +21,7 @@ namespace WebApplication9.Controllers
     {
 
         Repository repo = new Repository();
-        SSDDatingEntities10 context = new SSDDatingEntities10();
+        SSDDatingEntities11 context = new SSDDatingEntities11();
 
         // GET: Home
         public ActionResult Index()
@@ -110,11 +110,17 @@ namespace WebApplication9.Controllers
         }
 
         [HttpPost]
-        public ActionResult UserProfile(Client client,  HttpPostedFileBase photo, string[] interests, string country, string state, string city)
+        public ActionResult UserProfile(Client client,  HttpPostedFileBase photo, string[] interests, string country, string state)
         {
-           string message = updateUserProfile(photo, client.UserName);
+            if(photo!=null)
+            {
+                string message = updateUserProfile(photo, client.UserName);
+            }
+         
             repo.updatgeProfile(client, interests[0], interests[1], interests[2]);
-            ViewBag.message = message;        
+           
+
+            
             return RedirectToAction("UserProfile", new { userName= client.UserName});
         }
 
@@ -129,11 +135,11 @@ namespace WebApplication9.Controllers
         }
 
         [HttpPost]
-        public ActionResult findADate()
+        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1 )
         {
 
+            repo.saveAvailableDate(userName, availableDate, timepicker1);
             return View();
-
         }
 
         
