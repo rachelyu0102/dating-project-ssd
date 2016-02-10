@@ -80,30 +80,6 @@
 
 
 
-
-
-@*<div>
-    <form action="/Home/UploadProfileImage" method="post" enctype="multipart/form-data">
-      
-        <div class="form-group">
-            <input type="text" name="updateClientInfo.client.UserName" value="@Model.client.UserName" hidden>
-        </div>
-
-        <div class="form-group">
-            <label class="radio-inline"><input type="radio" name="updateClientInfo.client.gender" value="male">Male</label>
-            <label class="radio-inline"><input type="radio" name="updateClientInfo.client.gender">Female</label><br />
-        </div>
-        
-          <div class="form-group">
-
-            <label for="photo">Photo:</label>
-            <input type="text" name="UserName" value="@Model.client.UserName" hidden>
-            <input type="file" name="photo" id="photo" />
-            <input type="submit" class="btn btn-default btn-sm w3-margin" value="Upload" />
-        </div>
-    </form>
-</div>*@
-
    
     <div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="updateFormModal" style="margin:20px!important">
         <div class="modal-dialog modal-lg">
