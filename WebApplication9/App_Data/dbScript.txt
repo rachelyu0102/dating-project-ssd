@@ -26,10 +26,6 @@
     CREATE TABLE Available( 
     availableDate DATE NULL,
     timeStart TIME NULL,
-    timeEnd TIME NULL,
-	country VARCHAR(50) NULL,
-	province VARCHAR(50) NULL,
-	city VARCHAR(50) NULL,
     UserName NVARCHAR(256) PRIMARY KEY,
     FOREIGN KEY (userName) REFERENCES Client(UserName)
     );
