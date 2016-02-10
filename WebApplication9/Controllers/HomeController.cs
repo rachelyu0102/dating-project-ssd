@@ -112,11 +112,15 @@ namespace WebApplication9.Controllers
         [HttpPost]
         public ActionResult UserProfile(Client client,  HttpPostedFileBase photo, string[] interests, string country, string state)
         {
-           string message = updateUserProfile(photo, client.UserName);
+            if(photo!=null)
+            {
+                string message = updateUserProfile(photo, client.UserName);
+            }
+         
             repo.updatgeProfile(client, interests[0], interests[1], interests[2]);
            
 
-            ViewBag.message = message;        
+            
             return RedirectToAction("UserProfile", new { userName= client.UserName});
         }
 
