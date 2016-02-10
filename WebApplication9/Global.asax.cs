@@ -16,18 +16,19 @@ namespace WebApplication9
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
+
         void Application_PostAuthenticateRequest()
         {
             if (User.Identity.IsAuthenticated)
             {
                 var name = User.Identity.Name; // Get current user name.
 
-                SSDDatingEntities5 context = new SSDDatingEntities5();
+                SSDDatingEntities8 context = new SSDDatingEntities8();
                 var user = context.AspNetUsers.Where(u => u.UserName == name).FirstOrDefault();
-                IQueryable<string> roleQuery = from u in context.AspNetUsers
-                                               from r in u.AspNetRoles
-                                               where u.UserName == Context.User.Identity.Name
-                                               select r.Name;
+                IQueryable<string> roleQuery = from r in context.AspNetUserRoles
+                                               where r.UserId== user.Id
+                                               select r.AspNetRole.Name;
+
                 string[] roles = roleQuery.ToArray();
 
                 HttpContext.Current.User = Thread.CurrentPrincipal =

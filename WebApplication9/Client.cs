@@ -22,7 +22,11 @@ namespace WebApplication9
         public string province { get; set; }
         public string country { get; set; }
         public Nullable<System.DateTime> availableDate { get; set; }
+        public string RoleId { get; set; }
+        public string UserId { get; set; }
+        public string profile { get; set; }
     
+        public virtual AspNetUserRole AspNetUserRole { get; set; }
         public virtual Available Available { get; set; }
     }
 }

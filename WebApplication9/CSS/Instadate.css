@@ -1,25 +1,127 @@
-form{
-    border:1px solid #ddd;
-    padding:20px
+
+ @import url(https://fonts.googleapis.com/css?family=Lobster+Two:400,700,400italic,700italic);
+ @import url(https://fonts.googleapis.com/css?family=Lato:400,100,300,700);
+
+
+
+
+html, body, #index{
+    height:100%!important;
+
+
+ }
+
+ .userName{
+      font-family:Lato!important;
+     font-size:32px
+ }
+.navbar{
+    margin-bottom:0!important;
+}
+
+.navbar-brand{
+    font-family: 'Lobster Two' !important;
+    font-weight:400;       
+}
+
+.wrapper{
+    padding:0px!important;
+  
+    overflow:auto;
+
+  
+}
+
+
+ /*--login --*/
+ #index{
+     background-image: url("../Images/LoginBg.jpg")!important;
+     background-repeat:no-repeat;
+     background-size:cover;
+     height:100%!important;
+
+
+
+    
+
+
+ }
+
+.loginBtn{
+   width:100%
+}
+
+.loginBox {
+    background-color: #fff;
+    box-shadow: 0 0 225px rgba(255,255,255,.55);
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.1);
+    display: block;
+    margin-top:40px
+}
+
+.loginBox h1 {
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: .8;
+    padding: 20px 0 10px 0;
+    text-align:center
+}
+
+.login-wrapper {
+    padding-bottom: 20px;
+}
+
+
+/*register*/
+.registerBox{
+    margin-top:50px
 
 }
 
-main{
-    margin: 2%;
+.registerBox h1 {
+    font-size: 30px;
+    line-height: 36px;
+    font-weight: 300;
+    padding: 0;
+    margin-bottom: 24px;
 }
 
-.thumbnail{
-    width: 300px; 
+.registerBox .btn-info {
+    width: 100%;
 }
 
-.thumbnail img{
-    height: 230px; 
+
+/*---profile---*/
+.profile{
+    padding:0px!important;
+    margin:0px!important;
 }
 
-.row{
-    margin-top:20px;
+.profileHeaderImg.col-md-12{
+    padding:0px!important;
+   margin:0px!important;
+}
+.profileHeaderImg img{
+    height:360px!important;
+    width:100%;
+
 }
 
-#myAccount{
-    background-color: #31B0D5;
+.profileImg img{
+    height:200px!important;
+    width:200px!important;
+
 }
+
+
+/*-------footer*/
+#footer{
+    clear:both!important;
+    text-align:center;
+
+    margin-bottom:0px!important
+}
+

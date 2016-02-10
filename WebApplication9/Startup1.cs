@@ -27,10 +27,15 @@ namespace WebApplication9
 
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
 
-                LoginPath = new PathString("/Home/Index")
+                LoginPath = new PathString("/Home/Index"),
+
+
 
             });
 
+
+            //signalR();
+            app.MapSignalR();
         }
 
     }

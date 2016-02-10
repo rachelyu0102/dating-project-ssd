@@ -3,47 +3,90 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - InstaDate</title>
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="~/CSS/bootstrap.css">
     <link rel="stylesheet" href="~/CSS/Instadate.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 </head>
 <body>
-    <div class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("InstaDate", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand" href="~/Home/Index">InstaDate</a>
             </div>
 
-@if(Request.IsAuthenticated)
-    {
-      <a href="~/Home/findADate?username=@User.Identity.Name">@User.Identity.Name</a>
-    }
-
-            <div class="navbar-collapse collapse">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+               
+                    <li><a href="~/Home/About">About</a></li>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li><a href="~/Home/Square">Square</a></li>
+                        <li><a href="~/Home/findADate?username=@User.Identity.Name">Find a date</a></li>
+
+                        if(User.IsInRole("PaidUser"))
+                        {
+
+                            <li><a href="~/Home/Manager">Paid Only</a></li>
+
+                        }
+                    }
+                    
                 </ul>
-            </div>
-        </div>
-    </div>
+               
+                <ul class="nav navbar-nav navbar-right">
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <li><a href="~/Home/Register">SIGN UP</a></li>
+                        <li><a href="~/Home/Index">LOG IN</a></li>
 
-    <div class="container body-content">
+                    }
+                    else
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                    <li><a href="~/Home/UserProfile?userName=@User.Identity.Name">Profile</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li><a href="~/Home/Logout">Logout</a></li>
+                            </ul>
+                        </li>
+                     
+                    }                   
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+
+
+    
+
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+    
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+        @*<div id="footer">
+            <footer>
+                <p>&copy; @DateTime.Now.Year;
+                
+                
+                
+                 - My ASP.NET Application</p>
+            </footer>
+        </div>*@
 </body>
 </html>

@@ -1,82 +1,230 @@
-﻿@model WebApplication9.Client
+﻿@model WebApplication9.ViewModels.ClientDetailInfo
 
 @{
     ViewBag.Title = "UserProfile";
 }
 
-<h2>UserProfile</h2>
+@{
+    var date = DateTime.Now.Date.Subtract((DateTime)Model.client.birthdate);
+    int year = (int)date.TotalDays / 365;
 
-<div>
-    <h4>Client</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.email)
-        </dt>
+} 
 
-        <dd>
-            @Html.DisplayFor(model => model.email)
-        </dd>
+<div class="col-md-12 profile" style="position:relative">
+    <div class="profileHeaderImg col-md-12 w3-card-2">
+        <img src="~/Images/profileDefaultBg1.jpg" style="width:100%" />
+        <div class="w3-container w3-padding-24">
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
+    </div>
+    <div style="height:200px; width:200px; position:absolute; top: 250px;
+    left: 64px;">
 
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
+        @if (Model.client.profile != null)
+        {
+            <img class="img-thumbnail" src="~/Images/Uploads/UserProfile/@Model.client.profile" alt="@Model.client.UserName" style="width:100%;height:100%" />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.birthdate)
-        </dt>
+        }
+        else if (Model.client.gender == "male")
+        {
+            <img class="img-thumbnail" src="~/Images/Uploads/UserProfile/default-profile-male.jpg" alt="@Model.client.UserName" style="width:100%;height:100%" />
+        
+        }
+        else
+        {
+            <img class="img-thumbnail" src="~/Images/Uploads/UserProfile/default-profile-female.jpg" alt="@Model.client.UserName" style="width:100%;height:100%" />
+       
 
-        <dd>
-            @Html.DisplayFor(model => model.birthdate)
-        </dd>
+        }
+    </div>
+    
 
-        <dt>
-            @Html.DisplayNameFor(model => model.gender)
-        </dt>
+    </div>
+<div class="col-md-3 w3-margin-64 w3-border w3-round" style="width:200px;">
 
-        <dd>
-            @Html.DisplayFor(model => model.gender)
-        </dd>
+    <div><span class="userName w3-justify" style="text-align:center">@Model.client.UserName </span></div>
+   
+    @*<div>@Model.client.email</div>*@
+    <div style="margin-top:16px">@Model.client.gender, @year</div>
+    <div style="margin-top:5px">@Model.client.city, @Model.client.province, @Model.client.country</div>
+    <div style="margin-top:5px">
+        <span >Like: </span>
+        @if (Model.interests != null)
+        {
+            int length = (Model.interests).Count();
+            int counter = 0;
+            foreach (var interest in Model.interests)
+            {
+                counter++;
+                if (interest != null)
+                {
+                    if (counter < length)
+                    {
+                        <span>@interest,</span>
+                    }
+                    else
+                    {
+                        <span>@interest</span>
+                    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.city)
-        </dt>
+                }
 
-        <dd>
-            @Html.DisplayFor(model => model.city)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.province)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.province)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.country)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.country)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.availableDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.availableDate)
-        </dd>
-
-    </dl>
+               
+            }
+        }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <div class="w3-margin w3-left">@if(Request.IsAuthenticated && User.Identity.Name==Model.client.UserName) {
+        <a href="#" class="btn btn-info btn-sm " data-toggle="modal" data-target="#updateFormModal">Update</a>
+    }</div>
+</div>
+
+
+
+
+
+@*<div>
+    <form action="/Home/UploadProfileImage" method="post" enctype="multipart/form-data">
+      
+        <div class="form-group">
+            <input type="text" name="updateClientInfo.client.UserName" value="@Model.client.UserName" hidden>
+        </div>
+
+        <div class="form-group">
+            <label class="radio-inline"><input type="radio" name="updateClientInfo.client.gender" value="male">Male</label>
+            <label class="radio-inline"><input type="radio" name="updateClientInfo.client.gender">Female</label><br />
+        </div>
+        
+          <div class="form-group">
+
+            <label for="photo">Photo:</label>
+            <input type="text" name="UserName" value="@Model.client.UserName" hidden>
+            <input type="file" name="photo" id="photo" />
+            <input type="submit" class="btn btn-default btn-sm w3-margin" value="Upload" />
+        </div>
+    </form>
+</div>*@
+
+   
+    <div class="modal fade w3-padding" tabindex="-1" role="dialog" id="updateFormModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Update</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="~/Home/UserProfile" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group">
+                            <input type="text" name="client.UserName" value="@Model.client.UserName">
+                        </div>
+
+                     
+
+                        <div class="form-group">
+                            <label class="radio-inline"><input type="radio" name="client.gender" value="male">Male</label>
+                            <label class="radio-inline"><input type="radio" name="client.gender" value="famale">Female</label><br />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo">Photo:</label>
+                            <input type="file" name="photo" id="photo" />
+                        </div>
+
+                        <div class="form-group">
+                            <select name="country" class="countries" id="countryId">
+                                <option value="">Select Country</option>
+                            </select>
+                            <select name="state" class="states" id="stateId">
+                                <option value="">Select State</option>
+                            </select>
+                            <select name="city" class="cities" id="cityId">
+                                <option value="">Select City</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="interests">Interests (hold shift to select more than one):</label>
+                            <select multiple class="form-control" id="interests" name="interests[]">
+                                @*<option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>*@
+                                @{ 
+                                    var counter1 = 0;
+                                }
+                                @foreach (var interest in ViewBag.interests)
+                                {
+                                    <option name ="interests[@counter1]"value="@interest.interest1">@interest.interest1</option>
+                                    counter1++;
+                                }
+                            </select>
+                        </div>
+                    
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Upload">
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+$(document).ready(function(){
+    $("#myBtn").click(function(){
+        $("#myModal").modal();
+    });
+});
+    </script>
+
+<script src="http://lab.iamrohit.in/js/location.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+<script src="~/signalr/hubs"></script>
+   
+
+    <script>
+        $(function () {
+
+            var chat = $.connection.chatHub;
+            chat.client.sendMessage = function (message) {
+                // Add the message to the page. 
+                $('#discussion').append('<li><strong>' + htmlEncode(message) + '</li>');
+            };
+
+            $.connection.hub.start().done(function () {
+                $('#sendMessage').click(function () {
+                    // Call the Send method on the hub. 
+                    chat.server.send($("#sendTo").val(), $('#message').val());
+                    // Clear text box and reset focus for next comment. 
+                    $('#message').val('').focus();
+                });
+            });
+
+        });
+            
+            function htmlEncode(value) {
+                var encodedValue = $('<div />').text(value).html();
+                return encodedValue;
+            }
+
+        
+          
+          
+         
+
+
+
+        
+
+
+    </script>
+

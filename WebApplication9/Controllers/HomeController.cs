@@ -3,10 +3,15 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using WebApplication9.BusinessLogic;
+using PagedList;
+
 
 using WebApplication9.ViewModels;
 
@@ -16,7 +21,7 @@ namespace WebApplication9.Controllers
     {
 
         Repository repo = new Repository();
-        SSDDatingEntities5 context = new SSDDatingEntities5();
+        SSDDatingEntities8 context = new SSDDatingEntities8();
 
         // GET: Home
         public ActionResult Index()
@@ -24,6 +29,7 @@ namespace WebApplication9.Controllers
 
             return View();
         }
+
         [HttpPost]
         public ActionResult Index(Login login)
         {
@@ -52,26 +58,74 @@ namespace WebApplication9.Controllers
                     {
                         IsPersistent = false
                     }, identity);
-                    return RedirectToAction("SecureArea", "Home");
+
+                    return RedirectToAction("Square", "Home");
                 }
             }
             return View();
         }
+
+        //show all the clients in square page
         [Authorize]
-        public ActionResult SecureArea(Login login)
+        public ActionResult Square(Login login, string searchString, string interestString, string genderString, string sortOrder, int? page)
         {
-            return View();
+            IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsDetailsInfo(searchString, interestString, genderString, sortOrder);
+           
+            ViewBag.CurrentSearchString = searchString;
+            ViewBag.CurrentSortOrder = sortOrder;
+            ViewBag.CurrentGenderString = genderString;
+            ViewBag.CurrentInterestString = interestString;
+
+            if (sortOrder == null || sortOrder == "Name")
+            {
+                ViewBag.CurrentSortOrder = "Name";
+
+            }else if (sortOrder == "Age"){
+
+                ViewBag.CurrentSortOrder = "Age";
+            }
+            else {
+                ViewBag.CurrentSortOrder = "Age_Desc";
+            }
+
+            const int PAGE_SIZE = 4;
+            int pageNumber = (page ?? 1);
+
+            AllClients = AllClients.ToPagedList(pageNumber, PAGE_SIZE);
+
+
+            ViewBag.interests = repo.getAllInterests();
+            return View(AllClients);
+          
         }
+
+        //UserProfile page
+        public ActionResult UserProfile(string userName)
+        {
+            ClientDetailInfo clientDetailInfo = repo.getOneUserDetailInfo(userName);
+            ViewBag.interests = repo.getAllInterests();
+            return View(clientDetailInfo);
+        }
+
+        [HttpPost]
+        public ActionResult UserProfile(Client client,  HttpPostedFileBase photo, string[] interests, string country, string state, string city)
+        {
+           string message = updateUserProfile(photo, client.UserName);
+            repo.updatgeProfile(client, interests[0], interests[1], interests[2]);
+            ViewBag.message = message;        
+            return RedirectToAction("UserProfile", new { userName= client.UserName});
+        }
+
 
         [HttpGet]
         public ActionResult findADate(string username)
         {
-            Repository Repo = new Repository();
-            AspNetUser user = Repo.GetUser(username);
+            AspNetUser user = repo.GetUser(username);
             ViewBag.UserName = user.UserName;
             ViewBag.Id = user.Id;
             return View();
         }
+
         [HttpPost]
         public ActionResult findADate()
         {
@@ -80,18 +134,7 @@ namespace WebApplication9.Controllers
 
         }
 
-        public ActionResult Home()
-        {
-            Repository repo = new Repository();
-            var clientRepo = repo.getAllClients().ToList();
-            return View(clientRepo);
-        }
-
-
-        public ActionResult SignUp()
-        {
-            return View();
-        }
+        
 
         public ActionResult About()
         {
@@ -138,89 +181,83 @@ namespace WebApplication9.Controllers
         }
 
 
-            [HttpGet]
-            public ActionResult Register()
-            {
-                return View();
-            }
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public ActionResult Register(RegisteredUser newUser)
-            {
-                var userStore = new UserStore<IdentityUser>();
-                UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore)
-                {
-                    UserLockoutEnabledByDefault = true,
-                    DefaultAccountLockoutTimeSpan = new TimeSpan(0, 10, 0),
-                    MaxFailedAccessAttemptsBeforeLockout = 3
-                };
-
-                var identityUser = new IdentityUser()
-                {
-                    UserName = newUser.UserName,
-                    Email = newUser.Email
-                };
-                IdentityResult result = manager.Create(identityUser, newUser.Password);
-
-                if (result.Succeeded)
-                {
-                    CreateTokenProvider(manager, EMAIL_CONFIRMATION);
-
-                    var code = manager.GenerateEmailConfirmationToken(identityUser.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Home",
-                                                    new { userId = identityUser.Id, code = code },
-                                                        protocol: Request.Url.Scheme);
-
-                    string email = "Please confirm your account by clicking this link: <a href=\""
-                                    + callbackUrl + "\">Confirm Registration</a>";
-                    ViewBag.FakeConfirmation = email;
-
-                return RedirectToAction("CompleteInfo", new { userName= identityUser.UserName, email= identityUser.Email });
-
-                // return RedirectToAction("SecureArea", "Home");
-            }
-                return View();
-            }
-        public ActionResult CompleteInfo(string userName, string email)
+        [HttpGet]
+        public ActionResult Register()
         {
-
-
-            ViewBag.email = email;
-            ViewBag.username = userName;        
             return View();
-
-
-
-            //return RedirectToAction("Profile", new { userName = userName });
         }
 
-    [HttpPost]
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(RegisteredUser newUser)
+        {
+            var userStore = new UserStore<IdentityUser>();
+            UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore)
+            {
+                UserLockoutEnabledByDefault = true,
+                DefaultAccountLockoutTimeSpan = new TimeSpan(0, 10, 0),
+                MaxFailedAccessAttemptsBeforeLockout = 3
+            };
+
+            var identityUser = new IdentityUser()
+            {
+                UserName = newUser.UserName,
+                Email = newUser.Email
+            };
+            IdentityResult result = manager.Create(identityUser, newUser.Password);
+
+            if (result.Succeeded)
+            {
+                CreateTokenProvider(manager, EMAIL_CONFIRMATION);
+
+                var code = manager.GenerateEmailConfirmationToken(identityUser.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Home",
+                                                new { userId = identityUser.Id, code = code },
+                                                    protocol: Request.Url.Scheme);
+
+                string email = "Please confirm your account by clicking this link: <a href=\""
+                                + callbackUrl + "\">Confirm Registration</a>";
+                ViewBag.FakeConfirmation = email;
+
+            return RedirectToAction("CompleteInfo", new { userName= identityUser.UserName, email= identityUser.Email, id=identityUser.Id });
+
+            // return RedirectToAction("SecureArea", "Home");
+        }
+            return View();
+        }
+
+        public ActionResult CompleteInfo(string userName, string email, string id)
+        {
+            ViewBag.email = email;
+            ViewBag.username = userName;
+            ViewBag.id = id;       
+            return View();
+          
+        }
+
+        [HttpPost]
         public ActionResult CompleteInfo(Client clientInfo, string interest1, string interest2, string interest3)
         {
-
-
             repo.saveClientInfo(clientInfo, interest1, interest2, interest3);
-
             return RedirectToAction("UserProfile", new { userName = clientInfo.UserName});
         }
 
 
-        public ActionResult UserProfile(string userName)
+        //update profile images
+        [HttpPost]
+        public ActionResult UploadProfileImage(HttpPostedFileBase photo, ClientDetailInfo updateClientInfo)
         {
-          
-            repo.getUserProfile(userName);
-
-
-            return View(repo.getUserProfile(userName));
+            string message = updateUserProfile(photo, updateClientInfo.client.UserName);
+            ViewBag.Message = message;
+            return RedirectToAction("UserProfile", new { userName = updateClientInfo.client
+                .UserName });
         }
-            public ActionResult Logout()
-            {
-                var ctx = Request.GetOwinContext();
-                var authenticationManager = ctx.Authentication;
-                authenticationManager.SignOut();
-                return RedirectToAction("Index", "Home");
-            }
-            [HttpGet]
+
+       
+
+
+        [HttpGet]
             public ActionResult AddRole()
             {
                 return View();
@@ -229,7 +266,7 @@ namespace WebApplication9.Controllers
             [HttpPost]
             public ActionResult AddRole(AspNetRole role)
             {
-                SSDDatingEntities5 context = new SSDDatingEntities5();
+          
                 context.AspNetRoles.Add(role);
                 context.SaveChanges();
                 return View();
@@ -243,13 +280,17 @@ namespace WebApplication9.Controllers
             [HttpPost]
             public ActionResult AddUserToRole(string userName, string roleName)
             {
-                SSDDatingEntities5 context = new SSDDatingEntities5();
+              
                 AspNetUser user = context.AspNetUsers
                                  .Where(u => u.UserName == userName).FirstOrDefault();
                 AspNetRole role = context.AspNetRoles
                                  .Where(r => r.Name == roleName).FirstOrDefault();
+            AspNetUserRole userRole = new AspNetUserRole();
+            userRole.UserId = user.Id;
+            userRole.RoleId = role.Id;
+            context.AspNetUserRoles.Add(userRole);
 
-                user.AspNetRoles.Add(role);
+                //user.AspNetRoles.Add(role);
                 context.SaveChanges();
                 return View();
             }
@@ -260,7 +301,16 @@ namespace WebApplication9.Controllers
                 return View();
             }
 
-            bool ValidLogin(Login login)
+
+        public ActionResult Logout()
+        {
+            var ctx = Request.GetOwinContext();
+            var authenticationManager = ctx.Authentication;
+            authenticationManager.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+
+        bool ValidLogin(Login login)
             {
                 UserStore<IdentityUser> userStore = new UserStore<IdentityUser>();
                 UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(userStore)
@@ -307,6 +357,48 @@ namespace WebApplication9.Controllers
             void CreateTokenProvider(UserManager<IdentityUser> manager, string tokenType)
             {
                 manager.UserTokenProvider = new EmailTokenProvider<IdentityUser>();
+            }
+
+
+            string updateUserProfile(HttpPostedFileBase photo, string UserName)
+            {
+                string extension = Path.GetExtension(photo.FileName).ToLower();
+                string message = "";
+                switch (extension)
+                {
+                    case ".png":
+                    case ".jpg":
+                    case ".gif":
+                        break;
+                    default:             
+                    message = "We only accept .png, .jpg, and .gif!";
+                    return message;
+                }
+
+                try
+                {
+
+                    if (photo != null && photo.ContentLength > 0)
+                    {
+                        var fileName = UserName + extension;
+                        var path = Path.Combine(Server.MapPath("~/Images/Uploads/UserProfile"), fileName);
+
+                        photo.SaveAs(path);
+                        Client client = context.Clients.Find(UserName);
+                        client.profile = fileName;
+                        context.SaveChanges();
+
+                        message = "Upload successful";
+                    }
+                }
+                catch
+                {
+                    message = "Upload failed";
+                }
+
+            return message;
+             
+
             }
         /*
             public ActionResult ConfirmEmail(string userID, string code)

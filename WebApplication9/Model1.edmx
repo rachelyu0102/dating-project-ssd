@@ -66,6 +66,16 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="Available">
           <Key>
             <PropertyRef Name="UserName" />
@@ -90,6 +100,9 @@
           <Property Name="province" Type="varchar" MaxLength="20" />
           <Property Name="country" Type="varchar" MaxLength="20" />
           <Property Name="availableDate" Type="date" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="profile" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
@@ -105,6 +118,20 @@
           </Key>
           <Property Name="interest" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
+        <Association Name="clientFk">
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="0..1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Available__UserN__131DCD43">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
           <End Role="Available" Type="Self.Available" Multiplicity="0..1" />
@@ -198,10 +225,15 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Available" EntityType="Self.Available" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="Client" EntityType="Self.Client" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="ClientInterest" EntityType="Self.ClientInterest" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="Interest" EntityType="Self.Interest" Schema="ssdDating" store:Type="Tables" />
+          <AssociationSet Name="clientFk" Association="Self.clientFk">
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
           <AssociationSet Name="FK__Available__UserN__131DCD43" Association="Self.FK__Available__UserN__131DCD43">
             <End Role="Client" EntitySet="Client" />
             <End Role="Available" EntitySet="Available" />
@@ -248,7 +280,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUserRoles" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetRoles" ToRole="AspNetUserRoles" />
         </EntityType>
         <EntityType Name="AspNetUserClaim">
           <Key>
@@ -271,6 +303,17 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
         </EntityType>
+        <EntityType Name="AspNetUserRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetRole" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetUserRoles" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Clients" Relationship="Self.clientFk" FromRole="AspNetUserRoles" ToRole="Client" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUserRoles" ToRole="AspNetUsers" />
+        </EntityType>
         <EntityType Name="AspNetUser">
           <Key>
             <PropertyRef Name="Id" />
@@ -289,7 +332,17 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="AspNetUserRoles" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserRoles" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Available">
           <Key>
@@ -316,6 +369,10 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="province" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="availableDate" Type="DateTime" Precision="0" />
+          <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="profile" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserRole" Relationship="Self.clientFk" FromRole="Client" ToRole="AspNetUserRoles" />
           <NavigationProperty Name="Available" Relationship="Self.FK__Available__UserN__131DCD43" FromRole="Client" ToRole="Available" />
         </EntityType>
         <EntityType Name="ClientInterest">
@@ -334,6 +391,20 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="interest1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="ClientInterests" Relationship="Self.FK__ClientInt__inter__17E28260" FromRole="Interest" ToRole="ClientInterest" />
         </EntityType>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -362,6 +433,34 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="clientFk">
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRole" Multiplicity="0..1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Available__UserN__131DCD43">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
           <End Role="Available" Type="Self.Available" Multiplicity="0..1" />
@@ -386,20 +485,22 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="SSDDatingEntities5" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SSDDatingEntities8" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRole" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Availables" EntityType="Self.Available" />
           <EntitySet Name="Clients" EntityType="Self.Client" />
           <EntitySet Name="ClientInterests" EntityType="Self.ClientInterest" />
           <EntitySet Name="Interests" EntityType="Self.Interest" />
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -407,6 +508,14 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="clientFk" Association="Self.clientFk">
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
           <AssociationSet Name="FK__Available__UserN__131DCD43" Association="Self.FK__Available__UserN__131DCD43">
             <End Role="Client" EntitySet="Clients" />
@@ -416,17 +525,13 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             <End Role="Interest" EntitySet="Interests" />
             <End Role="ClientInterest" EntitySet="ClientInterests" />
           </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities5">
+        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities8">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="SSDDatingModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -464,6 +569,14 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserRoles">
+            <EntityTypeMapping TypeName="SSDDatingModel.AspNetUserRole">
+              <MappingFragment StoreEntitySet="AspNetUserRoles">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="SSDDatingModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
@@ -479,6 +592,17 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SSDDatingModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -506,6 +630,9 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
                 <ScalarProperty Name="province" ColumnName="province" />
                 <ScalarProperty Name="country" ColumnName="country" />
                 <ScalarProperty Name="availableDate" ColumnName="availableDate" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="profile" ColumnName="profile" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -524,14 +651,6 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="SSDDatingModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

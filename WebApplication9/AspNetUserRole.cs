@@ -12,18 +12,20 @@ namespace WebApplication9
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetRole
+    public partial class AspNetUserRole
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AspNetRole()
+        public AspNetUserRole()
         {
-            this.AspNetUserRoles = new HashSet<AspNetUserRole>();
+            this.Clients = new HashSet<Client>();
         }
     
-        public string Id { get; set; }
-        public string Name { get; set; }
+        public string UserId { get; set; }
+        public string RoleId { get; set; }
     
+        public virtual AspNetRole AspNetRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUserRole> AspNetUserRoles { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }
