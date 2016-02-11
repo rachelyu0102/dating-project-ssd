@@ -11,36 +11,54 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>ClientInterestViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
-            @Html.LabelFor(model => model.userId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.userId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.userId, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.email)
+            </div>
+        </div>
+        <div class="form-group">
+                @Html.LabelFor(model => model.userName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-12 col-sm-12">
+                @Html.DisplayFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.HiddenFor(model => model.userName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label col-md-2" })
+            </div>
+            <div class="col-md-10">
+                <label for="male">Male</label>
+                <input type="radio" name="gender" value="male" id="male" />
+                <label for="female">Female</label>
+                <input type="radio" name="gender" value="female" id="female"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Location" class="control-label col-md-2">Location:</label><br />
+            <select name="country" class="countries" id="countryId" ng-model="country" required>
+                <option value="">Select Country</option>
+            </select>
+            <select name="province" class="states" id="stateId" ng-model="state" required>
+                <option value="">Select State</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.userId)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+            <div class="control-label col-md-2">
+                @Html.DisplayNameFor(model => model.interests)
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.userName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.interests, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select multiple class="form-control">
                     @foreach (var x in Model.interests)
@@ -69,3 +87,8 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="http://lab.iamrohit.in/js/location.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+

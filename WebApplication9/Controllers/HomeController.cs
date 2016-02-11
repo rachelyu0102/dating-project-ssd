@@ -274,10 +274,10 @@ namespace WebApplication9.Controllers
         }
 
         [HttpPost]
-        public ActionResult CompleteInfo(Client Client, string[] interests)
+        public ActionResult CompleteInfo(ClientInterestViewModel client)
         {
             //repo.saveClientInfo(Client.client, Client.interests,Client.interests,Client.interests);
-            return RedirectToAction("UserProfile", new { userName = Client.UserName});
+            return RedirectToAction("UserProfile", new { userName = client.userName});
         }
 
 
