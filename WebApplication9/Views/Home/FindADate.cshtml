@@ -10,20 +10,23 @@
 <script src="~/Scripts/bootstrap-timepicker.min.js"></script>
 <link href="~/CSS/bootstrap-timepicker.min.css" rel="stylesheet" />
 
-    <h2>findADate</h2>
+
+   
 
 
     @using (Html.BeginForm())
     {
     //@Html.AntiForgeryToken()
          
-    <div class="form-horizontal" id="myform" ng-app="">
-        <h4>Available</h4>
-        <hr />
+    <div class="form-horizontal col-md-6 col-md-offset-3" id="myform" ng-app="" style="margin-top:20px!important">
+        <h4 style="padding-left:15px!important; margin-top:20px!important">Find a Date</h4>
+        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-        <input type="text" name="userName" value="@User.Identity.Name" class="form-control" hidden/>
+        <div class="form-group col-md-10">
+            <div class="col-md-10">
+                <input type="text" name="userName" value="@User.Identity.Name" class="form-control" hidden />
+            </div>
         </div>
    
 
@@ -36,7 +39,7 @@
         </div>
 
 
-        <div class="form-group bootstrap-timepicker timepicker">
+        <div class="form-group bootstrap-timepicker timepicker col-md-10">
             <div class="col-md-10">
                 <label>Start time</label>
                 <input ng-model="time" required id="timepicker1" name="timepicker1" type="text" class="form-control input-small">              
@@ -50,6 +53,7 @@
             </div>
         </div>
         <div class="form-group col-md-10">
+            <div class="col-md-10">
             <label for="Location">Location:</label><br />
             <select ng-model="country" required name="country" class="countries" id="countryId">
                 <option value="">Select Country</option>
@@ -57,20 +61,19 @@
             <select ng-model="province" required name="state" class="states" id="stateId">
                 <option value="">Select State</option>
             </select>
+                </div>
         </div>
 
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Submit" class="btn btn-default" />
+        <div class="form-group col-md-10">
+            <div class="col-md-10">
+                <input type="submit" value="Submit" class="btn btn-info" />
             </div>
         </div>
     </div>
     }
 
-    <div>
-        @Html.ActionLink("Back home", "Index")
-    </div>
+  
 <script type="text/javascript">
     $('#timepicker1').timepicker({
         minuteStep: 30
