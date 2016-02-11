@@ -268,6 +268,7 @@
     <Compile Include="ClientInterest.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -338,6 +339,7 @@
   <ItemGroup>
     <Folder Include="App_Data\uploads\UserProfile\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Chat\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
