@@ -5,16 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CompleteInfo</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>ClientInterestViewModel</h4>
-        <hr />
+    <div class="form-horizontal col-md-6 col-md-offset-3">
+        <div class="form-group col-md-10">
+            <div class="col-md-10">
+                <h4 style="margin-top:50px">Complete your info</h4>
+            </div>
+      
+      </div>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
@@ -22,32 +25,42 @@
                 @Html.HiddenFor(model => model.email)
             </div>
         </div>
-        <div class="form-group">
-                @Html.LabelFor(model => model.userName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-12 col-sm-12">
+        <div class="form-group col-md-10">
+                @*@Html.LabelFor(model => model.userName, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                @*<label>@Model.userName</label>*@
                 @Html.DisplayFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.HiddenFor(model => model.userName)
             </div>
+            @*<div class="col-md-12 col-sm-12">
+                @Html.DisplayFor(model => model.userName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.HiddenFor(model => model.userName)
+            </div>*@
         </div>
-        <div class="form-group">
-            <div class="control-label col-md-2">
-                @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label col-md-2" })
-            </div>
+        <div class="form-group col-md-10">
             <div class="col-md-10">
+              
+              @*//  @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            
                 <label for="male">Male</label>
                 <input type="radio" name="gender" value="male" id="male" />
                 <label for="female">Female</label>
                 <input type="radio" name="gender" value="female" id="female"/>
             </div>
         </div>
-        <div class="form-group">
-            <label for="Location" class="control-label col-md-2">Location:</label><br />
-            <select name="country" class="countries" id="countryId" ng-model="country" required>
-                <option value="">Select Country</option>
-            </select>
-            <select name="province" class="states" id="stateId" ng-model="state" required>
-                <option value="">Select State</option>
-            </select>
+       
+        <div class="form-group col-md-10">
+            <div class="col-md-10">
+
+
+                <label>Location:</label><br />
+                <select name="country" class="countries" id="countryId" ng-model="country" required>
+                    <option value="">Select Country</option>
+                </select>
+                <select name="province" class="states" id="stateId" ng-model="state" required>
+                    <option value="">Select State</option>
+                </select>
+            </div>
         </div>
         <div class="form-group">
             <div class="col-md-10">
@@ -55,34 +68,33 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="control-label col-md-2">
-                @Html.DisplayNameFor(model => model.interests)
-            </div>
+        <div class="form-group col-md-10">
             <div class="col-md-10">
-                <select multiple class="form-control">
-                    @foreach (var x in Model.interests)
-                    {
-                        <option name="interest" value="x">
-                            @x
-                        </option>
-                    }
-                </select>
-                @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
+                
+                <label>Interests</label>   <br />
+                
+                <div class="col-md-10" style="padding-left:0px">
+                    <select multiple class="form-control">
+                        @foreach (var x in Model.interests)
+                        {
+                            <option name="interest" value="x">
+                                @x
+                            </option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+        <div class="form-group col-md-10">
+            <div class="col-md-10">
+                <input type="submit" value="Save" class="btn btn-info" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
