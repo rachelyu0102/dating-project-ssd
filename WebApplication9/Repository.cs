@@ -93,8 +93,6 @@ namespace WebApplication9
             }
             return clients;
         }
-
-
          //get all clients detail info, including their interests
         public IEnumerable<ClientDetailInfo> getAllClientsDetailsInfo(string searchString, string interestringString, string genderString, string sortOrder)
         {
@@ -130,17 +128,18 @@ namespace WebApplication9
             ClientDetailInfo ClientDetailinfo = new ClientDetailInfo(client, interests);
             return ClientDetailinfo;
         }
-        public ClientDetailInfo getUserDetailInfo(string id)
+        public ClientInterestViewModel getClientInterest(string id)
         {
-            Client client = (from i in db.Clients
-                            where i.UserId == id
+            AspNetUser User = (from i in db.AspNetUsers
+                            where i.Id == id
                             select i).FirstOrDefault();
-            List < string > interests = new List<string>();
-            interests = (from i in db.Interests
-                         select i.interest1).ToList() ;
-
-            ClientDetailInfo ClientDetailinfo = new ClientDetailInfo(client, interests);
-            return ClientDetailinfo;
+            ClientInterestViewModel ClientInterest = new ClientInterestViewModel();
+            ClientInterest.email = User.Email;
+            ClientInterest.userId = User.Id;
+            ClientInterest.userName = User.UserName;
+            ClientInterest.interests = (from i in db.Interests
+                                        select i.interest1).ToList();
+            return ClientInterest;
         }
         //get all clients in one province
         public IEnumerable<ClientDetailInfo> getAllClientsInOneLocation(string UserName, string searchString, string interestringString, string genderString, string sortOrder)
