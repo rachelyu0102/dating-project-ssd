@@ -74,12 +74,16 @@
                 <label>Interests</label>   <br />
                 
                 <div class="col-md-10" style="padding-left:0px">
-                    <select multiple class="form-control">
+                    <select multiple class="form-control" name="interests">
+                        @{ 
+                            var counter = 0;
+                        }
                         @foreach (var x in Model.interests)
                         {
-                            <option name="interest" value="x">
+                            <option name="interests[@counter]" value="@x">
                                 @x
                             </option>
+                            counter++;
                         }
                     </select>
                     @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })

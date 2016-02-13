@@ -165,6 +165,7 @@ namespace WebApplication9
             return AllClientDetailsInfo;
         }
 
+
         public List<AspNetRole> getUserRole()
         {
             List<AspNetRole> roles = new List<AspNetRole>();
@@ -172,39 +173,40 @@ namespace WebApplication9
             return roles;
         }
 
-        public void saveClientInfo(Client clientInfo, string interest1, string interest2, string interest3)
+        public void saveClientInfo(ClientInterestViewModel clientInterestViewModel)
         {
-            db.Clients.Add(clientInfo);
-            ClientInterest clientInterest1 = new ClientInterest();
-            clientInterest1.UserName = clientInfo.UserName;
-          
-            clientInterest1.interest = interest1;
-            db.ClientInterests.Add(clientInterest1);
+            Client client = new Client();
+            client.UserId = clientInterestViewModel.userId;
+            client.UserName = clientInterestViewModel.userName;
+            client.gender = clientInterestViewModel.gender;
+            client.email = clientInterestViewModel.email;
+            client.country = clientInterestViewModel.country;
+            client.province = clientInterestViewModel.province;
+            client.birthdate = clientInterestViewModel.birthdate;
 
-            ClientInterest clientInterest2 = new ClientInterest();
-            clientInterest2.UserName = clientInfo.UserName;
-           
-            clientInterest2.interest = interest2;
-            db.ClientInterests.Add(clientInterest2);
+            db.Clients.Add(client);
+            db.SaveChanges();
 
-            ClientInterest clientInterest3 = new ClientInterest();
-            clientInterest3.UserName = clientInfo.UserName;
-          
-            clientInterest3.interest = interest3;
-            db.ClientInterests.Add(clientInterest3);
+            foreach (string interest in clientInterestViewModel.interests)
+            {
+                ClientInterest clientInterest = new ClientInterest();
+                clientInterest.UserName = clientInterestViewModel.userName;
+                clientInterest.interest = interest;
+                db.ClientInterests.Add(clientInterest);
+            }
 
             db.SaveChanges();
         }
+
        
         public void saveAvailableDate(String userName, DateTime availableDate, DateTime timepicker1)
         {
             Client client = db.Clients.Find(userName);
             client.availableDate = availableDate;
-           client.timeStart = timepicker1;
-            //client.availableDate.Value.Add(availableDate);
-            //client.timeStart.Value.Add((DateTime)timepicker1);
+            client.timeStart = timepicker1; 
             db.SaveChanges();
         }
+
         public void foundDates()
         {
 

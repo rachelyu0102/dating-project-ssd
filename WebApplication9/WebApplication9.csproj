@@ -262,6 +262,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="BusinessLogic\ChatHub.cs" />
+    <Compile Include="BusinessLogic\MailHelper.cs" />
     <Compile Include="Client.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -308,7 +309,9 @@
     <Compile Include="ViewModels\ClientDetailInfo.cs" />
     <Compile Include="ViewModels\ClientInterestViewModel.cs" />
     <Compile Include="ViewModels\Login.cs" />
+    <Compile Include="ViewModels\Message.cs" />
     <Compile Include="ViewModels\RegisteredUser.cs" />
+    <Compile Include="ViewModels\ResetPassword.cs" />
     <Compile Include="ViewModels\UserRole.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -330,6 +333,8 @@
     <Content Include="Views\Home\Square.cshtml" />
     <Content Include="Views\Home\CompleteInfo.cshtml" />
     <Content Include="Views\Home\foundDates.cshtml" />
+    <Content Include="Views\Home\ForgotPassword.cshtml" />
+    <Content Include="Views\Home\ResetPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

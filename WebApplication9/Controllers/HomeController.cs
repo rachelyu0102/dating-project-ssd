@@ -73,11 +73,10 @@ namespace WebApplication9.Controllers
         //show all the clients in square page
         [Authorize]
         public ActionResult Square(string UserName, string searchString, string interestString, string genderString, string sortOrder, int? page)
-        {
-            
-
+        {            
             IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsInOneLocation(UserName, searchString, interestString, genderString, sortOrder);
-           
+
+            ViewBag.Province = context.Clients.Find(UserName).province;
             ViewBag.CurrentSearchString = searchString;
             ViewBag.CurrentSortOrder = sortOrder;
             ViewBag.CurrentGenderString = genderString;
@@ -148,7 +147,6 @@ namespace WebApplication9.Controllers
             {
                 ViewBag.message = "Please fill or select all the input!";
                 return RedirectToAction("UserProfile", new { userName = client.UserName });
-
             }
             else
             {
@@ -193,10 +191,7 @@ namespace WebApplication9.Controllers
         }
 
        
-        public ActionResult Update()
-        {
-            return View();
-        }
+      
 
         public ActionResult Welcome()
         {
@@ -205,17 +200,8 @@ namespace WebApplication9.Controllers
 
         }
 
-        public ActionResult blindDateProfiles()
-        {
-            return View();
-
-        }
-        public ActionResult dateSummary()
-        {
-
-            return View();
-
-        }
+       
+        
         public ActionResult prototype()
         {
             return View();
@@ -279,7 +265,7 @@ namespace WebApplication9.Controllers
         [HttpPost]
         public ActionResult CompleteInfo(ClientInterestViewModel client)
         {
-            //repo.saveClientInfo(Client.client, Client.interests,Client.interests,Client.interests);
+            repo.saveClientInfo(client);
             return RedirectToAction("UserProfile", new { userName = client.userName});
         }
 
@@ -331,9 +317,10 @@ namespace WebApplication9.Controllers
                 context.SaveChanges();
                 return View();
             }
-            // To allow more than one role access use syntax like the following:
-            // [Authorize(Roles="Admin, Staff")]
-            public ActionResult PaidUserOnly()
+        // To allow more than one role access use syntax like the following:
+        // [Authorize(Roles="Admin, Staff")]
+
+        public ActionResult PaidUserOnly()
             {
                 return View();
             }
@@ -457,53 +444,100 @@ namespace WebApplication9.Controllers
                 return View();
             }
 
-            [HttpGet]
-            public ActionResult ForgotPassword()
+
+
+        */
+
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(string email)
+        {
+          
+            var userStore = new UserStore<IdentityUser>();
+            UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
+            var user = manager.FindByEmail(email);
+
+            if (user == null)
             {
+                ViewBag.Message = "Email not found. Please double-check and try again.";
                 return View();
             }
-            [HttpPost]
-            public ActionResult ForgotPassword(string email)
-            {
-                var userStore = new UserStore<IdentityUser>();
-                UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
-                var user = manager.FindByEmail(email);
-                CreateTokenProvider(manager, PASSWORD_RESET);
+            CreateTokenProvider(manager, PASSWORD_RESET);
 
-                var code = manager.GeneratePasswordResetToken(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Home",
-                                             new { userId = user.Id, code = code },
-                                             protocol: Request.Url.Scheme);
-                ViewBag.FakeEmailMessage = "Please reset your password by clicking <a href=\""
-                                         + callbackUrl + "\">here</a>";
-                return View();
+            var code = manager.GeneratePasswordResetToken(user.Id);
+            var callbackUrl = Url.Action("ResetPassword", "Home",
+                                         new { userId = user.Id, code = code },
+                                         protocol: Request.Url.Scheme);
+        
+            string emailBody = "Please reset your password by clicking <a href=\""
+                                     + callbackUrl + "\">here</a>";
+
+            MailHelper mailer = new MailHelper();
+
+            string Subject = "Confirm password reset";
+            string response = mailer.EmailFromArvixe(
+                                       new Message(user.Email, Subject, emailBody));
+
+            if (response.IndexOf("Success") >= 0)
+            {
+                ViewBag.Message = "A confirm email has been sent. Please check your your email.";
+                ViewBag.Email = user.Email;
             }
-
-            [HttpGet]
-            public ActionResult ResetPassword(string userID, string code)
+            else
             {
-                ViewBag.PasswordToken = code;
-                ViewBag.UserID = userID;
-                return View();
+                ViewBag.Message = response;
             }
-            [HttpPost]
-            public ActionResult ResetPassword(string password, string passwordConfirm,
-                                              string passwordToken, string userID)
-            {
+            return View();
+        }
 
+
+        [HttpGet]
+        public ActionResult ResetPassword(string userID, string code)
+        {
+            ViewBag.PasswordToken = code;
+            ViewBag.UserID = userID;
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult ResetPassword(ResetPassword resetPassword,
+                                          string passwordToken, string userID)
+        {
+            if (ModelState.IsValid)
+            {
                 var userStore = new UserStore<IdentityUser>();
                 UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
                 var user = manager.FindById(userID);
                 CreateTokenProvider(manager, PASSWORD_RESET);
 
-                IdentityResult result = manager.ResetPassword(userID, passwordToken, password);
+                IdentityResult result = manager.ResetPassword(userID, passwordToken, resetPassword.Password);
                 if (result.Succeeded)
-                    ViewBag.Result = "The password has been reset.";
-                else
-                    ViewBag.Result = "The password has not been reset.";
-                return View();
+                {
+                    TempData["Message"] = "The password has been reset. Please login in";
+                    return RedirectToAction("Index");
+                }
+                else {
+                    ViewBag.Message = "The password has not been reset.";
+                }
             }
-            */
+            else
+            {
+                ViewBag.Message = "Passworld reset failed. Please make sure password combine alphabet letter and numbers.";
+            }
+
+            return View();
+
         }
-        
+
+
+
     }
+
+}
