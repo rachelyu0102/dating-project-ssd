@@ -349,6 +349,7 @@
     <Content Include="Views\Home\ResetPassword.cshtml" />
     <Content Include="Views\Home\ConfirmEmail.cshtml" />
     <Content Include="Views\Home\CompleteRegistration.cshtml" />
+    <Content Include="Views\Home\Upgrade.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

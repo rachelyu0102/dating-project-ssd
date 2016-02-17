@@ -219,6 +219,11 @@ namespace WebApplication9.Controllers
 
         }
 
+        public ActionResult Upgrade()
+        {
+            return View();
+        }
+
        
         
         public ActionResult prototype()
