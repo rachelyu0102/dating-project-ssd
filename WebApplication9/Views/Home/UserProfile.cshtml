@@ -82,6 +82,7 @@
         <a href="#" class="btn btn-info btn-sm " data-toggle="modal" data-target="#updateFormModal">Update</a>
     }</div>
 
+
     
 </div>
 @if (ViewBag.uploadPhotoError != null)
@@ -175,6 +176,44 @@
             </div>
         </div>
     </div>
+
+<div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="messageModal" style="margin:20px!important" ng-app="">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content w3-margin w3-padding">
+            <div class="modal-header">
+                <h4 class="modal-title">Message</h4>
+            </div>
+            <textarea class="field span12 form-control" rows="12">
+
+            </textarea>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--<div class="w3-margin w3-left">
+
+    <a href="#" class="btn btn-info btn-sm " data-toggle="modal" data-target="#updateFormModal">Update</a>
+
+</div>
+-->
+
+<div id="message" style="position:fixed; top:700px; left: 120px;">
+    @if (Request.IsAuthenticated && User.Identity.Name != Model.client.UserName)
+    {
+        <a href="#" class="btn btn-info btn-sm " data-toggle="modal" data-target="#messageModal">Message</a>
+    }
+</div>
+
+
+
 @if (!User.IsInRole("PaidUser"))
 {
 <div id="upgradeFooter">
