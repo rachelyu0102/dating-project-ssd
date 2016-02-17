@@ -89,8 +89,11 @@ namespace WebApplication9.Controllers
         //show all the clients in square page
         [Authorize]
         public ActionResult Square(string UserName, string searchString, string interestString, string genderString, string sortOrder, int? page)
-        {            
-            IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsInOneLocation(UserName, searchString, interestString, genderString, sortOrder);
+        {
+
+            string country = null;
+            string state = null;         
+            IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsInOneLocation(UserName, searchString, interestString, genderString, sortOrder, country, state);
 
             ViewBag.Province = context.Clients.Find(UserName).province;
             ViewBag.CurrentSearchString = searchString;
@@ -123,9 +126,9 @@ namespace WebApplication9.Controllers
         }
 
         [Authorize]
-        public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder)
+        public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder, string country, string state)
         {
-           IEnumerable <ClientDetailInfo> clients= repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder);
+           IEnumerable <ClientDetailInfo> clients= repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder, country, state);
 
             List<ClientDetailInfo> clientsHasAvail = new List<ClientDetailInfo> ();
             Client getClient = context.Clients.Find(UserName);
@@ -187,11 +190,11 @@ namespace WebApplication9.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String location )
+        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String country, String state )
         {
             repo.saveAvailableDate(userName, availableDate, timepicker1);
 
-            return RedirectToAction("foundDates", new { UserName = userName, Gender = gender, Location = location });
+            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Country = country, State = state});
             
         }
 

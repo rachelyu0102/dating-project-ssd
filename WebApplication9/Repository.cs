@@ -160,13 +160,24 @@ namespace WebApplication9
             return ClientInterest;
         }
         //get all clients in one province
-        public IEnumerable<ClientDetailInfo> getAllClientsInOneLocation(string UserName, string searchString, string interestringString, string genderString, string sortOrder)
+        public IEnumerable<ClientDetailInfo> getAllClientsInOneLocation(string UserName, string searchString, string interestringString, string genderString, string sortOrder, string country, string state)
         {
             List<ClientDetailInfo> AllClientsDetailsInfoList = new List<ClientDetailInfo>();
 
             Client getClient = db.Clients.Find(UserName);
+            IEnumerable<Client> clients = null;
 
-            IEnumerable<Client> clients = (from c in db.Clients where c.province == getClient.province select c).ToList();
+            if (!String.IsNullOrEmpty(country) && !String.IsNullOrEmpty(state))
+            {
+                clients = (from c in db.Clients where c.country == country && c.province == state && c.UserName != getClient.UserName select c).ToList();
+            }
+            else
+            {
+
+                clients = (from c in db.Clients where c.country == getClient.country && c.province == getClient.province && c.UserName != getClient.UserName select c).ToList();
+            }
+
+           
 
             List<string> interests = new List<string>();
             foreach (Client client in clients)

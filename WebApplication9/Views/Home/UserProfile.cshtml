@@ -175,10 +175,12 @@
             </div>
         </div>
     </div>
-<div id="upgradeFooter" style="position:fixed; bottom: 0px; width:100%; right:25%; left: 50%; margin-left:-150px; ">
-    <p><a href="~/Home/Upgrade">Upgrade</a></p>
+@if (!User.IsInRole("PaidUser"))
+{
+<div id="upgradeFooter">
+    <p><a class="btn btn-info btn-sm" style="float:right; margin-right:10px; top:465px; right:0; position:absolute;" href="~/Home/Upgrade">Upgrade</a></p>
 </div>
-
+}
 
 
 
