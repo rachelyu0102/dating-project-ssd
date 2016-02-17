@@ -23,6 +23,10 @@ namespace WebApplication9.Controllers
     public class HomeController : Controller
     {
 
+        Boolean UserNoFound;
+        Boolean PasswordIncorrent;
+        Boolean Locked;
+
         Repository repo = new Repository();
         SSDDatingEntities11 context = new SSDDatingEntities11();
 
@@ -65,6 +69,18 @@ namespace WebApplication9.Controllers
 
                     return RedirectToAction("Square", "Home", new {UserName=login.UserName});
                 }
+                else
+                {
+                    if (UserNoFound || PasswordIncorrent)
+                    {
+                        ViewBag.Message = "The username and password you entered did not match our records. Please double-check and try again.";
+                    }
+                    else if (Locked)
+                    {
+                        ViewBag.Message = "You have been locked. Please login in 10 minutes.";
+                    }
+
+                }
 
             }
             return View();
@@ -95,7 +111,7 @@ namespace WebApplication9.Controllers
                 ViewBag.CurrentSortOrder = "Age_Desc";
             }
 
-            const int PAGE_SIZE = 4;
+            const int PAGE_SIZE = 8;
             int pageNumber = (page ?? 1);
 
             AllClients = AllClients.ToPagedList(pageNumber, PAGE_SIZE);
@@ -105,6 +121,8 @@ namespace WebApplication9.Controllers
             return View(AllClients);
           
         }
+
+        [Authorize]
         public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder)
         {
            IEnumerable <ClientDetailInfo> clients= repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder);
@@ -141,23 +159,23 @@ namespace WebApplication9.Controllers
             if(photo!=null)
             {
                 updateUserProfile(photo, client.UserName);
-            }
-         
-            if(client == null || interests== null || country == null || state == null)
-            {
-                ViewBag.message = "Please fill or select all the input!";
-                return RedirectToAction("UserProfile", new { userName = client.UserName });
-            }
-            else
-            {
-                repo.updatgeProfile(client, interests, country, state);
+                if(!updateUserProfile(photo, client.UserName).Contains("successful"))
+                {
+                    ViewBag.uploadPhotoError = updateUserProfile(photo, client.UserName);
 
-            }         
-            
+                    ClientDetailInfo clientDetailInfo = repo.getOneUserDetailInfo(client.UserName);
+                    ViewBag.interests = repo.getAllInterests();
+                    return View(clientDetailInfo);
+
+                }
+            }
+                         
+            repo.updatgeProfile(client, interests, country, state);
+
             return RedirectToAction("UserProfile", new { userName= client.UserName});
         }
 
-
+        [Authorize]
         [HttpGet]
         public ActionResult findADate(string username)
         {
@@ -167,6 +185,7 @@ namespace WebApplication9.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String location )
         {
@@ -226,32 +245,41 @@ namespace WebApplication9.Controllers
                 MaxFailedAccessAttemptsBeforeLockout = 3
             };
 
+
+            var user = manager.FindByName(newUser.UserName);
+            if (user != null)
+            {
+                ViewBag.Message = "Username '" + newUser.UserName + "' already exists! Please login or try another username!";
+                return View();
+
+            }
+
+            var findUserByEmail = manager.FindByEmail(newUser.Email);
+
+            if (findUserByEmail != null)
+            {
+                ViewBag.Message = "Email '" + newUser.Email + "' already exists! Please login or try another email!";
+                return View();
+            }
+
+
             var identityUser = new IdentityUser()
             {
                 UserName = newUser.UserName,
                 Email = newUser.Email
             };
+
             IdentityResult result = manager.Create(identityUser, newUser.Password);
 
             if (result.Succeeded)
             {
-                CreateTokenProvider(manager, EMAIL_CONFIRMATION);
-
-                var code = manager.GenerateEmailConfirmationToken(identityUser.Id);
-                var callbackUrl = Url.Action("ConfirmEmail", "Home",
-                                                new { userId = identityUser.Id, code = code },
-                                                    protocol: Request.Url.Scheme);
-
-                string email = "Please confirm your account by clicking this link: <a href=\""
-                                + callbackUrl + "\">Confirm Registration</a>";
-                ViewBag.FakeConfirmation = email;
-
+                
             return RedirectToAction("CompleteInfo", new { userName= identityUser.UserName, email= identityUser.Email, id=identityUser.Id });
 
-            // return RedirectToAction("SecureArea", "Home");
         }
             return View();
         }
+
         [HttpGet]
         public ActionResult CompleteInfo(string userName, string email, string id)
         {
@@ -259,6 +287,7 @@ namespace WebApplication9.Controllers
             ViewBag.username = userName;
             ViewBag.id = id;
             ClientInterestViewModel user = repo.getClientInterest(id);
+
             return View(user);
         }
 
@@ -266,9 +295,49 @@ namespace WebApplication9.Controllers
         public ActionResult CompleteInfo(ClientInterestViewModel client)
         {
             repo.saveClientInfo(client);
-            return RedirectToAction("UserProfile", new { userName = client.userName});
+
+            var userStore = new UserStore<IdentityUser>();
+            UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
+
+            CreateTokenProvider(manager, EMAIL_CONFIRMATION);
+
+          var user = manager.FindByName(client.userName);
+            var code = manager.GenerateEmailConfirmationToken(user.Id);
+
+            var callbackUrl = Url.Action("ConfirmEmail", "Home",
+                                            new { userId = user.Id, code = code },
+                                                protocol: Request.Url.Scheme);
+
+            string emailBody = "Please confirm your account by clicking this link: <a href=\""
+                            + callbackUrl + "\">Confirm Registration</a>";
+
+            MailHelper mailer = new MailHelper();
+
+            string Subject = "Confirm registration";
+            string response = mailer.EmailFromArvixe(
+                                       new Message(client.email, Subject, emailBody));
+
+            if (response.IndexOf("Success") >= 0)
+            {
+             //   ViewBag.Message = "A confirm email has been sent. Please check your email.";
+                TempData["Message"] = "A confirm email has been sent. Please check your email.";
+                return RedirectToAction("CompleteRegistration");
+            }
+            else {
+                ViewBag.Message = response;
+            }
+
+            ClientInterestViewModel newClient = repo.getClientInterest(client.userId);
+            return View(newClient);
+           // return RedirectToAction("UserProfile", new { userName = client.userName});
         }
 
+
+        public ActionResult CompleteRegistration()
+        {
+            return View();
+
+        }
 
         //update profile images
         [HttpPost]
@@ -280,13 +349,16 @@ namespace WebApplication9.Controllers
                 .UserName });
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
             public ActionResult AddRole()
             {
                 return View();
             }
 
-            [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
             public ActionResult AddRole(AspNetRole role)
             {
           
@@ -295,12 +367,15 @@ namespace WebApplication9.Controllers
                 return View();
             }
 
-            [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
             public ActionResult AddUserToRole()
             {
                 return View();
             }
-            [HttpPost]
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
             public ActionResult AddUserToRole(string userName, string roleName)
             {
               
@@ -320,11 +395,9 @@ namespace WebApplication9.Controllers
         // To allow more than one role access use syntax like the following:
         // [Authorize(Roles="Admin, Staff")]
 
-        public ActionResult PaidUserOnly()
-            {
-                return View();
-            }
 
+
+  
 
         public ActionResult Logout()
         {
@@ -346,14 +419,22 @@ namespace WebApplication9.Controllers
                 var user = userManager.FindByName(login.UserName);
 
                 if (user == null)
+                {
+                    UserNoFound = true;
                     return false;
+                }
+                    
 
                 // User is locked out.
                 if (userManager.SupportsUserLockout && userManager.IsLockedOut(user.Id))
+                {
+                    Locked = true;
                     return false;
+                }
+                   
 
                 // Validated user was locked out but now can be reset.
-                if (userManager.CheckPassword(user, login.Password))
+                if (userManager.CheckPassword(user, login.Password) && userManager.IsEmailConfirmed(user.Id))
 
                 {
                     if (userManager.SupportsUserLockout
@@ -365,6 +446,7 @@ namespace WebApplication9.Controllers
                 // Login is invalid so increment failed attempts.
                 else {
                     bool lockoutEnabled = userManager.GetLockoutEnabled(user.Id);
+                    PasswordIncorrent = true;
                     if (userManager.SupportsUserLockout && userManager.GetLockoutEnabled(user.Id))
                     {
                         userManager.AccessFailed(user.Id);
@@ -424,29 +506,52 @@ namespace WebApplication9.Controllers
              
 
             }
-        /*
-            public ActionResult ConfirmEmail(string userID, string code)
+        public ActionResult ConfirmEmail(string userId, string code)
+        {
+            var userStore = new UserStore<IdentityUser>();
+            UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
+            var user = manager.FindById(userId);
+
+
+            CreateTokenProvider(manager, EMAIL_CONFIRMATION);
+            try
             {
-                var userStore = new UserStore<IdentityUser>();
-                UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
-                var user = manager.FindById(userID);
-                CreateTokenProvider(manager, EMAIL_CONFIRMATION);
-                try
+                IdentityResult result = manager.ConfirmEmail(userId, code);
+                if (result.Succeeded)
                 {
-                    IdentityResult result = manager.ConfirmEmail(userID, code);
-                    if (result.Succeeded)
-                        ViewBag.Message = "You are now registered!";
+                    IAuthenticationManager authenticationManager
+                                          = HttpContext.GetOwinContext().Authentication;
+                    authenticationManager
+                   .SignOut(DefaultAuthenticationTypes.ExternalCookie);
+
+                    var identity = new ClaimsIdentity(new[] {
+                                            new Claim(ClaimTypes.Name, user.UserName),
+                                        },
+                                        DefaultAuthenticationTypes.ApplicationCookie,
+                                        ClaimTypes.Name, ClaimTypes.Role);
+
+                    // SignIn() accepts ClaimsIdentity and issues logged in cookie. 
+                    authenticationManager.SignIn(new AuthenticationProperties
+                    {
+                        IsPersistent = false
+                    }, identity);
+
+                    ViewBag.UserName = user.UserName;
+                    ViewBag.Message = "You are now registered!";
+
                 }
-                catch
-                {
-                    ViewBag.Message = "Validation attempt failed!";
-                }
-                return View();
+               
             }
+            catch
+            {
+                ViewBag.Message = "Validation attempt failed!";
+            }
+            return View();
+        }
 
 
 
-        */
+
 
 
         [HttpGet]

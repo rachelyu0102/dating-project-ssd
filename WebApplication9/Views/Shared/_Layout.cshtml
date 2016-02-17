@@ -44,12 +44,7 @@
                         <li><a href="~/Home/Square/?UserName=@User.Identity.Name">Square</a></li>
                         <li><a href="~/Home/findADate?username=@User.Identity.Name">Find a date</a></li>
 
-                        @*if(User.IsInRole("PaidUser"))
-                        {
-
-                            <li><a href="~/Home/Manager">Paid Only</a></li>
-
-                        }*@
+                      
                     }
                     
                 </ul>
@@ -67,6 +62,12 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                     <li><a href="~/Home/UserProfile?userName=@User.Identity.Name">Profile</a></li>
+                                @if(User.IsInRole("Admin"))
+                                {
+                                    <li><a href="~/Home/AddRole">Add Role</a></li>
+                                    <li><a href="~/Home/AddUserToRole">Add use to role</a></li>
+                                }
+
                                     <li><a href="~/Home/Logout">Logout</a></li>
                             </ul>
                         </li>

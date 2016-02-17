@@ -9,8 +9,11 @@ namespace WebApplication9.ViewModels
     public class ResetPassword
     {
         [Required]
-        [DataType(DataType.Password, ErrorMessage = "Password should container numbers and alphabet letters.")]
+        [DataType(DataType.Password)]
         [Display(Name = "Password")]
+        [RegularExpression(@"^.*[a-zA-Z]+.*$",
+        ErrorMessage = "Password should contain alphabet letters.")]
+        [StringLength(8, MinimumLength = 6, ErrorMessage = "Password should between 6-8 characters.")]
         public string Password { get; set; }
 
         [Required]

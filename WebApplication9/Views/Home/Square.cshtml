@@ -50,7 +50,7 @@
             }
             
 
-            <h1><small>People in @province </small></h1>
+            <h1 style="font-family: Lobster; font-style: italic;"><small>People in @province </small></h1>
         </div>
 
         <!--Sort, filter button groups-->
@@ -189,30 +189,32 @@
                                     int year = (int)date.TotalDays / 365;
 
                                     <h4>@year, @item.client.province </h4>
-                                    <p><a href="~/Home/UserProfile/?UserName=@item.client.UserName" class="btn btn-info btn-sm">Quick View</a></p>
+                                   
 
 
                                     if (item.client.RoleId != null)
                                     {
 
-                                        <p>Paid User @item.client.RoleId</p>
+                                        <p>Paid User</p>
                                     }
                                     else
                                     {
                                         <p>Normal users</p>
                                     }
 
-                                    if(item.interests!= null)
+                                    <span>Like: </span>
+                                    if (item.interests != null)
                                     {
                                         foreach (var interest in item.interests)
                                         {
-                                            <span>@interest</span>
+                                        <span>@interest</span>
                                         }
+                                 
                                     }
 
 
                                 }
-                       
+                                <p><a href="~/Home/UserProfile/?UserName=@item.client.UserName" class="btn btn-info btn-sm" style="margin-top:10px">Quick View</a></p>
                             </div>
                         </div>
                     </div>

@@ -32,14 +32,15 @@ namespace WebApplication9
              //filter by interest
             if (!String.IsNullOrEmpty(interestString)){
 
-                clients = getClientsByInterest(interestString);
+                clients = getClientsByInterest(clients, interestString);
 
             }
             
             //filter by gender
             if (!String.IsNullOrEmpty(genderString)){
 
-                clients = clients.Where(c => c.client.gender == genderString);
+              //  clients = clients.Where(c => c.client.gender == genderString);
+                clients = getClientsByGender(clients, genderString);
 
             }
 
@@ -47,31 +48,48 @@ namespace WebApplication9
         }
 
         //get clients DetialInfo by interest
-        IEnumerable<ClientDetailInfo> getClientsByInterest(string interestString)
+        IEnumerable<ClientDetailInfo> getClientsByInterest(IEnumerable<ClientDetailInfo> clients, string interestString)
         {
-            var query = from c_i in db.ClientInterests
-                        where c_i.interest == interestString
-                        select c_i.UserName;
-
-           List <Client> clientList = new List<Client>();
-            foreach(var username in query)
+            List<ClientDetailInfo> GetClientsByInterests = new List<ClientDetailInfo>();
+            foreach (var query in clients)
             {
-                Client client = db.Clients.Find(username);
-                clientList.Add(client);
-            }
-       
-            List<ClientDetailInfo> AllClientsDetailsInfo = new List<ClientDetailInfo>();
-        
-            List<string> interests = new List<string>();
-            foreach (Client client in clientList)
-            {
-                interests = (from c_i in db.ClientInterests where c_i.UserName == client.UserName select c_i.Interest1.interest1).ToList();
+                foreach(string interest in query.interests)
+                {
+                    if(interest == interestString)
+                    {
+                        GetClientsByInterests.Add(query);
+                        break;
+                    }
 
-                AllClientsDetailsInfo.Add(new ClientDetailInfo(client, interests));
+                }
+
             }
 
-           return AllClientsDetailsInfo;
+            return GetClientsByInterests;
+
+         
         }
+
+
+        //get clients by gender
+        IEnumerable<ClientDetailInfo> getClientsByGender(IEnumerable<ClientDetailInfo> clients, string genderString)
+        {
+            List<ClientDetailInfo> GetClientsByGender = new List<ClientDetailInfo>();
+           
+            foreach (var query in clients)
+            {               
+                if (query.client.gender == genderString)
+                {
+                    GetClientsByGender.Add(query);                    
+                }
+
+            }
+
+            return GetClientsByGender;
+        }
+
+          
+
 
         //Sort users
         IEnumerable<ClientDetailInfo> SortClient(IEnumerable<ClientDetailInfo> clients, string sortOrder)
@@ -235,28 +253,41 @@ namespace WebApplication9
             client.birthdate = clientUpdate.birthdate;
             }
 
-            client.country = country;
-            client.province = state;
-        
-            var queryInterests = from c_i in db.ClientInterests where c_i.UserName == clientUpdate.UserName select c_i;
-
-            if (queryInterests != null)
+            if(country!=null && country != "")
             {
-                foreach (var interest in queryInterests)
+                client.country = country;
+            }
+         
+            if(state !=null && state != "")
+            {
+                client.province = state;
+
+            }
+
+            if (interests != null)
+            {
+                var queryInterests = from c_i in db.ClientInterests where c_i.UserName == clientUpdate.UserName select c_i;
+
+                if (queryInterests != null)
                 {
-                    db.ClientInterests.Remove(interest);
+                    foreach (var interest in queryInterests)
+                    {
+                        db.ClientInterests.Remove(interest);
+                    }
+                }
+
+
+                foreach (string interest in interests)
+                {
+                    ClientInterest clientInterest = new ClientInterest();
+                    clientInterest.UserName = clientUpdate.UserName;
+                    clientInterest.interest = interest;
+
+                    db.ClientInterests.Add(clientInterest);
                 }
             }
-
-          
-            foreach(string interest in interests)
-            {
-                ClientInterest clientInterest = new ClientInterest();
-                clientInterest.UserName = clientUpdate.UserName;
-                clientInterest.interest = interest;
-
-                db.ClientInterests.Add(clientInterest);
-            }
+        
+           
 
             db.SaveChanges();
 

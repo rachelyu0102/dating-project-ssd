@@ -59,10 +59,11 @@ html, body, #index{
 }
 
 .loginBox h1 {
+     font-family: 'Lobster Two' !important;
     display: block;
     font-size: 2em;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 22px;
     line-height: .8;
     padding: 20px 0 10px 0;
     text-align:center
