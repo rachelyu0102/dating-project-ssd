@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <style>
+	@import url(https://fonts.googleapis.com/css?family=Lobster+Two:400,700,400italic,700italic);
+	@import url(https://fonts.googleapis.com/css?family=Lato:400,100,300,700);
+		
+	h1{
+		font-family:'Lobster two'!important;
+		color:#FF69B4!important;
+	}
+		
+	h3{
+		font-family:'Lato'!important;
+		font-size:16px!important;
+		padding-left:15px;
+	}	
+		
+	.clientsContainer{	
+		border:1px solid #ddd; 
+		padding:15px;
+		border-radius:6px;	
+			
+	}
+	
+	div#clientsResult{
+		padding-left:0px!important;
+		padding-right:0px!important;	
+	}
+	
+	table  th	{
+		background-color:#333;
+		color: white;
+	}
+	
+	table tr:nth-child(odd) {
+		background-color: #eee;
+	}
+	
+    </style>
+    <script src="Scripts/jquery-2.2.0.js"></script>
+    <script src="Scripts/app.js"></script>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<h1 class="col-md-offset-2">InstaDate</h1>
+
+    <div class="col-md-6 col-md-offset-2 clientsContainer">
+        <h3>Find available people in your province</h3>
+		<div class="form-group col-md-8">		
+        <input type="text" id="provinceFind" placeholder="Enter a province, e.g., British Columbia" class="form-control input-sm"/>    
+        </div>
+		   <input class="btn btn-info btn-sm" type="button" value="Search" onclick="find();" /> 
+        <span ></span>
+    </div>
+
+
+<div id='clientsResult' class="col-md-6 col-md-offset-2"> 
+</div>
+
+
+</body>
+</html>
