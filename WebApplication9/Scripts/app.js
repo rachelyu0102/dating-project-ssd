@@ -5,7 +5,7 @@ window.onload = function find() {
     var latitude;
     var longitude
     var geoOptions = {
-        maximumAge: 5 * 60 * 1000,
+        enableHighAccuracy: true,
     }
     var geoError = function (position) {
         console.log('Error occurred. Error code: ' + error.code);
@@ -27,14 +27,27 @@ function reverseGeoLocate(latitude,longitude)
 {
     var reverGeo = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=false'
     var province;
+    var country;
+    var selectorProvince = 0;
+    var selectorCountry = 1;
     $.getJSON(reverGeo,
         function (data) {
             if (data == null) {
                 $('#clientsResult').text('clients not found.');
                 return;
             }
-            province = data.results[8].address_components[0].long_name;
-            getClients(province);
+            console.log(data);
+            if (data.results[8].address_components.length > 2) {
+                province = data.results[8].address_components[selectorProvince + 1].long_name;
+                country = data.results[8].address_components[selectorCountry + 1].long_name;
+
+            }
+            else {
+                province = data.results[8].address_components[selectorProvince].long_name;
+                country = data.results[8].address_components[selectorCountry].long_name;
+            }
+            alert(country + ", " + province)
+            getClients(province,country);
         })
     .fail(
         function (jqueryHeaderRequest, textStatus, err) {
@@ -42,9 +55,8 @@ function reverseGeoLocate(latitude,longitude)
         });
 }
 
-function getClients(province)
+function getClients(province,country)
 {
-
     $.getJSON(url + "/" + province,
         function (data) {
             if (data.clients.length == 0) {
@@ -60,6 +72,7 @@ function getClients(province)
 }
 
 function callbackClients(data) {
+    //For Web API{
     var valTag = document.getElementById("clientsResult");
     valTag.innerHTML = "";
     var table = document.createElement("table");
@@ -94,5 +107,9 @@ function callbackClients(data) {
         td3.innerHTML = parseInt((now - Date.parse(val.Age)) / (1000 * 60 * 60 * 24 * 365));
         tr2.appendChild(td3);
     });
+    //}
+    //For FindADate Autofill{
+
+    //}
 }
 
