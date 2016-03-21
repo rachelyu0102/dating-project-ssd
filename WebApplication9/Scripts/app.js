@@ -1,14 +1,56 @@
 ﻿var url = 'http://instadateapi.zaichaopan.com/api/Region';
 
-function find() {
-    var id = $('#provinceFind').val();
-    $.getJSON(url + "/" + id,
+window.onload = function find() {
+    var startPos;
+    var latitude;
+    var longitude
+    var geoOptions = {
+        maximumAge: 5 * 60 * 1000,
+    }
+    var geoError = function (position) {
+        console.log('Error occurred. Error code: ' + error.code);
+        // error.code can be:
+        //   0: unknown error
+        //   1: permission denied
+        //   2: position unavailable (error response from location provider)
+        //   3: timed out
+    };
+    var geoSuccess = function (position) {
+        startPos = position;
+        latitude = startPos.coords.latitude;
+        longitude = startPos.coords.longitude;
+        reverseGeoLocate(latitude, longitude)
+    }
+    navigator.geolocation.getCurrentPosition(geoSuccess,geoError,geoOptions);
+}
+function reverseGeoLocate(latitude,longitude)
+{
+    var reverGeo = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=false'
+    var province;
+    $.getJSON(reverGeo,
+        function (data) {
+            if (data == null) {
+                $('#clientsResult').text('clients not found.');
+                return;
+            }
+            province = data.results[8].address_components[0].long_name;
+            getClients(province);
+        })
+    .fail(
+        function (jqueryHeaderRequest, textStatus, err) {
+            $('#clientsResult').text('Find error: ' + err);
+        });
+}
+
+function getClients(province)
+{
+
+    $.getJSON(url + "/" + province,
         function (data) {
             if (data.clients.length == 0) {
                 $('#clientsResult').text('clients not found.');
                 return;
             }
-
             callbackClients(data);
         })
     .fail(
@@ -17,9 +59,6 @@ function find() {
         });
 }
 
-
-
-
 function callbackClients(data) {
     var valTag = document.getElementById("clientsResult");
     valTag.innerHTML = "";
@@ -27,7 +66,7 @@ function callbackClients(data) {
     valTag.appendChild(table);
     table.className = "table table-striped table-hover table-responsive";
     var caption = document.createElement("caption");
-    caption.innerHTML = data.province +": " +data.totalPeople +" people" + "   " +"male: " + data.male + " " + "female: " +data.female; 
+    caption.innerHTML = data.province + ": " + data.totalPeople + " people" + "   " + "male: " + data.male + " " + "female: " + data.female;
     table.appendChild(caption);
     var tr1 = document.createElement("tr");
     table.appendChild(tr1);
