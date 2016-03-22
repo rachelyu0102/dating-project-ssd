@@ -54,10 +54,22 @@ function reverseGeoLocate(latitude, longitude) {
 }
 
 function getClients(province, country) {
-
+    var wait = $('#countryId option:selected').text();
+    var countrySelect = $('#countryId option:selected');
+    var provinceSelect = $('#provinceId option:selected');
+   // alert(countrySelect.text());
     //For FindADate Autofill{
-    alert(country + " " + province)
-    $('select.country').val(country);
-    $('select.province').val(province);
+    if (provinceSelect.text() === wait) {//we want it to match
+      //  alert(countrySelect.text());
+      //  setTimeout(alert(countrySelect.text()), 50);//wait 50 millisecnds then recheck
+        return;
+    }
+     countrySelect.text(country);
+    //real action
+    if (provinceSelect.text() === wait) {//we want it to match
+        setTimeout(alert(provinceSelect.text()), 50);//wait 50 millisecnds then recheck
+        return;
+    }
+    provinceSelect.text(province);
     //}
 }
