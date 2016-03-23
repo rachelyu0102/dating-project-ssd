@@ -133,5 +133,58 @@ html, body, #index{
 }
 
 
+/*--conversation container in useproflie page --*/
+.conversation-outer-container{
+    border:1px solid #ddd;
+    border-radius:4px 4px 0 0;
+    padding-bottom:150px
+} 
+
+ul#conversation-container {
+    padding: 0; 
+}
 
 
+
+ul#conversation-container li:nth-child(even) {
+    margin-right: 50px;
+    background-color: #ffe6e6;
+}
+
+
+ul#conversation-container li:nth-child(odd) {
+    margin-left: 50px;
+    background-color: #e6f3ff;
+ 
+}
+
+
+ul#conversation-container li {
+    list-style: none;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-top: 15px;
+    border-radius: 3px;
+}
+
+#instant-message{
+    border:1px solid #ddd;
+    padding-left:0px;
+    height:40px;
+   
+}
+
+#sendMessage{
+    height:40px;
+}
+
+.hidden{
+    display:none;
+}
+.fa-lock,.fa-unlock{
+    margin-right:15px;
+}
+
+.start_a_conversation{
+    margin-top:20px;
+}

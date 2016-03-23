@@ -354,6 +354,10 @@
     <Content Include="Views\Home\ConfirmEmail.cshtml" />
     <Content Include="Views\Home\CompleteRegistration.cshtml" />
     <Content Include="Views\Home\Upgrade.cshtml" />
+    <Content Include="Views\Home\testOnline.cshtml" />
+    <Content Include="Views\Home\TestNewWindow.cshtml" />
+    <Content Include="Views\Home\startAConversation.cshtml" />
+    <Content Include="Views\Home\AcceptAConversation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

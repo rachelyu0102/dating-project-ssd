@@ -38,8 +38,7 @@
         else
         {
             <img class="img-thumbnail" src="~/Images/Uploads/UserProfile/default-profile-female.jpg" alt="@Model.client.UserName" style="width:100%;height:100%" />
-       
-
+      
         }
     </div>
     
@@ -47,7 +46,12 @@
     </div>
 <div class="col-md-3 w3-margin-64 w3-border w3-round" style="width:200px;">
 
-    <div><span class="userName w3-justify" style="text-align:center">@Model.client.UserName </span></div>
+    <div><a href="~/home/testOnline/?username=@Model.client.UserName">
+    <span class="userName w3-justify" style="text-align:center">
+
+        @Model.client.UserName
+    </span></a>
+</div>
    
     @*<div>@Model.client.email</div>*@
     <div style="margin-top:16px">@Model.client.gender, @year</div>
@@ -98,8 +102,7 @@
 
 
 
-
-         <div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="updateFormModal" style="margin:20px!important" ng-app="">
+<div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="updateFormModal" style="margin:20px!important" ng-app="">
         <div class="modal-dialog modal-lg">
             <div class="modal-content w3-margin w3-padding">
                 <div class="modal-header">
@@ -221,48 +224,43 @@
 </div>
 }
 
+<!---->
+<div id="alertArea"></div>
 
+@if (User.Identity.Name != Model.client.UserName)
+{
+    <a class="btn btn-default start_a_conversation" href="/home/StartAConversation?receiver=@Model.client.UserName&&sender=@User.Identity.Name">Start 
+    a conversation</a>
+    <input id="sendTo" value="@Model.client.UserName" style="display:none"><br />
+    <input id="sendFrom" value="@User.Identity.Name" style="display:none" /><br />
+}
 
-
-    <script>
-$(document).ready(function(){
-    $("#myBtn").click(function(){
-        $("#myModal").modal();
+ <script>
+     $(document).ready(function () {
+         $("#myBtn").click(function () {
+         $("#myModal").modal();
     });
 });
-    </script>
+</script>
 
 <script src="http://lab.iamrohit.in/js/location.js"></script>
+
 <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
 <script src="~/signalr/hubs"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>   
+<script>
+     $(function () {
+         var chatStart = $.connection.chatHub;
 
-    <script>
-        $(function () {
-
-            var chat = $.connection.chatHub;
-            chat.client.sendMessage = function (message) {
-                // Add the message to the page. 
-                $('#discussion').append('<li><strong>' + htmlEncode(message) + '</li>');
-            };
-
-            $.connection.hub.start().done(function () {
-                $('#sendMessage').click(function () {
-                    // Call the Send method on the hub. 
-                    chat.server.send($("#sendTo").val(), $('#message').val());
-                    // Clear text box and reset focus for next comment. 
-                    $('#message').val('').focus();
-                });
+         $.connection.hub.start().done(function () {
+            $('.start_a_conversation').click(function (event) {
+                event.preventDefault();
+                window.open($(this).attr("href"), 'startAConversation', "width=600,height=600,scrollbars=yes");
+               var start_receiver = $("#sendTo").val();
+               var start_sender = $("#sendFrom").val();
+               console.log(start_receiver);
+               console.log(start_sender);
+                chatStart.server.startAConversation(start_receiver, start_sender);
             });
-
+            });
         });
-            
-            function htmlEncode(value) {
-                var encodedValue = $('<div />').text(value).html();
-                return encodedValue;
-            }
-
-
-
-    </script>
-
+</script>
