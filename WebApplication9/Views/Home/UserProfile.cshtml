@@ -21,6 +21,21 @@
         </div>
 
     </div>
+    <div>
+        @if (Session[Model.client.UserName] != null)
+        {
+            if (Session[Model.client.UserName].ToString() == "true")
+            {
+                <p>Hey I'm online!</p>
+            }
+          
+
+        }
+        else
+        {
+            <p>Offline</p>
+        }
+    </div>
   
     <div style="height:200px; width:200px; position:absolute; top: 250px;
     left: 64px;">
