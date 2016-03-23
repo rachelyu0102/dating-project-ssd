@@ -12,14 +12,46 @@ using System.Web.Mvc;
 using WebApplication9.BusinessLogic;
 using PagedList;
 using System.Net;
+
+
+
 using WebApplication9.ViewModels;
 using System.Data;
 using System.Web.Security;
 
 namespace WebApplication9.Controllers
 {
+
     public class HomeController : Controller
     {
+        MembershipUserCollection users;
+
+
+        public ActionResult testOnline(string username)
+        {
+
+            
+            bool isOnline = Membership.GetUser(username).IsOnline;
+
+           
+            if (isOnline)
+            {
+                ViewBag.online = "Oneline";
+
+            }
+            else
+            {
+                ViewBag.online = "Offline";
+            }
+
+          
+        
+            return View(username);
+
+
+        }
+
+       
 
         Boolean UserNoFound;
         Boolean PasswordIncorrent;
@@ -677,6 +709,19 @@ namespace WebApplication9.Controllers
 
         }
 
+      
+
+        public ActionResult AcceptAConversation(string sender, string receiver)
+        {
+            ViewBag.sender = sender;
+            return View();
+        }
+
+        public ActionResult StartAConversation(string receiver,string sender)
+        {
+            ViewBag.receiver = receiver;
+            return View();
+        }
 
 
 

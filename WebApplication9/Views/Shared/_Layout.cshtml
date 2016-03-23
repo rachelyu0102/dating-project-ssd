@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="~/CSS/bootstrap.css">
     <link rel="stylesheet" href="~/CSS/Instadate.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="//js.pusher.com/3.0/pusher.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
     <script>
         var pusher = new Pusher('YOUR_APP_KEY');
         var channel = pusher.subscribe('my-channel');
@@ -59,8 +62,22 @@
                     }
                     else
                     {
+                       
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+                               aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell"></i>
+                            </a>
+                            <ul class="dropdown-menu alertCenter">
+                                <li><a href="#">Alert center</a></li>
+                            </ul>
+                        </li>
+
+
+                       <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+                               aria-haspopup="true" aria-expanded="false">@User.Identity.Name 
+                           
+                            <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                     <li><a href="~/Home/UserProfile?userName=@User.Identity.Name">Profile</a></li>
                                 @if(User.IsInRole("Admin"))
@@ -88,6 +105,69 @@
         @RenderBody()
     
 
-       
+    <script src="http://lab.iamrohit.in/js/location.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    
+    <script>
+        var StartAConversation;
+
+     $(function () {
+
+         var chat = $.connection.chatHub;
+
+         chat.client.sendInvitation = function (start_receiver, start_sender) {
+             var start_receiver = start_receiver;
+             var start_sender = start_sender;
+             var alertAConversation;
+             
+             $(".alertCenter").append('<li><a class="openInNewWindow" href="/home/AcceptAConversation/?sender=' + start_sender + '&&receiver=' + start_receiver + '">' + "accept invitation from " + start_sender + "?</a>");
+             alertAConversation = setInterval(function () { $(".fa-bell").effect("shake"); }, 2000);
+            
+             /*----*/
+             $('.fa-bell').click(function() {
+                    clearInterval(alertAConversation);
+                    var randomnumber = Math.floor((Math.random() * 100) + 1);
+                    $('.openInNewWindow').click(function (event) {
+                        event.preventDefault();
+                        window.open($(this).attr("href"), 'PopUp'+randomnumber, "width=600,height=600,scrollbars=yes");
+                        $(this).remove();
+                    });
+
+                    var accept_sender = start_receiver;
+                    var accept_receiver = start_sender;
+
+                    var chat1 = $.connection.chatHub;
+                    $.connection.hub.start().done(function () {
+                        chat.server.acceptConversation(accept_receiver, accept_sender);
+                    });
+
+                    accept_sender = '';
+                    accept_receive = '';
+
+
+
+                });
+         }
+
+         /*
+         $.connection.hub.start().done(function () {
+  
+            $('.start_a_conversation').click(function (event) {
+                event.preventDefault();
+                window.open($(this).attr("href"), 'startAConversation', "width=600,height=600,scrollbars=yes");
+               var start_receiver = $("#sendTo").val();
+               var start_sender = $("#sendFrom").val();
+                chat.server.startAConversation(start_receiver, start_sender);
+            });
+
+
+            });*/
+           
+        });
+    </script>
+
+
 </body>
 </html>
