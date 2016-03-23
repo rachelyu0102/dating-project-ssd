@@ -16,26 +16,12 @@
        
         <img src="~/Images/profileDefaultBg1.jpg"  style="width:100%"/>
         <div class="w3-container w3-padding-24">
-   
+
 
         </div>
 
     </div>
-    <div>
-        @if (Session[Model.client.UserName] != null)
-        {
-            if (Session[Model.client.UserName].ToString() == "true")
-            {
-                <p>Hey I'm online!</p>
-            }
-          
 
-        }
-        else
-        {
-            <p>Offline</p>
-        }
-    </div>
   
     <div style="height:200px; width:200px; position:absolute; top: 250px;
     left: 64px;">
@@ -64,6 +50,22 @@
 
     <div><span class="userName w3-justify" style="text-align:center">@Model.client.UserName </span></div>
    
+    <div id="userLoginState">
+        @if (Session[Model.client.UserName] != null)
+        {
+            if (Session[Model.client.UserName].ToString() == "true")
+            {
+                <p><img src="~/Images/3d-green-ball-th.png "style="max-width:10px; max-height:10px;"/> Online</p>
+            }
+            
+
+        }
+        else
+        {
+            <p><img src="~/Images/3d-red-ball.png" style="max-width:10px; max-height:10px;"/> Offline</p>
+        }
+    </div>
+
     @*<div>@Model.client.email</div>*@
     <div style="margin-top:16px">@Model.client.gender, @year</div>
     <div style="margin-top:5px"> @Model.client.province, @Model.client.country</div>
@@ -119,7 +121,7 @@
             <div class="modal-content w3-margin w3-padding">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Update</h4>
+                    <h4 class="modal-title">Upload images</h4>
                 </div>
                 <div class="modal-body">
                     <form action="~/Home/UserProfile" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -219,13 +221,61 @@
 
 </div>
 -->
-
 <div id="message" style="position:fixed; top:700px; left: 120px;">
     @if (Request.IsAuthenticated && User.Identity.Name != Model.client.UserName)
     {
         <a href="#" class="btn btn-info btn-sm " data-toggle="modal" data-target="#messageModal">Message</a>
     }
 </div>
+
+@using (Html.BeginForm("FileUpload", "Home", FormMethod.Post,
+                                        new { enctype = "multipart/form-data" }))
+{
+    <label for="file">Upload Image:</label>
+    <input type="file" name="file" id="file" style="width: 100%;" />
+    <input type="text" name="username" value="@User.Identity.Name" hidden/>
+    <input type="submit" value="Upload" class="submit" />
+}
+
+<!--
+<div id="imageUpload">
+    @if (Request.IsAuthenticated && User.Identity.Name == Model.client.UserName)
+    {
+        <a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#imageModal">Upload images</a>
+        
+    }
+    
+
+</div>
+
+<div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="imageModal" style="margin:20px!important" ng-app="">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content w3-margin w3-padding">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Upload images</h4>
+            </div>
+            <div class="modal-body">
+                <form action="~/Home/UserProfile" method="post" enctype="multipart/form-data" class="form-horizontal">
+
+                    <div class="form-group">
+                        <label for="photo">Photo:</label>
+                        <input type="file" name="photo" class="form-control" id="photo" />
+                        <input type="submit" class="btn btn-primary" value="Upload">
+                    </div>          
+
+            
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+-->
+
+
+
 
 
 

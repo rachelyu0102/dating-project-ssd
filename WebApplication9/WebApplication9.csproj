@@ -185,6 +185,8 @@
     <Content Include="CSS\Instadate.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\3d-green-ball-th.png" />
+    <Content Include="Images\3d-red-ball.png" />
     <Content Include="Images\database.JPG" />
     <Content Include="Images\DatingERD.PNG" />
     <Content Include="Images\image1.jpg" />

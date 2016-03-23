@@ -64,7 +64,7 @@ namespace WebApplication9.Controllers
                     {
                         IsPersistent = false
                     }, identity);
-
+                   
                     Session[login.UserName] = "true";
 
 
@@ -177,6 +177,33 @@ namespace WebApplication9.Controllers
             repo.updatgeProfile(client, interests, country, state);
 
             return RedirectToAction("UserProfile", new { userName= client.UserName});
+        }
+
+        [HttpPost]
+        public ActionResult FileUpload(string username, HttpPostedFileBase file, string[] interests, string country, string state)
+        {
+            if (file != null)
+            {
+                string pic = System.IO.Path.GetFileName(file.FileName);
+                string path = System.IO.Path.Combine(
+                                       Server.MapPath("~/Images/Uploads/UserProfile"), pic);
+                // file is uploaded
+                file.SaveAs(path);
+                HttpPostedFileBase photo = file;
+                updateUserProfile(photo, username);
+
+                // save the image path path to the database or you can send image 
+                // directly to database
+                // in-case if you want to store byte[] ie. for DB
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    photo.InputStream.CopyTo(ms);
+                    byte[] array = ms.GetBuffer();
+                }
+
+            }
+            // after successfully uploading redirect the user
+            return RedirectToAction("UserProfile", new { userName = username });
         }
 
         [Authorize]
@@ -649,6 +676,8 @@ namespace WebApplication9.Controllers
             return View();
 
         }
+
+
 
 
 
