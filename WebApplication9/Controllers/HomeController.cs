@@ -12,9 +12,12 @@ using System.Web.Mvc;
 using WebApplication9.BusinessLogic;
 using PagedList;
 using System.Net;
-using System.Web.Security;
+
+
+
 using WebApplication9.ViewModels;
 using System.Data;
+using System.Web.Security;
 
 namespace WebApplication9.Controllers
 {
@@ -93,6 +96,9 @@ namespace WebApplication9.Controllers
                     {
                         IsPersistent = false
                     }, identity);
+
+                    Session[login.UserName] = "true";
+
 
                     return RedirectToAction("Square", "Home", new {UserName=login.UserName});
                 }

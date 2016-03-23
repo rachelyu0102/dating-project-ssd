@@ -13,11 +13,22 @@ namespace WebApplication9
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        protected void Application_Start()
+        protected void Application_Start(object sender, EventArgs e)
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            
+            // Code that runs on application startup
+            Application["OnlineUsers"] = 0;
+
+        }
+        void Session_Start(object sender, EventArgs e)
+        {
+            // Code that runs when a new session is started
+          
+        }
+        void Session_End(object sender, EventArgs e)
+        {
+            Session[User.Identity.Name] = "false"; 
         }
 
         void Application_PostAuthenticateRequest()

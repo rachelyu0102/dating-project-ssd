@@ -21,6 +21,21 @@
         </div>
 
     </div>
+    <div>
+        @if (Session[Model.client.UserName] != null)
+        {
+            if (Session[Model.client.UserName].ToString() == "true")
+            {
+                <p>Hey I'm online!</p>
+            }
+          
+
+        }
+        else
+        {
+            <p>Offline</p>
+        }
+    </div>
   
     <div style="height:200px; width:200px; position:absolute; top: 250px;
     left: 64px;">
@@ -233,6 +248,7 @@
     a conversation</a>
     <input id="sendTo" value="@Model.client.UserName" style="display:none"><br />
     <input id="sendFrom" value="@User.Identity.Name" style="display:none" /><br />
+
 }
 
  <script>
@@ -248,6 +264,8 @@
 <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
 <script src="~/signalr/hubs"></script>
 <script>
+
+    
      $(function () {
          var chatStart = $.connection.chatHub;
 
@@ -259,7 +277,8 @@
                var start_sender = $("#sendFrom").val();
                console.log(start_receiver);
                console.log(start_sender);
-                chatStart.server.startAConversation(start_receiver, start_sender);
+               chatStart.server.startAConversation(start_receiver, start_sender);
+               console.log("test");
             });
             });
         });
