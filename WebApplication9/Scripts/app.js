@@ -56,7 +56,7 @@ function reverseGeoLocate(latitude,longitude)
             else {
                 parseData(data);
             }
-            getClients(province,country);
+            getClients(province,country,city);
         })
     .fail(
         function (jqueryHeaderRequest, textStatus, err) {
@@ -64,20 +64,30 @@ function reverseGeoLocate(latitude,longitude)
         });
 }
 
-function getClients(province,country)
+function getClients(province,country,city)
 {
-    $.getJSON(url + "/" + province,
-        function (data) {
-            if (data.clients.length == 0) {
-                $('#clientsResult').text('clients not found.');
-                return;
-            }
-            callbackClients(data);
-        })
-    .fail(
-        function (jqueryHeaderRequest, textStatus, err) {
-            $('#clientsResult').text('Find error: ' + err);
-        });
+    var editCountry = $("#countryId");
+    var editState = $("#stateId");
+    var editCity = $("#cityId");
+    if (editCountry) {
+        editCountry.val(country);
+        editState.val(province);
+        editCity.val(city);
+    }
+    else {
+        $.getJSON(url + "/" + province,
+            function (data) {
+                if (data.clients.length == 0) {
+                    $('#clientsResult').text('clients not found.');
+                    return;
+                }
+                callbackClients(data);
+            })
+        .fail(
+            function (jqueryHeaderRequest, textStatus, err) {
+                $('#clientsResult').text('Find error: ' + err);
+            });
+    }
 }
 
 function callbackClients(data) {

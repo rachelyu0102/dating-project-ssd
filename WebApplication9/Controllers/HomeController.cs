@@ -159,7 +159,7 @@ namespace WebApplication9.Controllers
         }
 
         [Authorize]
-        public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder, string country, string state)
+        public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder, string country, string state, string city)
         {
            IEnumerable <ClientDetailInfo> clients= repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder, country, state);
 
@@ -250,11 +250,11 @@ namespace WebApplication9.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String country, String state )
+        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String country, String state, String city )
         {
             repo.saveAvailableDate(userName, availableDate, timepicker1);
 
-            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Country = country, State = state});
+            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Country = country, State = state, City = city});
             
         }
 
