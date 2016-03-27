@@ -28,25 +28,34 @@ function reverseGeoLocate(latitude,longitude)
     var reverGeo = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=false'
     var province;
     var country;
-    var selectorProvince = 0;
-    var selectorCountry = 1;
+    var city;
+    var parseProvince = 0;
+    var parseCity = 0;
+    var parseCountry = 1;
+    var componentSelector;
+    function parseData(location)
+    {
+        console.log(location);
+                province = location.results[componentSelector].address_components[parseProvince].long_name;
+                country = location.results[componentSelector].address_components[parseCountry].long_name;
+                city = location.results[componentSelector-1].address_components[parseCity].long_name;
+
+    }
     $.getJSON(reverGeo,
         function (data) {
             if (data == null) {
                 $('#clientsResult').text('clients not found.');
                 return;
             }
-            console.log(data);
-            if (data.results[8].address_components.length > 2) {
-                province = data.results[8].address_components[selectorProvince + 1].long_name;
-                country = data.results[8].address_components[selectorCountry + 1].long_name;
-
+            componentSelector = data.results.length - 2;
+            if (data.results[componentSelector].address_components.length > 2) {
+                parseProvince++;
+                parseCountry++;
+                parseData(data);
             }
             else {
-                province = data.results[8].address_components[selectorProvince].long_name;
-                country = data.results[8].address_components[selectorCountry].long_name;
+                parseData(data);
             }
-            alert(country + ", " + province)
             getClients(province,country);
         })
     .fail(
@@ -107,9 +116,5 @@ function callbackClients(data) {
         td3.innerHTML = parseInt((now - Date.parse(val.Age)) / (1000 * 60 * 60 * 24 * 365));
         tr2.appendChild(td3);
     });
-    //}
-    //For FindADate Autofill{
-
-    //}
 }
 
