@@ -21,6 +21,11 @@
         <AssociationConnector Association="SSDDatingModel.clientFk" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.FK__ClientInt__inter__17E28260" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SSDDatingModel.UserActivityImage" Width="1.5" PointX="10.5" PointY="6.375" />
+        <EntityTypeShape EntityType="SSDDatingModel.UserMessage" Width="1.5" PointX="10.5" PointY="2.875" />
+        <AssociationConnector Association="SSDDatingModel.FK__UserActiv__userN__66161CA2" />
+        <AssociationConnector Association="SSDDatingModel.FK__UserMessa__recei__57C7FD4B" />
+        <AssociationConnector Association="SSDDatingModel.FK__UserMessa__sende__56D3D912" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

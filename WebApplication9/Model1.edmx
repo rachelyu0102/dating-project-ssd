@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SSDDatingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SSDDatingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -91,6 +91,8 @@
           <Property Name="profile" Type="nvarchar" MaxLength="128" />
           <Property Name="availableDate" Type="datetime" />
           <Property Name="timeStart" Type="datetime" />
+          <Property Name="profilebackground" Type="varchar" MaxLength="128" />
+          <Property Name="city" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
@@ -105,6 +107,31 @@
             <PropertyRef Name="interest" />
           </Key>
           <Property Name="interest" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserActivityImages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="256" />
+          <Property Name="title" Type="varchar" MaxLength="255" />
+          <Property Name="image1" Type="varchar" MaxLength="255" />
+          <Property Name="image2" Type="varchar" MaxLength="255" />
+          <Property Name="image3" Type="varchar" MaxLength="255" />
+          <Property Name="image4" Type="varchar" MaxLength="255" />
+          <Property Name="uploadDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserMessages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sender" Type="nvarchar" MaxLength="256" />
+          <Property Name="receiver" Type="nvarchar" MaxLength="256" />
+          <Property Name="messageBody" Type="text" Nullable="false" />
+          <Property Name="senderProfile" Type="varchar" MaxLength="128" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="new" Type="bit" />
         </EntityType>
         <Association Name="clientFk">
           <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="0..1" />
@@ -138,6 +165,42 @@ warning 6035: The relationship 'FK__Client__UserName__10416098' has columns that
         <!--Errors Found During Generation:
 warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
         <Association Name="FK__ClientInt__UserN__18D6A699" />-->
+        <Association Name="FK__UserActiv__userN__66161CA2">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserActivityImages" Type="Self.UserActivityImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserActivityImages">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMessa__recei__57C7FD4B">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserMessages" Type="Self.UserMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserMessages">
+              <PropertyRef Name="receiver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMessa__sende__56D3D912">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserMessages" Type="Self.UserMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserMessages">
+              <PropertyRef Name="sender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -194,6 +257,37 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="SSDDatingModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -205,6 +299,8 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <EntitySet Name="Client" EntityType="Self.Client" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="ClientInterest" EntityType="Self.ClientInterest" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="Interest" EntityType="Self.Interest" Schema="ssdDating" store:Type="Tables" />
+          <EntitySet Name="UserActivityImages" EntityType="Self.UserActivityImages" Schema="ssdDating" store:Type="Tables" />
+          <EntitySet Name="UserMessages" EntityType="Self.UserMessages" Schema="ssdDating" store:Type="Tables" />
           <AssociationSet Name="clientFk" Association="Self.clientFk">
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
             <End Role="Client" EntitySet="Client" />
@@ -212,6 +308,18 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <AssociationSet Name="FK__ClientInt__inter__17E28260" Association="Self.FK__ClientInt__inter__17E28260">
             <End Role="Interest" EntitySet="Interest" />
             <End Role="ClientInterest" EntitySet="ClientInterest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserActiv__userN__66161CA2" Association="Self.FK__UserActiv__userN__66161CA2">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="UserActivityImages" EntitySet="UserActivityImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMessa__recei__57C7FD4B" Association="Self.FK__UserMessa__recei__57C7FD4B">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="UserMessages" EntitySet="UserMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMessa__sende__56D3D912" Association="Self.FK__UserMessa__sende__56D3D912">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="UserMessages" EntitySet="UserMessages" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -230,8 +338,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SSDDatingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -331,6 +438,11 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="availableDate" Type="DateTime" Precision="3" />
           <Property Name="timeStart" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AspNetUserRole" Relationship="Self.clientFk" FromRole="Client" ToRole="AspNetUserRoles" />
+          <Property Name="profilebackground" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserActivityImages" Relationship="SSDDatingModel.FK__UserActiv__userN__66161CA2" FromRole="Client" ToRole="UserActivityImage" />
+          <NavigationProperty Name="UserMessages" Relationship="SSDDatingModel.FK__UserMessa__recei__57C7FD4B" FromRole="Client" ToRole="UserMessage" />
+          <NavigationProperty Name="UserMessages1" Relationship="SSDDatingModel.FK__UserMessa__sende__56D3D912" FromRole="Client" ToRole="UserMessage" />
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
@@ -465,7 +577,126 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             <End Role="Interest" EntitySet="Interests" />
             <End Role="ClientInterest" EntitySet="ClientInterests" />
           </AssociationSet>
+          <EntitySet Name="UserActivityImages" EntityType="SSDDatingModel.UserActivityImage" />
+          <EntitySet Name="UserMessages" EntityType="SSDDatingModel.UserMessage" />
+          <AssociationSet Name="FK__UserActiv__userN__66161CA2" Association="SSDDatingModel.FK__UserActiv__userN__66161CA2">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="UserActivityImage" EntitySet="UserActivityImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMessa__recei__57C7FD4B" Association="SSDDatingModel.FK__UserMessa__recei__57C7FD4B">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="UserMessage" EntitySet="UserMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMessa__sende__56D3D912" Association="SSDDatingModel.FK__UserMessa__sende__56D3D912">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="UserMessage" EntitySet="UserMessages" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SSDDatingModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SSDDatingModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
+        <EntityType Name="UserActivityImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image4" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="uploadDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Client" Relationship="SSDDatingModel.FK__UserActiv__userN__66161CA2" FromRole="UserActivityImage" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="UserMessage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sender" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="receiver" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="messageBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="senderProfile" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="new" Type="Boolean" />
+          <NavigationProperty Name="Client" Relationship="SSDDatingModel.FK__UserMessa__recei__57C7FD4B" FromRole="UserMessage" ToRole="Client" />
+          <NavigationProperty Name="Client1" Relationship="SSDDatingModel.FK__UserMessa__sende__56D3D912" FromRole="UserMessage" ToRole="Client" />
+        </EntityType>
+        <Association Name="FK__UserActiv__userN__66161CA2">
+          <End Type="SSDDatingModel.Client" Role="Client" Multiplicity="0..1" />
+          <End Type="SSDDatingModel.UserActivityImage" Role="UserActivityImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserActivityImage">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMessa__recei__57C7FD4B">
+          <End Type="SSDDatingModel.Client" Role="Client" Multiplicity="0..1" />
+          <End Type="SSDDatingModel.UserMessage" Role="UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="receiver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMessa__sende__56D3D912">
+          <End Type="SSDDatingModel.Client" Role="Client" Multiplicity="0..1" />
+          <End Type="SSDDatingModel.UserMessage" Role="UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="sender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -549,6 +780,8 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="SSDDatingModel.Client">
               <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="profilebackground" ColumnName="profilebackground" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="birthdate" ColumnName="birthdate" />
@@ -578,6 +811,57 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserActivityImages">
+            <EntityTypeMapping TypeName="SSDDatingModel.UserActivityImage">
+              <MappingFragment StoreEntitySet="UserActivityImages">
+                <ScalarProperty Name="uploadDate" ColumnName="uploadDate" />
+                <ScalarProperty Name="image4" ColumnName="image4" />
+                <ScalarProperty Name="image3" ColumnName="image3" />
+                <ScalarProperty Name="image2" ColumnName="image2" />
+                <ScalarProperty Name="image1" ColumnName="image1" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMessages">
+            <EntityTypeMapping TypeName="SSDDatingModel.UserMessage">
+              <MappingFragment StoreEntitySet="UserMessages">
+                <ScalarProperty Name="new" ColumnName="new" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="senderProfile" ColumnName="senderProfile" />
+                <ScalarProperty Name="messageBody" ColumnName="messageBody" />
+                <ScalarProperty Name="receiver" ColumnName="receiver" />
+                <ScalarProperty Name="sender" ColumnName="sender" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="SSDDatingModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SSDDatingModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SSDDatingModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SSDDatingModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SSDDatingModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SSDDatingModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SSDDatingModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SSDDatingModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SSDDatingModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

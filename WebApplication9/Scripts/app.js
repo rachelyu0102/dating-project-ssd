@@ -36,9 +36,9 @@ function reverseGeoLocate(latitude,longitude)
     function parseData(location)
     {
         console.log(location);
-                province = location.results[componentSelector].address_components[parseProvince].long_name;
-                country = location.results[componentSelector].address_components[parseCountry].long_name;
-                city = location.results[componentSelector-1].address_components[parseCity].long_name;
+                province = location.results[1].address_components[3].long_name;
+                country = location.results[1].address_components[4].long_name;
+                city = location.results[1].address_components[1].long_name;
 
     }
     $.getJSON(reverGeo,
@@ -73,8 +73,8 @@ function getClients(province,country,city)
         editCountry.val(country);
         editState.val(province);
         editCity.val(city);
+        alert(country + " IN " + province + " IN " + city);
     }
-    else {
         $.getJSON(url + "/" + province,
             function (data) {
                 if (data.clients.length == 0) {
@@ -87,7 +87,6 @@ function getClients(province,country,city)
             function (jqueryHeaderRequest, textStatus, err) {
                 $('#clientsResult').text('Find error: ' + err);
             });
-    }
 }
 
 function callbackClients(data) {
