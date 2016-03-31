@@ -20,6 +20,10 @@ namespace WebApplication9.ViewModels
         public string gender { get; set; }
         [Display(Name = "city")]
         public string city { get; set; }
+        [Display(Name = "latitude")]
+        public string latitude { get; set; }
+        [Display(Name = "longitude")]
+        public string longitude { get; set; }
         [Display(Name = "Province")]
         public string province { get; set; }
         [Display(Name = "Country")]

@@ -23,16 +23,61 @@ window.onload = function find() {
     }
     navigator.geolocation.getCurrentPosition(geoSuccess,geoError,geoOptions);
 }
+function calculateDistances(origins, destinations) {
+    var service = new google.maps.DistanceMatrixService();
+    var d = $.Deferred();
+    service.getDistanceMatrix(
+        {
+            origins: origins,
+            destinations: destinations,
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+        },
+        function (response, status) {
+            if (status != google.maps.DistanceMatrixStatus.OK) {
+                d.reject(status);
+            } else {
+                d.resolve(response);
+            }
+        });
+    return d.promise();
+}
 function reverseGeoLocate(latitude,longitude)
 {
+    var originLatLng = latitude + "," + longitude;
+    var destLatLng = $(".latLng")
+    var distance = $(".distance");
+    if (distance)
+    {
+        destLatLng.each(function (index) {
+            calculateDistances([originLatLng], [$(this).text()])
+               .done(function (response) {
+                   var results = response.rows[0].elements;
+                   console.log(results[0].distance.text);
+                   alert(index);
+                   console.log(distance);
+                   distance[index].innerHTML= results[0].distance.text;
+               })
+               .fail(function (status) {
+                   document.getElementById('result').innerHTML = 'An error occured. Status: ' + status;
+               });
+        console.log($(this).text());
+    });
+    }
+    var editLatitude = $("#latitude");
+    var editLongitude = $("#longitude");
+    editLatitude.val(latitude);
+    editLongitude.val(longitude);
     var reverGeo = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=false'
     var province;
     var country;
     var city;
-    var parseProvince = 3;
-    var parseCity = 1;
-    var parseCountry = 4;
-    var componentSelector;
+    var parseProvince = 5;
+    var parseCity = 3;
+    var parseCountry = 6;
+    var componentSelector = 0;
     function parseData(location)
     {
         console.log(location);
@@ -47,16 +92,7 @@ function reverseGeoLocate(latitude,longitude)
                 $('#clientsResult').text('clients not found.');
                 return;
             }
-            componentSelector = data.results.length - 8;
             parseData(data);
-           // if (data.results[componentSelector].address_components.length > 2) {
-           //     parseProvince++;
-           //     parseCountry++;
-           //     parseData(data);
-           // }
-           // else {
-           //     parseData(data);
-           // }
             getClients(province,country,city);
         })
     .fail(

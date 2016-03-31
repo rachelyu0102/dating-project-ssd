@@ -35,6 +35,9 @@ namespace WebApplication9
         public Nullable<System.DateTime> timeStart { get; set; }
         public string profilebackground { get; set; }
         public string city { get; set; }
+        public string provShort { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
     
         public virtual AspNetUserRole AspNetUserRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
