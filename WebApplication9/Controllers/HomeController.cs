@@ -220,9 +220,10 @@ namespace WebApplication9.Controllers
             if (checkViewer)
             {
 
-                userMessages =(from um in context.UserMessages where um.receiver == receiver select um).ToList();
+                userMessages = (from um in context.UserMessages where um.receiver == receiver select um).ToList();
 
-                if (userMessages != null) {
+                if (userMessages != null)
+                {
 
                     foreach (var query in userMessages)
                     {
@@ -233,10 +234,11 @@ namespace WebApplication9.Controllers
                         }
                     }
                     context.SaveChanges();
-                }               
+                }
             }
-            else{
-                userMessages =(from um in context.UserMessages where um.receiver == receiver &&  um.sender == sender select um).ToList();             
+            else
+            {
+                userMessages = (from um in context.UserMessages where um.receiver == receiver && um.sender == sender select um).ToList();
             }
 
             if (userMessages == null)
@@ -247,13 +249,14 @@ namespace WebApplication9.Controllers
             {
                 ViewBag.number = userMessages.Count();
             }
-        
+
             userMessages = userMessages.OrderByDescending(c => c.DateCreated);
             userMessages = userMessages.ToPagedList(pageNumber, PAGE_SIZE);
             ViewBag.checkViewer = checkViewer;
             ViewBag.sender = sender;
             ViewBag.receiver = receiver;
             ViewBag.newMessages = newMessages;
+        }
 
         [Authorize]
         public ActionResult deleteLeaveMessage(string userName, int Id)
