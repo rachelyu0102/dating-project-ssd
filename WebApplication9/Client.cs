@@ -33,6 +33,8 @@ namespace WebApplication9
         public string profile { get; set; }
         public Nullable<System.DateTime> availableDate { get; set; }
         public Nullable<System.DateTime> timeStart { get; set; }
+        public string profilebackground { get; set; }
+        public string city { get; set; }
     
         public virtual AspNetUserRole AspNetUserRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

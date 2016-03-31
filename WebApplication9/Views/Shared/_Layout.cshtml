@@ -77,7 +77,7 @@
                         </li>
                     <li>
                         @{
-                            SSDDatingEntities20 context = new SSDDatingEntities20();
+                            SSDDatingEntities21 context = new SSDDatingEntities21();
                             var profile = (context.Clients.Find(User.Identity.Name)).profile;
                             if (profile != null)
                             {

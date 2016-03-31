@@ -37,7 +37,7 @@ namespace WebApplication9
             {
                 var name = User.Identity.Name; // Get current user name.
 
-                SSDDatingEntities20 context = new SSDDatingEntities20();
+                SSDDatingEntities21 context = new SSDDatingEntities21();
                 var user = context.AspNetUsers.Where(u => u.UserName == name).FirstOrDefault();
                 IQueryable<string> roleQuery = from r in context.AspNetUserRoles
                                                where r.UserId== user.Id

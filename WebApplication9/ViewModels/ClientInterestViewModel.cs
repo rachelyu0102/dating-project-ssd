@@ -9,7 +9,7 @@ namespace WebApplication9.ViewModels
 {
     public class ClientInterestViewModel
     {
-    SSDDatingEntities20 db = new SSDDatingEntities20();
+    SSDDatingEntities21 db = new SSDDatingEntities21();
         [Display(Name = "Email")]
         public string email { get; set; }
         [Display(Name = "User Name")]
