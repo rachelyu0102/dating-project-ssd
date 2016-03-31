@@ -70,11 +70,11 @@ namespace WebApplication9.Controllers
                     Session[login.UserName] = "true";
 
 
-                  //  Client client = context.Clients.Find(login.UserName);
+                    //  Client client = context.Clients.Find(login.UserName);
                     Session["userProfile"] = context.Clients.Find(login.UserName).profile;
 
 
-                    return RedirectToAction("Square", "Home", new {UserName=login.UserName});
+                    return RedirectToAction("Square", "Home", new { UserName = login.UserName });
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace WebApplication9.Controllers
         {
 
             string country = null;
-            string state = null;         
+            string state = null;
             IEnumerable<ClientDetailInfo> AllClients = repo.getAllClientsInOneLocation(UserName, searchString, interestString, genderString, sortOrder, country, state);
 
             ViewBag.Province = context.Clients.Find(UserName).province;
@@ -114,7 +114,9 @@ namespace WebApplication9.Controllers
             {
                 ViewBag.CurrentSortOrder = "Name";
 
-            }else if (sortOrder == "Age"){
+            }
+            else if (sortOrder == "Age")
+            {
 
                 ViewBag.CurrentSortOrder = "Age";
             }
@@ -130,22 +132,22 @@ namespace WebApplication9.Controllers
 
             ViewBag.interests = repo.getAllInterests();
             return View(AllClients);
-          
+
         }
 
         [Authorize]
         public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder, string country, string state, string city)
         {
-           IEnumerable <ClientDetailInfo> clients= repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder, country, state);
+            IEnumerable<ClientDetailInfo> clients = repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder, country, state);
 
-            List<ClientDetailInfo> clientsHasAvail = new List<ClientDetailInfo> ();
+            List<ClientDetailInfo> clientsHasAvail = new List<ClientDetailInfo>();
             Client getClient = context.Clients.Find(UserName);
 
 
-            foreach(ClientDetailInfo client in clients)
+            foreach (ClientDetailInfo client in clients)
             {
 
-                if (client.client.availableDate!=null)
+                if (client.client.availableDate != null)
                 {
                     clientsHasAvail.Add(client);
                 }
@@ -159,7 +161,7 @@ namespace WebApplication9.Controllers
         public ActionResult UserProfile(string userName)
         {
             ClientDetailInfo clientDetailInfo = repo.getOneUserDetailInfo(userName);
-          //  Client loginUser = context.Clients.Find(User.Identity.Name);
+            //  Client loginUser = context.Clients.Find(User.Identity.Name);
             //ViewBag.loginUserProfile = loginUser.profile;           
             ViewBag.interests = repo.getAllInterests();
             return View(clientDetailInfo);
@@ -167,12 +169,12 @@ namespace WebApplication9.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult UserProfile(Client client,  HttpPostedFileBase photo, string[] interests, string country, string state)
+        public ActionResult UserProfile(Client client, HttpPostedFileBase photo, string[] interests, string country, string state)
         {
-            if(photo!=null)
+            if (photo != null)
             {
                 updateUserProfile(photo, client.UserName);
-                if(!updateUserProfile(photo, client.UserName).Contains("successful"))
+                if (!updateUserProfile(photo, client.UserName).Contains("successful"))
                 {
                     ViewBag.uploadPhotoError = updateUserProfile(photo, client.UserName);
 
@@ -182,10 +184,10 @@ namespace WebApplication9.Controllers
 
                 }
             }
-                         
+
             repo.updatgeProfile(client, interests, country, state);
 
-            return RedirectToAction("UserProfile", new { userName= client.UserName});
+            return RedirectToAction("UserProfile", new { userName = client.UserName });
         }
 
 
@@ -256,9 +258,11 @@ namespace WebApplication9.Controllers
             ViewBag.sender = sender;
             ViewBag.receiver = receiver;
             ViewBag.newMessages = newMessages;
-
             return PartialView(userMessages);
         }
+
+
+
 
         [Authorize]
         public ActionResult deleteLeaveMessage(string userName, int Id)
@@ -283,34 +287,34 @@ namespace WebApplication9.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String country, String state, String city )
+        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String country, String state, String city)
         {
             repo.saveAvailableDate(userName, availableDate, timepicker1);
 
-            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Country = country, State = state, City = city});
-            
+            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Country = country, State = state, City = city });
+
         }
 
-        
+
         public ActionResult About()
         {
 
             return View();
         }
-      
+
 
         public ActionResult MyAccount()
         {
-          
+
             return View();
         }
 
-       
-      
+
+
 
         public ActionResult Welcome()
         {
-           
+
             return View();
 
         }
@@ -320,8 +324,8 @@ namespace WebApplication9.Controllers
             return View();
         }
 
-       
-        
+
+
         public ActionResult prototype()
         {
             return View();
@@ -374,10 +378,10 @@ namespace WebApplication9.Controllers
 
             if (result.Succeeded)
             {
-                
-            return RedirectToAction("CompleteInfo", new { userName= identityUser.UserName, email= identityUser.Email, id=identityUser.Id });
 
-        }
+                return RedirectToAction("CompleteInfo", new { userName = identityUser.UserName, email = identityUser.Email, id = identityUser.Id });
+
+            }
             return View();
         }
 
@@ -402,7 +406,7 @@ namespace WebApplication9.Controllers
 
             CreateTokenProvider(manager, EMAIL_CONFIRMATION);
 
-          var user = manager.FindByName(client.userName);
+            var user = manager.FindByName(client.userName);
             var code = manager.GenerateEmailConfirmationToken(user.Id);
 
             var callbackUrl = Url.Action("ConfirmEmail", "Home",
@@ -420,7 +424,7 @@ namespace WebApplication9.Controllers
 
             if (response.IndexOf("Success") >= 0)
             {
-             //   ViewBag.Message = "A confirm email has been sent. Please check your email.";
+                //   ViewBag.Message = "A confirm email has been sent. Please check your email.";
                 TempData["Message"] = "A confirm email has been sent. Please check your email.";
                 return RedirectToAction("CompleteRegistration");
             }
@@ -430,7 +434,7 @@ namespace WebApplication9.Controllers
 
             ClientInterestViewModel newClient = repo.getClientInterest(client.userId);
             return View(newClient);
-           // return RedirectToAction("UserProfile", new { userName = client.userName});
+            // return RedirectToAction("UserProfile", new { userName = client.userName});
         }
 
 
@@ -447,59 +451,62 @@ namespace WebApplication9.Controllers
         {
             string message = updateUserProfile(photo, updateClientInfo.client.UserName);
             ViewBag.Message = message;
-            return RedirectToAction("UserProfile", new { userName = updateClientInfo.client
-                .UserName });
+            return RedirectToAction("UserProfile", new
+            {
+                userName = updateClientInfo.client
+                .UserName
+            });
         }
 
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-            public ActionResult AddRole()
-            {
-                return View();
-            }
+        public ActionResult AddRole()
+        {
+            return View();
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-            public ActionResult AddRole(AspNetRole role)
-            {
-          
-                context.AspNetRoles.Add(role);
-                context.SaveChanges();
-                return View();
-            }
+        public ActionResult AddRole(AspNetRole role)
+        {
+
+            context.AspNetRoles.Add(role);
+            context.SaveChanges();
+            return View();
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-            public ActionResult AddUserToRole()
-            {
-                return View();
-            }
+        public ActionResult AddUserToRole()
+        {
+            return View();
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-            public ActionResult AddUserToRole(string userName, string roleName)
-            {
-              
-                AspNetUser user = context.AspNetUsers
-                                 .Where(u => u.UserName == userName).FirstOrDefault();
-                AspNetRole role = context.AspNetRoles
-                                 .Where(r => r.Name == roleName).FirstOrDefault();
+        public ActionResult AddUserToRole(string userName, string roleName)
+        {
+
+            AspNetUser user = context.AspNetUsers
+                             .Where(u => u.UserName == userName).FirstOrDefault();
+            AspNetRole role = context.AspNetRoles
+                             .Where(r => r.Name == roleName).FirstOrDefault();
             AspNetUserRole userRole = new AspNetUserRole();
             userRole.UserId = user.Id;
             userRole.RoleId = role.Id;
             context.AspNetUserRoles.Add(userRole);
 
-                //user.AspNetRoles.Add(role);
-                context.SaveChanges();
-                return View();
-            }
+            //user.AspNetRoles.Add(role);
+            context.SaveChanges();
+            return View();
+        }
         // To allow more than one role access use syntax like the following:
         // [Authorize(Roles="Admin, Staff")]
 
 
 
-  
+
 
         public ActionResult Logout()
         {
@@ -510,103 +517,103 @@ namespace WebApplication9.Controllers
         }
 
         bool ValidLogin(Login login)
+        {
+            UserStore<IdentityUser> userStore = new UserStore<IdentityUser>();
+            UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(userStore)
             {
-                UserStore<IdentityUser> userStore = new UserStore<IdentityUser>();
-                UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(userStore)
-                {
-                    UserLockoutEnabledByDefault = true,
-                    DefaultAccountLockoutTimeSpan = new TimeSpan(0, 10, 0),
-                    MaxFailedAccessAttemptsBeforeLockout = 5
-                };
-                var user = userManager.FindByName(login.UserName);
+                UserLockoutEnabledByDefault = true,
+                DefaultAccountLockoutTimeSpan = new TimeSpan(0, 10, 0),
+                MaxFailedAccessAttemptsBeforeLockout = 5
+            };
+            var user = userManager.FindByName(login.UserName);
 
-                if (user == null)
-                {
-                    UserNoFound = true;
-                    return false;
-                }
-                    
-
-                // User is locked out.
-                if (userManager.SupportsUserLockout && userManager.IsLockedOut(user.Id))
-                {
-                    Locked = true;
-                    return false;
-                }
-                   
-
-                // Validated user was locked out but now can be reset.
-                if (userManager.CheckPassword(user, login.Password) && userManager.IsEmailConfirmed(user.Id))
-
-                {
-                    if (userManager.SupportsUserLockout
-                     && userManager.GetAccessFailedCount(user.Id) > 0)
-                    {
-                        userManager.ResetAccessFailedCount(user.Id);
-                    }
-                }
-                // Login is invalid so increment failed attempts.
-                else {
-                    bool lockoutEnabled = userManager.GetLockoutEnabled(user.Id);
-                    PasswordIncorrent = true;
-                    if (userManager.SupportsUserLockout && userManager.GetLockoutEnabled(user.Id))
-                    {
-                        userManager.AccessFailed(user.Id);
-                        return false;
-                    }
-                }
-                return true;
-            }
-        
-
-            const string EMAIL_CONFIRMATION = "EmailConfirmation";
-            const string PASSWORD_RESET = "ResetPassword";
-
-            void CreateTokenProvider(UserManager<IdentityUser> manager, string tokenType)
+            if (user == null)
             {
-                manager.UserTokenProvider = new EmailTokenProvider<IdentityUser>();
+                UserNoFound = true;
+                return false;
             }
 
 
-            string updateUserProfile(HttpPostedFileBase photo, string UserName)
+            // User is locked out.
+            if (userManager.SupportsUserLockout && userManager.IsLockedOut(user.Id))
             {
-                string extension = Path.GetExtension(photo.FileName).ToLower();
-                string message = "";
-                switch (extension)
+                Locked = true;
+                return false;
+            }
+
+
+            // Validated user was locked out but now can be reset.
+            if (userManager.CheckPassword(user, login.Password) && userManager.IsEmailConfirmed(user.Id))
+
+            {
+                if (userManager.SupportsUserLockout
+                 && userManager.GetAccessFailedCount(user.Id) > 0)
                 {
-                    case ".png":
-                    case ".jpg":
-                    case ".gif":
-                        break;
-                    default:             
+                    userManager.ResetAccessFailedCount(user.Id);
+                }
+            }
+            // Login is invalid so increment failed attempts.
+            else {
+                bool lockoutEnabled = userManager.GetLockoutEnabled(user.Id);
+                PasswordIncorrent = true;
+                if (userManager.SupportsUserLockout && userManager.GetLockoutEnabled(user.Id))
+                {
+                    userManager.AccessFailed(user.Id);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        const string EMAIL_CONFIRMATION = "EmailConfirmation";
+        const string PASSWORD_RESET = "ResetPassword";
+
+        void CreateTokenProvider(UserManager<IdentityUser> manager, string tokenType)
+        {
+            manager.UserTokenProvider = new EmailTokenProvider<IdentityUser>();
+        }
+
+
+        string updateUserProfile(HttpPostedFileBase photo, string UserName)
+        {
+            string extension = Path.GetExtension(photo.FileName).ToLower();
+            string message = "";
+            switch (extension)
+            {
+                case ".png":
+                case ".jpg":
+                case ".gif":
+                    break;
+                default:
                     message = "We only accept .png, .jpg, and .gif!";
                     return message;
-                }
+            }
 
-                try
+            try
+            {
+
+                if (photo != null && photo.ContentLength > 0)
                 {
+                    var fileName = UserName + extension;
+                    var path = Path.Combine(Server.MapPath("~/Images/Uploads/UserProfile"), fileName);
 
-                    if (photo != null && photo.ContentLength > 0)
-                    {
-                        var fileName = UserName + extension;
-                        var path = Path.Combine(Server.MapPath("~/Images/Uploads/UserProfile"), fileName);
+                    photo.SaveAs(path);
+                    Client client = context.Clients.Find(UserName);
+                    client.profile = fileName;
+                    context.SaveChanges();
 
-                        photo.SaveAs(path);
-                        Client client = context.Clients.Find(UserName);
-                        client.profile = fileName;
-                        context.SaveChanges();
-
-                        message = "Upload successful";
-                    }
+                    message = "Upload successful";
                 }
-                catch
-                {
-                    message = "Upload failed";
-                }
+            }
+            catch
+            {
+                message = "Upload failed";
+            }
 
             return message;
-            }
-             
+        }
+
 
 
         public ActionResult ConfirmEmail(string userId, string code)
@@ -643,7 +650,7 @@ namespace WebApplication9.Controllers
                     ViewBag.Message = "You are now registered!";
 
                 }
-               
+
             }
             catch
             {
@@ -666,7 +673,7 @@ namespace WebApplication9.Controllers
         [HttpPost]
         public ActionResult ForgotPassword(string email)
         {
-          
+
             var userStore = new UserStore<IdentityUser>();
             UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
             var user = manager.FindByEmail(email);
@@ -682,7 +689,7 @@ namespace WebApplication9.Controllers
             var callbackUrl = Url.Action("ResetPassword", "Home",
                                          new { userId = user.Id, code = code },
                                          protocol: Request.Url.Scheme);
-        
+
             string emailBody = "Please reset your password by clicking <a href=\""
                                      + callbackUrl + "\">here</a>";
 
@@ -993,10 +1000,5 @@ namespace WebApplication9.Controllers
 
             return false;
         }
-
     }
-
-
-
 }
-
