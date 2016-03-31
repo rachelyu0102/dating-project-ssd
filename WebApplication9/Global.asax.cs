@@ -28,7 +28,7 @@ namespace WebApplication9
         }
         void Session_End(object sender, EventArgs e)
         {
-            Session[User.Identity.Name] = "false"; 
+        //    Session[User.Identity.Name] = "false"; 
         }
 
         void Application_PostAuthenticateRequest()
@@ -37,7 +37,7 @@ namespace WebApplication9
             {
                 var name = User.Identity.Name; // Get current user name.
 
-                SSDDatingEntities11 context = new SSDDatingEntities11();
+                SSDDatingEntities20 context = new SSDDatingEntities20();
                 var user = context.AspNetUsers.Where(u => u.UserName == name).FirstOrDefault();
                 IQueryable<string> roleQuery = from r in context.AspNetUserRoles
                                                where r.UserId== user.Id

@@ -7,6 +7,11 @@
 
 html, body, #index{
     height:100%!important;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
  }
 
  .userName{
@@ -133,58 +138,378 @@ html, body, #index{
 }
 
 
-/*--conversation container in useproflie page --*/
-.conversation-outer-container{
-    border:1px solid #ddd;
-    border-radius:4px 4px 0 0;
-    padding-bottom:150px
-} 
 
-ul#conversation-container {
-    padding: 0; 
+
+
+/*-alert center--*/
+.alterCenterHeader{
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.alertCenter li{
+    padding-left:15px;
+    width:300px;
+    border-bottom: 1px solid rgb(221, 221, 221);
+    margin-bottom: 15px;
+}
+
+.alertCenter .btn-info {
+    margin: 5px 10px!important;
+    width: 100px!important;
+    display:inline-block;
+}
+
+.alertCenter li span{
+    padding-left: 15px;
+}
+
+.alertCenter .btn-default {
+    width: 100px!important;
+    display:inline-block;
+}
+
+.fa-comment{
+    margin-right:10px;
+}
+
+a.btn.btn-info.start_a_conversation{
+    position:relative;
+    padding-left:30px;
+}
+
+.start_a_conversation i.material-icons{
+    position:absolute;
+    left:3px;
+}
+
+
+.onlineStatus{
+    margin-left: 15px;
 }
 
 
 
-ul#conversation-container li:nth-child(even) {
-    margin-right: 50px;
-    background-color: #ffe6e6;
+/*--squre page*/
+span.username {
+    font-size: 22px;
+    margin-right: 15px;
+}
+
+span.age-square{
+    font-size: 17px;
+}
+
+.location-square{
+    font-size:16px;
+    margin:8px 0
 }
 
 
-ul#conversation-container li:nth-child(odd) {
-    margin-left: 50px;
-    background-color: #e6f3ff;
- 
+/*--nav*/
+.square-link{
+    position:relative;
+    padding-left:15px;
+}
+
+.square-link a{
+    padding-left:20px!important;
+}
+.square-link .material-icons{
+    position:absolute;
+    font-size:18px;
+    left:0px;
+    line-height:20px;
+}
+
+/* remove alert-center-header hover color*/
+a.alterCenterHeader:hover {
+    background-color: #fff!important;
+    color: #333!important;
 }
 
 
-ul#conversation-container li {
-    list-style: none;
+/*-- user profile message box--*/
+#commentBoxInside{
+    margin-bottom:10px;
+}
+
+i.material-icons.commentIcon{
+    font-size: 40px!important;
     border: 1px solid #ddd;
+    border-radius: 50%;
     padding: 5px;
-    margin-top: 15px;
-    border-radius: 3px;
+   color: #5BC0DE;
 }
 
-#instant-message{
+.message-button-group{
+    padding-left:15px;
+}
+
+.commentP{
+    padding-left:15px;
+
+}
+
+.commentBoxOuter img, .view-per-message-container img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+
+/*-- view messages container--*/
+.view-messages-container{
+    margin-bottom:20px;
+    padding:20px 0!important;
+    border-radius:4px;
     border:1px solid #ddd;
-    padding-left:0px;
-    height:40px;
+}
+
+.view-messages-container-header{
+    margin-top:30px;
+    margin-bottom: 10px;
+    padding-left:0px!important;
+    display: inline-block;
+    font-size:20px;
+  
+    font-family:"Lobster 1.4";
    
 }
 
-#sendMessage{
-    height:40px;
+.view-per-message-container{
+    padding-left:0px; 
+    border-radius: 4px;
+    margin-bottom:30px;
 }
 
-.hidden{
+.view-per-message-sender{
+    padding-left:23px;
+    margin-bottom: 10px;
+}
+
+.view-per-message-sender span{
+    background-color: #ff78bb;
+}
+
+.view-per-message-post-time{
+     margin-bottom: 10px;
+}
+
+.view-per-message-delete{
+     margin-bottom: 10px;
+     color:#333
+}
+
+.view-per-message-delete a{
+    cursor:pointer;
+     color:#333;
+}
+
+#view-message-per-page{
+    padding-left:0px;
+}
+
+/*--leave-message-container--*/
+
+.leave-message-container{
+    margin-top: 20px;
+    padding-left: 0;
+}
+
+.leave-message-header{
+   margin-bottom: 10px;
+   display: inline-block;
+}
+
+/*--leave a message button*/
+.leave-message-button{
+    padding-left: 30px;
+    padding-right: 30px;
+    position:relative;
+    margin-bottom:20px;
+    background-color: #FF78BB;
+    color: #fff;
+}
+
+.leave-message-button .material-icons{
+    position:absolute;
+    left:4px;
+    line-height:20px;
+}
+
+
+/*-- update button --*/
+.update-button{
+    position: relative;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.update-button .material-icons{
+    position: absolute;
+    left: 25px;
+    line-height: 19px;
+    font-size: 18px;
+}
+
+
+/*--nav profile link*/
+
+.nav-profile-link{
+    padding: 7px 15px!important;
+    border: 0px!important;
+}
+
+.nav-profile-img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer
+}
+
+
+.nav-profile-icon{
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    padding: 5px;
+    color: #5BC0DE;
+    background-color: white;
+    font-size:30px;
+    cursor:pointer;
+}
+
+
+
+/*-- user activity images --*/
+.user-activity-container{
+    padding:0px;
+    margin-top:30px;
+}
+
+.user-activity-container-header{
+    font-size:20px;
+    font-family:"Lobster 1.4";
+    padding-left:0px;
+    margin-bottom:10px;
+}
+.user-per-activity{
+    border:1px solid #ddd;
+    padding:40px 15px;
+    margin-top: 1px;
+    position:relative;
+
+}
+
+.user-per-activity-date{
+    border: 1px solid #ddd;
+    padding: 1px 15px;
+    position:absolute;
+    left: -60px;
+    top: -20px;
+    background: white;
+}
+
+.user-per-activity-date .day{
+    margin-left: 10px;
+    color: #FF3333;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.user-per-activity-title{
+   margin-bottom: 20px;
+    margin-top: 50px;
+    font-family:"Lobster 1.4"
+}
+
+.user-per-activity-large-image-container{
+margin-top:30px;
+cursor:pointer;
+}
+
+#view-activity-images-pag-nav{
+    padding-left:15px;
+}
+
+.delete-per-image-link{
     display:none;
 }
-.fa-lock,.fa-unlock{
-    margin-right:15px;
+
+.delete-per-image-link .fa.fa-trash-o{
+  margin-top:10px;
 }
 
-.start_a_conversation{
+.delete-per-image-link a{
+    color:#333;    
+}
+
+.delete-images-toggle-button{
+    position:absolute;
+    right: 5px;
+    top: 10px;
+    font-size: 18px;
+    cursor:pointer;
+}
+
+.user-activity-per-image{
+    cursor:pointer;
+}
+
+
+/*-- uploadActivityError --*/
+.uploadActivityError{
     margin-top:20px;
+}
+
+
+/*-- change backgrund button*/
+.change-background-container{
+    position: absolute;
+    top: 320px;
+    right: 10px;
+    font-size: 10px;
+    display:none;
+}
+
+.change-background-container a{
+    font-size:10px;
+}
+
+
+/*--change cover modal --*/
+.per-cover-img-container{
+    position:relative;
+    margin-bottom:100px;
+}
+
+.per-cover-img-container .material-icons{
+    position:absolute;
+    top: 25px;
+    left: 90px;
+    color: black;
+    display:none;
+}
+
+
+.change-cover-modal-footer{
+    clear: both;
+    margin-top: 150px;
+}
+
+
+/*---user-activity-upload-header*/
+.user-activity-images-header{
+    font-family:'Lobster 1.4';
+    font-size:20px;
+    padding-left:0px!important;
+    margin-top:30px;
+} 
+
+.user-activity-images-header span{
+    font-size:12px;
+    margin-left:20px;
 }

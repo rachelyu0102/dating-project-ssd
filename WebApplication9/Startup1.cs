@@ -25,11 +25,10 @@ namespace WebApplication9
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
 
+                ExpireTimeSpan = TimeSpan.FromMinutes(20),
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
 
                 LoginPath = new PathString("/Home/Index"),
-
-
 
             });
 

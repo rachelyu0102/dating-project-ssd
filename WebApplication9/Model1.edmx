@@ -91,6 +91,7 @@
           <Property Name="profile" Type="nvarchar" MaxLength="128" />
           <Property Name="availableDate" Type="datetime" />
           <Property Name="timeStart" Type="datetime" />
+          <Property Name="profilebackground" Type="varchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
@@ -105,6 +106,31 @@
             <PropertyRef Name="interest" />
           </Key>
           <Property Name="interest" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserActivityImages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="256" />
+          <Property Name="title" Type="varchar" MaxLength="255" />
+          <Property Name="image1" Type="varchar" MaxLength="255" />
+          <Property Name="image2" Type="varchar" MaxLength="255" />
+          <Property Name="image3" Type="varchar" MaxLength="255" />
+          <Property Name="image4" Type="varchar" MaxLength="255" />
+          <Property Name="uploadDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserMessages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sender" Type="nvarchar" MaxLength="256" />
+          <Property Name="receiver" Type="nvarchar" MaxLength="256" />
+          <Property Name="messageBody" Type="text" Nullable="false" />
+          <Property Name="senderProfile" Type="varchar" MaxLength="128" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="new" Type="bit" />
         </EntityType>
         <Association Name="clientFk">
           <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="0..1" />
@@ -138,6 +164,42 @@ warning 6035: The relationship 'FK__Client__UserName__10416098' has columns that
         <!--Errors Found During Generation:
 warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
         <Association Name="FK__ClientInt__UserN__18D6A699" />-->
+        <Association Name="FK__UserActiv__userN__66161CA2">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserActivityImages" Type="Self.UserActivityImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserActivityImages">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMessa__recei__57C7FD4B">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserMessages" Type="Self.UserMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserMessages">
+              <PropertyRef Name="receiver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMessa__sende__56D3D912">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserMessages" Type="Self.UserMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserMessages">
+              <PropertyRef Name="sender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -205,6 +267,8 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <EntitySet Name="Client" EntityType="Self.Client" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="ClientInterest" EntityType="Self.ClientInterest" Schema="ssdDating" store:Type="Tables" />
           <EntitySet Name="Interest" EntityType="Self.Interest" Schema="ssdDating" store:Type="Tables" />
+          <EntitySet Name="UserActivityImages" EntityType="Self.UserActivityImages" Schema="ssdDating" store:Type="Tables" />
+          <EntitySet Name="UserMessages" EntityType="Self.UserMessages" Schema="ssdDating" store:Type="Tables" />
           <AssociationSet Name="clientFk" Association="Self.clientFk">
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
             <End Role="Client" EntitySet="Client" />
@@ -212,6 +276,18 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <AssociationSet Name="FK__ClientInt__inter__17E28260" Association="Self.FK__ClientInt__inter__17E28260">
             <End Role="Interest" EntitySet="Interest" />
             <End Role="ClientInterest" EntitySet="ClientInterest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserActiv__userN__66161CA2" Association="Self.FK__UserActiv__userN__66161CA2">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="UserActivityImages" EntitySet="UserActivityImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMessa__recei__57C7FD4B" Association="Self.FK__UserMessa__recei__57C7FD4B">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="UserMessages" EntitySet="UserMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMessa__sende__56D3D912" Association="Self.FK__UserMessa__sende__56D3D912">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="UserMessages" EntitySet="UserMessages" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -330,7 +406,11 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <Property Name="profile" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="availableDate" Type="DateTime" Precision="3" />
           <Property Name="timeStart" Type="DateTime" Precision="3" />
+          <Property Name="profilebackground" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="AspNetUserRole" Relationship="Self.clientFk" FromRole="Client" ToRole="AspNetUserRoles" />
+          <NavigationProperty Name="UserActivityImages" Relationship="Self.FK__UserActiv__userN__66161CA2" FromRole="Client" ToRole="UserActivityImages" />
+          <NavigationProperty Name="UserMessages" Relationship="Self.FK__UserMessa__recei__57C7FD4B" FromRole="Client" ToRole="UserMessages" />
+          <NavigationProperty Name="UserMessages1" Relationship="Self.FK__UserMessa__sende__56D3D912" FromRole="Client" ToRole="UserMessages" />
         </EntityType>
         <EntityType Name="ClientInterest">
           <Key>
@@ -347,6 +427,34 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           </Key>
           <Property Name="interest1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="ClientInterests" Relationship="Self.FK__ClientInt__inter__17E28260" FromRole="Interest" ToRole="ClientInterest" />
+        </EntityType>
+        <EntityType Name="UserActivityImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image4" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="uploadDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__UserActiv__userN__66161CA2" FromRole="UserActivityImages" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="UserMessage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sender" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="receiver" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="messageBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="senderProfile" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="new" Type="Boolean" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__UserMessa__recei__57C7FD4B" FromRole="UserMessages" ToRole="Client" />
+          <NavigationProperty Name="Client1" Relationship="Self.FK__UserMessa__sende__56D3D912" FromRole="UserMessages" ToRole="Client" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
           <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="1">
@@ -418,6 +526,42 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__UserActiv__userN__66161CA2">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserActivityImages" Type="Self.UserActivityImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserActivityImages">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMessa__recei__57C7FD4B">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserMessages" Type="Self.UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserMessages">
+              <PropertyRef Name="receiver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMessa__sende__56D3D912">
+          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="UserMessages" Type="Self.UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="UserMessages">
+              <PropertyRef Name="sender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__ClientInt__inter__17E28260">
           <End Role="Interest" Type="Self.Interest" Multiplicity="1" />
           <End Role="ClientInterest" Type="Self.ClientInterest" Multiplicity="*" />
@@ -430,7 +574,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SSDDatingEntities11" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SSDDatingEntities20" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
@@ -441,6 +585,8 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
           <EntitySet Name="Clients" EntityType="Self.Client" />
           <EntitySet Name="ClientInterests" EntityType="Self.ClientInterest" />
           <EntitySet Name="Interests" EntityType="Self.Interest" />
+          <EntitySet Name="UserActivityImages" EntityType="Self.UserActivityImage" />
+          <EntitySet Name="UserMessages" EntityType="Self.UserMessage" />
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
@@ -461,6 +607,18 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK__UserActiv__userN__66161CA2" Association="Self.FK__UserActiv__userN__66161CA2">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="UserActivityImages" EntitySet="UserActivityImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMessa__recei__57C7FD4B" Association="Self.FK__UserMessa__recei__57C7FD4B">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="UserMessages" EntitySet="UserMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMessa__sende__56D3D912" Association="Self.FK__UserMessa__sende__56D3D912">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="UserMessages" EntitySet="UserMessages" />
+          </AssociationSet>
           <AssociationSet Name="FK__ClientInt__inter__17E28260" Association="Self.FK__ClientInt__inter__17E28260">
             <End Role="Interest" EntitySet="Interests" />
             <End Role="ClientInterest" EntitySet="ClientInterests" />
@@ -471,7 +629,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities11">
+        <EntityContainerMapping StorageEntityContainer="SSDDatingModelStoreContainer" CdmEntityContainer="SSDDatingEntities20">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="SSDDatingModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -560,6 +718,7 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
                 <ScalarProperty Name="profile" ColumnName="profile" />
                 <ScalarProperty Name="availableDate" ColumnName="availableDate" />
                 <ScalarProperty Name="timeStart" ColumnName="timeStart" />
+                <ScalarProperty Name="profilebackground" ColumnName="profilebackground" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -575,6 +734,33 @@ warning 6035: The relationship 'FK__ClientInt__UserN__18D6A699' has columns that
             <EntityTypeMapping TypeName="SSDDatingModel.Interest">
               <MappingFragment StoreEntitySet="Interest">
                 <ScalarProperty Name="interest1" ColumnName="interest" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserActivityImages">
+            <EntityTypeMapping TypeName="SSDDatingModel.UserActivityImage">
+              <MappingFragment StoreEntitySet="UserActivityImages">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="image1" ColumnName="image1" />
+                <ScalarProperty Name="image2" ColumnName="image2" />
+                <ScalarProperty Name="image3" ColumnName="image3" />
+                <ScalarProperty Name="image4" ColumnName="image4" />
+                <ScalarProperty Name="uploadDate" ColumnName="uploadDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMessages">
+            <EntityTypeMapping TypeName="SSDDatingModel.UserMessage">
+              <MappingFragment StoreEntitySet="UserMessages">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="sender" ColumnName="sender" />
+                <ScalarProperty Name="receiver" ColumnName="receiver" />
+                <ScalarProperty Name="messageBody" ColumnName="messageBody" />
+                <ScalarProperty Name="senderProfile" ColumnName="senderProfile" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="new" ColumnName="new" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

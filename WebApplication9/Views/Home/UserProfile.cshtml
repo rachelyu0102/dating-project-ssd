@@ -10,100 +10,100 @@
 
 } 
 
+
+<!-- profile background and profile photo-->
 <div class="col-md-12 profile" style="position:relative">
-    <div class="profileHeaderImg col-md-12 w3-card-2">
+    <div class="profileHeaderImg col-md-12 w3-card-2"> 
         
-       
-        <img src="~/Images/profileDefaultBg1.jpg"  style="width:100%"/>
-        <div class="w3-container w3-padding-24">
-   
-
-        </div>
-
-    </div>
-    <div>
-        @if (Session[Model.client.UserName] != null)
+        @if (Model.client.profilebackground != null)
         {
-            if (Session[Model.client.UserName].ToString() == "true")
-            {
-                <p>Hey I'm online!</p>
-            }
-          
-
+            <img src="~/Images/profile-cover/@Model.client.profilebackground" style="width:100%" />
         }
         else
         {
-            <p>Offline</p>
+            <img src="~/Images/profile-cover/profile-cover1.jpg" style="width:100%" />
         }
-    </div>
-  
-    <div style="height:200px; width:200px; position:absolute; top: 250px;
-    left: 64px;">
 
+       
+        <div class="w3-container w3-padding-24"></div>
+    </div>
+    <div style="height:200px; width:200px; position:absolute; top: 250px;left: 64px;">
         @if (Model.client.profile != null)
         {
             <img class="img-thumbnail" src="~/Images/Uploads/UserProfile/@Model.client.profile" alt="@Model.client.UserName" style="width:100%;height:100%" />
-
         }
         else if (Model.client.gender == "male")
         {
             <img class="img-thumbnail" src="~/Images/Uploads/UserProfile/default-profile-male.jpg" alt="@Model.client.UserName" style="width:100%;height:100%" />
-        
         }
         else
         {
             <img class="img-thumbnail" src="~/Images/Uploads/UserProfile/default-profile-female.jpg" alt="@Model.client.UserName" style="width:100%;height:100%" />
-      
         }
     </div>
+    @if (User.Identity.Name == Model.client.UserName)
+    {
+        <div class="change-background-container"  data-toggle="modal" data-target="#show-cover-image-modal"><a class="btn btn-default">Change cover</a></div>
+    }
     
+ </div>
 
-    </div>
+<!--profile info area-->
 <div class="col-md-3 w3-margin-64 w3-border w3-round" style="width:200px;">
-
-    <div><a href="~/home/testOnline/?username=@Model.client.UserName">
-    <span class="userName w3-justify" style="text-align:center">
-
-        @Model.client.UserName
-    </span></a>
-</div>
+    <div>
+        <span class="userName w3-justify" style="text-align:center">@Model.client.UserName </span>
+     
+            @if (Session[Model.client.UserName] != null){
+                if (Session[Model.client.UserName].ToString() == "true"){
+                    <span class="onlineStatus">online!</span>
+                }
+            }else{
+                <span class="onlineStatus">Offline</span>
+            }
+        </div>
    
-    @*<div>@Model.client.email</div>*@
     <div style="margin-top:16px">@Model.client.gender, @year</div>
-    <div style="margin-top:5px"> @Model.client.province, @Model.client.country</div>
-    <div style="margin-top:5px">
-        <span >Like: </span>
-        @if (Model.interests != null)
-        {
+    <div style="margin-top:5px">@Model.client.province, @Model.client.country</div>
+    <div style="margin-top:5px"><i class="fa fa-tags"></i>
+        @if (Model.interests != null){
             int length = (Model.interests).Count();
             int counter = 0;
-            foreach (var interest in Model.interests)
-            {
+            foreach (var interest in Model.interests){
                 counter++;
-                if (interest != null)
-                {
-                    if (counter < length)
-                    {
+                if (interest != null){
+                    if (counter < length){
                         <span>@interest,</span>
-                    }
-                    else
-                    {
+                    }else{
                         <span>@interest</span>
                     }
-
                 }
-
-               
             }
         }
-</div>
-    <div class="w3-margin w3-left">@if(Request.IsAuthenticated && User.Identity.Name==Model.client.UserName) {
-        <a href="#" class="btn btn-info btn-sm " data-toggle="modal" data-target="#updateFormModal">Update</a>
-    }</div>
-
-
+    </div>
     
+    <!--update button -->
+    <div class="w3-margin w3-left">
+    @if (Request.IsAuthenticated && User.Identity.Name == Model.client.UserName) {
+        <a href="#" class="btn btn-info btn-sm update-button" data-toggle="modal" data-target="#updateFormModal"><i class="material-icons">update</i> Update</a>
+    }
+    </div>
+
+    @if (User.Identity.Name != Model.client.UserName)
+    {
+        <!-- start a conversation button-->
+        <a class="btn btn-info start_a_conversation" href="/home/StartAConversation?receiver=@Model.client.UserName&&sender=@User.Identity.Name" target="@Model.client.UserName">
+            <i class="material-icons">chat</i>Start a conversation
+        </a>
+        <input id="sendTo" value="@Model.client.UserName" style="display:none"><br />
+        <input id="sendFrom" value="@User.Identity.Name" style="display:none" /><br />
+    
+        <!--leave a message button-->
+        <a class="btn leave-message-button"><i class="material-icons">create</i> leave a message</a>
+    }
+
 </div>
+
+<!-- show update error-->
 @if (ViewBag.uploadPhotoError != null)
 {
     <div class="alert  alert-info alert-dismissible col-md-6 col-md-offset-3" role="alert" style="margin-top:20px!important;margin-left: 0px!important;">
@@ -115,8 +115,7 @@
 }
 
 
-
-
+<!-- update profile area -->
 <div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="updateFormModal" style="margin:20px!important" ng-app="">
         <div class="modal-dialog modal-lg">
             <div class="modal-content w3-margin w3-padding">
@@ -133,7 +132,7 @@
                         <div class="form-group">
                             <label for="Gender">Gender:</label><br />
                             @if (Model.client.gender == "male")
-        {
+                            {
                                 <label class="radio-inline"><input type="radio" name="client.gender" value="male" checked>Male</label>
                                 <label class="radio-inline"><input type="radio" name="client.gender" value="female">Female</label><br />
                             }
@@ -188,98 +187,235 @@
                     </form>
 
                 </div>
-                <div class="modal-footer">
-                   
+                <div class="modal-footer">                   
                 </div>
             </div>
         </div>
     </div>
 
-<div class="modal fade w3-padding w3-padding" tabindex="-1" role="dialog" id="messageModal" style="margin:20px!important" ng-app="">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content w3-margin w3-padding">
-            <div class="modal-header">
-                <h4 class="modal-title">Message</h4>
-            </div>
-            <textarea class="field span12 form-control" rows="12">
 
-            </textarea>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-<!--<div class="w3-margin w3-left">
-
-    <a href="#" class="btn btn-info btn-sm " data-toggle="modal" data-target="#updateFormModal">Update</a>
-
-</div>
--->
-
-<div id="message" style="position:fixed; top:700px; left: 120px;">
-    @if (Request.IsAuthenticated && User.Identity.Name != Model.client.UserName)
-    {
-        <a href="#" class="btn btn-info btn-sm " data-toggle="modal" data-target="#messageModal">Message</a>
-    }
-</div>
-
-
-
-@if (!User.IsInRole("PaidUser"))
+<!--leave message area-->
+@if (!User.IsInRole("PaidUser")&& User.Identity.Name== @Model.client.UserName)
 {
 <div id="upgradeFooter">
     <p><a class="btn btn-info btn-sm" style="float:right; margin-right:10px; top:465px; right:0; position:absolute;" href="~/Home/Upgrade">Upgrade</a></p>
 </div>
 }
 
-<!---->
-<div id="alertArea"></div>
+<div class="leave-message-container col-xs-8" style="display:none">
+    <form style="position:relative" method="post" action="~/home/LeaveMessage">
+        <div class="form-group col-xs-12 commentBox">
+            <div class="commentBoxOuter">
+                <div class="commentP"><span class="leave-message-header"><i class="fa fa-pencil"></i> Leave message</span></div>
+                <div class="col-xs-1">
+                    @{
+                        SSDDatingEntities20 context = new SSDDatingEntities20();
+                        var profile = (context.Clients.Find(User.Identity.Name)).profile;
+                        if (profile != null)
+                        {
+                            <img src="~/Images/Uploads/UserProfile/@profile" />
+                        }
+                        else
+                        {
+                            <i class="material-icons commentIcon">person</i>
+                        }
+                    }
 
-@if (User.Identity.Name != Model.client.UserName)
+                </div>
+
+                <div class="col-xs-11" rows="4" cols="50" id="commentBoxInside">
+                    <input type="text" name="messageSender" value="@User.Identity.Name" style="display:none" />
+                    <input type="text" name="messageReceiver" value="@Model.client.UserName" style="display:none" />
+                    <textarea class="form-control commentHightChange" rows="5" id="message" name="message" placeholder="Leave your comment...." required></textarea>
+                </div>
+            </div>
+
+            <div class="col-xs-7 col-xs-offset-1 message-button-group">
+                <button class="btn btn-default btn-sm cancelButton" type="reset">Cancel</button>
+                <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- show upload user activity images error-->
+@if (TempData["uploadActivityError"] != null)
 {
-    <a class="btn btn-default start_a_conversation" href="/home/StartAConversation?receiver=@Model.client.UserName&&sender=@User.Identity.Name">Start 
-    a conversation</a>
-    <input id="sendTo" value="@Model.client.UserName" style="display:none"><br />
-    <input id="sendFrom" value="@User.Identity.Name" style="display:none" /><br />
-
+    <div class="alert alert-warning alert-dismissible col-xs-8 uploadActivityError" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Warning!</strong> @TempData["uploadActivityError"].
+    </div>
 }
 
- <script>
-     $(document).ready(function () {
-         $("#myBtn").click(function () {
-         $("#myModal").modal();
-    });
-});
-</script>
+@if (Model.client.UserName == User.Identity.Name) { 
+<!-- upload user activity images area-->
+    <div class="col-xs-8 user-activity-images-container">
+        <div class="user-activity-images-header">What is new with you? <span> @string.Format("{0:yyyy-MM-dd}", DateTime.Now)</span></div>
+        <form class="form-horizontal" method="post" action="/home/postActivityImages" enctype="multipart/form-data">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="username" value="@User.Identity.Name" style="display:none">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Title" name="title" required>
+                    <div class="input-group-addon camera-button" style="cursor:pointer"><i class="fa fa-camera-retro"></i></div>
+                </div>
+            </div>
+            <div id="upload-submit" style="display:none">
+                <div class="form-group">
+                    <input type="file" name="files" multiple id="uploadImages" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default uploadImages-button">Upload</button>
+                </div>
+            </div>
+        </form>
 
-<script src="http://lab.iamrohit.in/js/location.js"></script>
+    </div>
+}
 
-<script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
-<script src="~/signalr/hubs"></script>
-<script>
+<!--load user activity images view page-->
 
-    
-     $(function () {
-         var chatStart = $.connection.chatHub;
+<div id="loadImages">
+    @{
+            Html.RenderAction("loadUserActivityImages", new { UserNam = Model.client.UserName});
+    }
+</div>
 
-         $.connection.hub.start().done(function () {
-            $('.start_a_conversation').click(function (event) {
-                event.preventDefault();
-                window.open($(this).attr("href"), 'startAConversation', "width=600,height=600,scrollbars=yes");
-               var start_receiver = $("#sendTo").val();
-               var start_sender = $("#sendFrom").val();
-               console.log(start_receiver);
-               console.log(start_sender);
-               chatStart.server.startAConversation(start_receiver, start_sender);
-               console.log("test");
-            });
+
+
+<!-- load message partial view page-->
+<div id="loadMessage" class="col-xs-12 col-xs-offset-3">
+    @{
+        Boolean checkViewer = false;
+        if (Model.client.UserName == User.Identity.Name)
+        {
+            checkViewer = true;
+        }
+        Html.RenderAction("loadMessages", new { receiver = Model.client.UserName, sender = User.Identity.Name, checkViewer = checkViewer });
+    }
+</div>
+
+<!-- change cover modal-->
+<!-- Modal -->
+<div id="show-cover-image-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Change cover</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-3 per-cover-img-container">
+                    <img class="img-responsive img-cover-in-modal" src="~/Images/profile-cover/profile-cover1.jpg" />
+                    <a href="~/home/changecover?Username=@User.Identity.Name&&ImageName=profile-cover1.jpg"><i class="material-icons">check_circle</i></a>
+                </div>
+
+                <div class="col-xs-3 per-cover-img-container">
+                    <img class="img-responsive img-cover-in-modal" src="~/Images/profile-cover/profile-cover2.jpg" />
+                    <a href="~/home/changecover?Username=@User.Identity.Name&&ImageName=profile-cover2.jpg"><i class="material-icons">check_circle</i></a>
+                </div>
+
+                <div class="col-xs-3 per-cover-img-container" style="margin-bottom:50px">
+                    <img class="img-responsive img-cover-in-modal" src="~/Images/profile-cover/profile-cover3.jpg" />
+                    <a href="~/home/changecover?Username=@User.Identity.Name&&ImageName=profile-cover3.jpg"><i class="material-icons">check_circle</i></a>
+                </div>
+
+                <div class="col-xs-3 per-cover-img-container">
+                    <img class="img-responsive img-cover-in-modal" src="~/Images/profile-cover/profile-cover4.jpg" />
+                    <a href="~/home/changecover?Username=@User.Identity.Name&&ImageName=profile-cover4.jpg"><i class="material-icons">check_circle</i></a>
+                </div>
+
+                <div class="col-xs-3 per-cover-img-container">
+                    <img class="img-responsive img-cover-in-modal" src="~/Images/profile-cover/profile-cover5.jpg" />
+                    <a href="~/home/changecover?Username=@User.Identity.Name&&ImageName=profile-cover5.jpg"><i class="material-icons">check_circle</i></a>
+                </div>
+
+                <div class="col-xs-3 per-cover-img-container">
+                    <img class="img-responsive img-cover-in-modal" src="~/Images/profile-cover/profile-cover6.jpg" />
+                    <a href="~/home/changecover?Username=@User.Identity.Name&&ImageName=profile-cover6.jpg"><i class="material-icons">check_circle</i></a>
+                </div>
+
+                <div class="col-xs-3 per-cover-img-container">
+                    <img class="img-responsive img-cover-in-modal" src="~/Images/profile-cover/profile-cover7.jpg" />
+                    <a href="~/home/changecover?Username=@User.Identity.Name&&ImageName=profile-cover7.jpg"><i class="material-icons">check_circle</i></a>
+                </div>
+
+                <div class="col-xs-3 per-cover-img-container">
+                    <img class="img-responsive img-cover-in-modal" src="~/Images/profile-cover/profile-cover8.jpg" />
+                    <a href="~/home/changecover?Username=@User.Identity.Name&&ImageName=profile-cover8.jpg"><i class="material-icons">check_circle</i></a>
+                </div>
+
+            </div>
+            <div class="modal-footer change-cover-modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $("#myBtn").click(function () {
+                $("#myModal").modal();
             });
         });
-</script>
+        $('.leave-message-button').click(function () {
+            $(".leave-message-container").toggle(500);
+           
+        });
+
+
+        $('.camera-button').click(function () {
+            $("#upload-submit").toggle(500);
+          
+        });
+       
+        //check upload images number
+        $(".uploadImages-button").click(function () {
+            var uploadImageNumber = $("#uploadImages").get(0).files.length;
+            if (uploadImageNumber > 4 || uploadImageNumber == 0) {
+                if (uploadImageNumber == 0) {
+                    alert("Please upload at least one image.");
+                } else {
+                    alert("Sorry, you can only upload 4 images one time");
+                }
+               
+                return false;
+            }
+        });
+
+        //change image opactiy in modal
+        $(".per-cover-img-container").hover(function () {
+            $(this).find("img").fadeTo(500, 0.4);
+            $(this).find("i").show(1000);
+
+        }).mouseleave(function () {
+            $(this).find("img").fadeTo(500, 1);
+            $(this).find("i").hide(500);
+        });
+
+        //show change cover button when hover
+        $(".profile").hover(function () {
+            $(".change-background-container").show(500);
+        }).mouseleave(
+        function () {
+            $(".change-background-container").hide(500);
+        }
+        );
+
+
+
+    </script>
+    <script src="http://lab.iamrohit.in/js/location.js"></script>
+    <script src="~/Scripts/SignalR-startAConversation.js"></script>
+
+

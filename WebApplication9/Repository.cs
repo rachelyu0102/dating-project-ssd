@@ -10,7 +10,7 @@ namespace WebApplication9
 {
     public class Repository
     {
-        SSDDatingEntities11 db = new SSDDatingEntities11();
+        SSDDatingEntities20 db = new SSDDatingEntities20();
 
         public const string NAME = "Name";
         public const string AGE = "Age";

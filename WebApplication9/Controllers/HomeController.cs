@@ -7,60 +7,30 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using WebApplication9.BusinessLogic;
 using PagedList;
-using System.Net;
 
 
 
 using WebApplication9.ViewModels;
 using System.Data;
-using System.Web.Security;
 
 namespace WebApplication9.Controllers
 {
 
     public class HomeController : Controller
     {
-        MembershipUserCollection users;
-
-
-        public ActionResult testOnline(string username)
-        {
-
-            
-            bool isOnline = Membership.GetUser(username).IsOnline;
-
-           
-            if (isOnline)
-            {
-                ViewBag.online = "Oneline";
-
-            }
-            else
-            {
-                ViewBag.online = "Offline";
-            }
-
-          
-        
-            return View(username);
-
-
-        }
-
        
-
         Boolean UserNoFound;
         Boolean PasswordIncorrent;
         Boolean Locked;
 
         Repository repo = new Repository();
-        SSDDatingEntities11 context = new SSDDatingEntities11();
+        SSDDatingEntities20 context = new SSDDatingEntities20();
 
         // GET: Home
+        [LogFilterAttribute]
         public ActionResult Index()
         {
 
@@ -100,6 +70,10 @@ namespace WebApplication9.Controllers
                     Session[login.UserName] = "true";
 
 
+                  //  Client client = context.Clients.Find(login.UserName);
+                    Session["userProfile"] = context.Clients.Find(login.UserName).profile;
+
+
                     return RedirectToAction("Square", "Home", new {UserName=login.UserName});
                 }
                 else
@@ -114,8 +88,9 @@ namespace WebApplication9.Controllers
                     }
 
                 }
-
             }
+
+
             return View();
         }
 
@@ -180,15 +155,17 @@ namespace WebApplication9.Controllers
         }
 
         //UserProfile page
+        [Authorize]
         public ActionResult UserProfile(string userName)
         {
             ClientDetailInfo clientDetailInfo = repo.getOneUserDetailInfo(userName);
-
-            
+          //  Client loginUser = context.Clients.Find(User.Identity.Name);
+            //ViewBag.loginUserProfile = loginUser.profile;           
             ViewBag.interests = repo.getAllInterests();
             return View(clientDetailInfo);
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult UserProfile(Client client,  HttpPostedFileBase photo, string[] interests, string country, string state)
         {
@@ -210,6 +187,86 @@ namespace WebApplication9.Controllers
 
             return RedirectToAction("UserProfile", new { userName= client.UserName});
         }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult LeaveMessage(string messageSender, string messageReceiver, string message)
+        {
+            UserMessage userMessage = new UserMessage();
+            userMessage.receiver = messageReceiver;
+            userMessage.sender = messageSender;
+            userMessage.messageBody = message;
+            if ((context.Clients.Find(messageSender)).profile != null)
+            {
+                userMessage.senderProfile = (context.Clients.Find(messageSender)).profile;
+            };
+
+            userMessage.@new = true;
+            userMessage.DateCreated = DateTime.Now;
+            context.UserMessages.Add(userMessage);
+            context.SaveChanges();        
+            return RedirectToAction("UserProfile", new { UserName = messageReceiver });
+        }
+
+
+        [Authorize]
+        public ActionResult loadMessages(string receiver, string sender, Boolean checkViewer, int? page)
+        {
+            const int PAGE_SIZE = 1;
+            int pageNumber = (page ?? 1);
+            int newMessages = 0;
+            IEnumerable<UserMessage> userMessages;
+
+            if (checkViewer)
+            {
+
+                userMessages =(from um in context.UserMessages where um.receiver == receiver select um).ToList();
+
+                if (userMessages != null) {
+
+                    foreach (var query in userMessages)
+                    {
+                        if ((bool)query.@new)
+                        {
+                            newMessages++;
+                            query.@new = false;
+                        }
+                    }
+                    context.SaveChanges();
+                }               
+            }
+            else{
+                userMessages =(from um in context.UserMessages where um.receiver == receiver &&  um.sender == sender select um).ToList();             
+            }
+
+            if (userMessages == null)
+            {
+                ViewBag.number = 0;
+            }
+            else
+            {
+                ViewBag.number = userMessages.Count();
+            }
+        
+            userMessages = userMessages.OrderByDescending(c => c.DateCreated);
+            userMessages = userMessages.ToPagedList(pageNumber, PAGE_SIZE);
+            ViewBag.checkViewer = checkViewer;
+            ViewBag.sender = sender;
+            ViewBag.receiver = receiver;
+            ViewBag.newMessages = newMessages;
+          
+            return PartialView(userMessages);
+        }
+
+        [Authorize]
+        public ActionResult deleteLeaveMessage(string userName, int Id)
+        {
+            UserMessage userMessage = context.UserMessages.Find(Id);
+            context.UserMessages.Remove(userMessage);
+            context.SaveChanges();
+            return RedirectToAction("UserProfile", new { Username = userName});
+        }
+
 
         [Authorize]
         [HttpGet]
@@ -381,6 +438,7 @@ namespace WebApplication9.Controllers
         }
 
         //update profile images
+        [Authorize]
         [HttpPost]
         public ActionResult UploadProfileImage(HttpPostedFileBase photo, ClientDetailInfo updateClientInfo)
         {
@@ -543,10 +601,11 @@ namespace WebApplication9.Controllers
                     message = "Upload failed";
                 }
 
-            return message;
-             
-
+            return message;            
             }
+
+
+
         public ActionResult ConfirmEmail(string userId, string code)
         {
             var userStore = new UserStore<IdentityUser>();
@@ -682,8 +741,8 @@ namespace WebApplication9.Controllers
 
         }
 
-      
 
+       
         public ActionResult AcceptAConversation(string sender, string receiver)
         {
             ViewBag.sender = sender;
@@ -696,6 +755,238 @@ namespace WebApplication9.Controllers
             return View();
         }
 
+
+
+        [Authorize]
+        public ActionResult changecover(string Username, string ImageName)
+        {
+            if(ImageName == null || ImageName =="")
+            {
+                return RedirectToAction("UserProfile", new { userName = Username });
+            }
+
+            Client client = context.Clients.Find(Username);
+
+            if (client != null && ImageName !=null)
+            {
+                client.profilebackground = ImageName;
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("UserProfile", new { userName = Username });
+        }
+
+
+        [Authorize]
+        public ActionResult loadUserActivityImages(string UserName, int? page)
+        {
+            const int PAGE_SIZE = 1;
+            int pageNumber = (page ?? 1);
+            ViewBag.hasActivityImages = false;
+            ViewBag.UserName = UserName;
+
+            IEnumerable<UserActivityImage> userActivityImages =
+             (from u in context.UserActivityImages where u.userName == UserName select u).ToList();
+
+            if (userActivityImages.Count() != 0)
+            {
+                ViewBag.hasActivityImages = true;
+            }
+
+            userActivityImages = userActivityImages.OrderByDescending(u=>u.uploadDate);
+            userActivityImages = userActivityImages.ToPagedList(pageNumber, PAGE_SIZE);
+
+            return PartialView(userActivityImages);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult postActivityImages(IEnumerable<HttpPostedFileBase> files, string title, string username)
+        {
+            if (title == null || title=="")
+            {
+                TempData["uploadActivityError"] = "Please enter a title.";
+                return RedirectToAction("UserProfile", new { UserName = username });
+            }
+
+            if (files.First() == null || files.Count() > 4)
+            {
+                if(files.First() == null) {
+
+                    TempData["uploadActivityError"] = "Please upload at least one image.";
+                }
+                else
+                {
+                    TempData["uploadActivityError"] = "You can only upload 4 images one time.";
+                }
+                        
+                return RedirectToAction("UserProfile", new { UserName = username });
+            }
+
+            string CheckImgExtension = "";
+            string CheckContent = "";
+            bool valid = true;
+            foreach (var file in files)
+            {
+                CheckImgExtension = checkImgExtension(file);
+                CheckContent = checkImgContent(file);
+                if (CheckImgExtension == "Invalid Extension" || CheckContent == "invalid content")
+                {
+                    valid = false;
+                    TempData["uploadActivityError"] = "Please upload valid image";
+                    return RedirectToAction("UserProfile", new { UserName = username });
+                }
+            }
+
+            if (valid)
+            {
+                uploadActivityImages(files,username, title);
+            }
+
+            return RedirectToAction("UserProfile", new { UserName = username});
+        }
+
+
+
+        /*-- delete user activity image --*/
+        [Authorize]
+        public ActionResult deleteUserActivityImage(string UserName,int Id, int order)
+        {
+
+            UserActivityImage userActivityImage = context.UserActivityImages.Find(Id);
+            if (userActivityImage != null)
+            {
+                switch(order){
+                    case 1:
+                        userActivityImage.image1 = null;
+                        break;
+                    case 2:
+                        userActivityImage.image2 = null;
+                        break;
+                    case 3:
+                        userActivityImage.image3 = null;
+                        break;
+                    case 4:
+                        userActivityImage.image4 = null;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            //check if all the images have been deleted
+            if (!check_images_exists_in_one_activity(Id))
+            {
+                context.UserActivityImages.Remove(userActivityImage);
+            }
+
+            context.SaveChanges();
+            return RedirectToAction("UserProfile", new { UserName = UserName });
+        }
+
+
+
+        /*--- check extension --*/
+        string checkImgExtension(HttpPostedFileBase photo)
+        {
+            string extension = Path.GetExtension(photo.FileName).ToLower();
+            string message = "";
+            switch (extension)
+            {
+                case ".png":
+                case ".jpg":
+                case ".gif":break;
+                default:message = "Invalid Extension";
+               break;                  
+            }
+            return message;
+        }
+
+        /*-- check phote null or not ---*/
+        string checkImgContent(HttpPostedFileBase photo)
+        {
+            if (photo == null && photo.ContentLength <= 0)
+            {
+                return "invalid content";
+            }
+
+            return "valid content";
+        }
+
+
+        /*--user activity image upload---*/
+        void uploadActivityImages(IEnumerable<HttpPostedFileBase> photos, string UserName, string title)
+        {
+            int totolNumber = photos.Count();
+            UserActivityImage userActivityImage = new UserActivityImage();
+            userActivityImage.userName = UserName;
+            userActivityImage.title = title;
+            userActivityImage.uploadDate = DateTime.Now;
+            string time = DateTime.Now.Ticks.ToString();
+            int number = 1;
+            string dirUrl = "~/Images/Uploads/UserActivityImages/" + UserName;
+            string dirPath = Server.MapPath(dirUrl);
+            // Check for Directory, If not exist, then create it  
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
+            foreach (var photo in photos) {
+                string extension = Path.GetExtension(photo.FileName).ToLower();
+                var fileName = time + number + extension;                               
+                var path = Path.Combine(Server.MapPath(dirUrl), fileName);
+                photo.SaveAs(path);
+
+                switch (number)
+                {
+                    case 1:
+                        userActivityImage.image1 = fileName;
+                        break;
+                    case 2:
+                        userActivityImage.image2 = fileName;
+                        break;
+                    case 3:
+                        userActivityImage.image3 = fileName;
+                        break;
+                    default:
+                        userActivityImage.image4 = fileName;
+                        break;
+                }
+                number++;             
+            }
+
+            context.UserActivityImages.Add(userActivityImage);
+            context.SaveChanges();
+        }
+
+
+        //check if all the images in one activity have been deleted
+        bool check_images_exists_in_one_activity(int Id)
+        {          
+            UserActivityImage userActivityImage = context.UserActivityImages.Find(Id);
+
+            if (userActivityImage.image1 != null)
+            {
+                return true;
+            }
+
+            if (userActivityImage.image2 != null)
+            {
+                return true;
+            }
+
+            if (userActivityImage.image3 != null)
+            {
+                return true;
+            }
+
+            if (userActivityImage.image4 != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
     }
 

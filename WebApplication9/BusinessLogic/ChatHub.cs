@@ -20,11 +20,12 @@ namespace WebApplication9.BusinessLogic
 
         }
 
+        public void discardConversation(string discard_receiver, string discard_sender) {
+            Clients.User(discard_receiver).informedDiscard(discard_receiver, discard_sender);
+        }
+
         public void Send(string receiver, string sender, string message, string time)
         {
-            // Call the broadcastMessage method to update clients.
-            //    Clients.All.broadcastMessage(name, message);
-            
             Clients.User(receiver).sendMessage(sender, message,time);
         }
     }

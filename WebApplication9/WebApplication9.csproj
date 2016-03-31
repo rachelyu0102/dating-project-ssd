@@ -180,23 +180,35 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="CSS\customizecarousel.css" />
+    <Content Include="CSS\tinycarousel.css" />
     <Content Include="CSS\bootstrap-timepicker.min.css" />
     <Content Include="CSS\bootstrap.css" />
     <Content Include="CSS\Instadate.css" />
+    <Content Include="CSS\receive-talk-room.css" />
+    <Content Include="CSS\start-talk-room.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Images\database.JPG" />
     <Content Include="Images\DatingERD.PNG" />
-    <Content Include="Images\image1.jpg" />
-    <Content Include="Images\image2.jpg" />
-    <Content Include="Images\image3.jpg" />
-    <Content Include="Images\image4.jpg" />
-    <Content Include="Images\image5.jpg" />
-    <Content Include="Images\image6.jpg" />
-    <Content Include="Images\Koala.jpg" />
+    <Content Include="Images\emoji\emoji-1.png" />
+    <Content Include="Images\emoji\emoji-10.png" />
+    <Content Include="Images\emoji\emoji-11.png" />
+    <Content Include="Images\emoji\emoji-12.png" />
+    <Content Include="Images\emoji\emoji-13.png" />
+    <Content Include="Images\emoji\emoji-2.png" />
+    <Content Include="Images\emoji\emoji-3.png" />
+    <Content Include="Images\emoji\emoji-4.png" />
+    <Content Include="Images\emoji\emoji-5.png" />
+    <Content Include="Images\emoji\emoji-6.png" />
+    <Content Include="Images\emoji\emoji-7.png" />
+    <Content Include="Images\emoji\emoji-8.png" />
+    <Content Include="Images\emoji\emoji-9.png" />
     <Content Include="Images\LoginBg.jpg" />
+    <Content Include="Images\profilebackground1.jpg" />
+    <Content Include="Images\profilebackground2.jpg" />
+    <Content Include="Images\profilebackground3.jpg" />
     <Content Include="Images\profileDefaultBg1.jpg" />
-    <Content Include="Images\profileDefulatBg.jpg" />
     <Content Include="Images\profilePic.jpg" />
     <Content Include="Images\Uploads\UserProfile\default-profile-female.jpg" />
     <Content Include="Images\Uploads\UserProfile\default-profile-male.jpg" />
@@ -212,16 +224,15 @@
     <Content Include="Images\Uploads\UserProfile\rosa.jpg" />
     <Content Include="Images\Uploads\UserProfile\sally.jpg" />
     <Content Include="Images\Uploads\UserProfile\tim.jpg" />
-    <Content Include="Images\userDefaultProfile.PNG" />
     <Content Include="Images\use_case.PNG" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Instadate_Api.html" />
     <EntityDeploy Include="Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Instadate_Api.html" />
     <Content Include="Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
@@ -259,6 +270,11 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\SignalR-accept-talk.js" />
+    <Content Include="Scripts\SignalR-Global.js" />
+    <Content Include="Scripts\SignalR-informAccept-talk.js" />
+    <Content Include="Scripts\SignalR-startAConversation.js" />
+    <Content Include="Scripts\tinycarousel\jquery.tinycarousel.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +304,7 @@
     </Compile>
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogFilterAttribute .cs" />
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -323,6 +340,12 @@
     <Compile Include="sysdiagram.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserActivityImage.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserMessage.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ClientDetailInfo.cs" />
     <Compile Include="ViewModels\ClientInterestViewModel.cs" />
     <Compile Include="ViewModels\Login.cs" />
@@ -355,10 +378,10 @@
     <Content Include="Views\Home\ConfirmEmail.cshtml" />
     <Content Include="Views\Home\CompleteRegistration.cshtml" />
     <Content Include="Views\Home\Upgrade.cshtml" />
-    <Content Include="Views\Home\testOnline.cshtml" />
-    <Content Include="Views\Home\TestNewWindow.cshtml" />
     <Content Include="Views\Home\startAConversation.cshtml" />
     <Content Include="Views\Home\AcceptAConversation.cshtml" />
+    <Content Include="Views\Home\loadMessages.cshtml" />
+    <Content Include="Views\Home\loadUserActivityImages.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -368,6 +391,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\UserProfile\" />
+    <Folder Include="Images\Uploads\UserActivityImages\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Chat\" />
   </ItemGroup>

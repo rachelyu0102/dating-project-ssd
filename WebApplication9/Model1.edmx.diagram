@@ -4,22 +4,27 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="eb368fc0b98c4bb1a16564d7e82ab898" Name="Diagram1">
+      <Diagram DiagramId="99b21d7b0db34a6c92342522a17c0d3f" Name="Diagram1">
         <EntityTypeShape EntityType="SSDDatingModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSDDatingModel.AspNetRole" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSDDatingModel.AspNetUserClaim" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSDDatingModel.AspNetUserLogin" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSDDatingModel.AspNetUserRole" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSDDatingModel.AspNetUser" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSDDatingModel.sysdiagram" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSDDatingModel.Client" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.AspNetRole" Width="1.5" PointX="3.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.AspNetUserClaim" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.AspNetUserLogin" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.AspNetUserRole" Width="1.5" PointX="6" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.AspNetUser" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.sysdiagram" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.Client" Width="1.5" PointX="8.25" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SSDDatingModel.ClientInterest" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SSDDatingModel.Interest" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.UserActivityImage" Width="1.5" PointX="10.5" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="SSDDatingModel.UserMessage" Width="1.5" PointX="10.5" PointY="7.5" IsExpanded="true" />
         <AssociationConnector Association="SSDDatingModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.clientFk" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="SSDDatingModel.FK__UserActiv__userN__66161CA2" ManuallyRouted="false" />
+        <AssociationConnector Association="SSDDatingModel.FK__UserMessa__recei__57C7FD4B" ManuallyRouted="false" />
+        <AssociationConnector Association="SSDDatingModel.FK__UserMessa__sende__56D3D912" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.FK__ClientInt__inter__17E28260" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
