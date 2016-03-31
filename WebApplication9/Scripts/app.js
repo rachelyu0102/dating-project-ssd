@@ -29,16 +29,16 @@ function reverseGeoLocate(latitude,longitude)
     var province;
     var country;
     var city;
-    var parseProvince = 0;
-    var parseCity = 0;
-    var parseCountry = 1;
+    var parseProvince = 3;
+    var parseCity = 1;
+    var parseCountry = 4;
     var componentSelector;
     function parseData(location)
     {
         console.log(location);
-                province = location.results[1].address_components[3].long_name;
-                country = location.results[1].address_components[4].long_name;
-                city = location.results[1].address_components[1].long_name;
+                province = location.results[componentSelector].address_components[parseProvince].long_name;
+                country = location.results[componentSelector].address_components[parseCountry].long_name;
+                city = location.results[componentSelector].address_components[parseCity].long_name;
 
     }
     $.getJSON(reverGeo,
@@ -47,15 +47,16 @@ function reverseGeoLocate(latitude,longitude)
                 $('#clientsResult').text('clients not found.');
                 return;
             }
-            componentSelector = data.results.length - 2;
-            if (data.results[componentSelector].address_components.length > 2) {
-                parseProvince++;
-                parseCountry++;
-                parseData(data);
-            }
-            else {
-                parseData(data);
-            }
+            componentSelector = data.results.length - 8;
+            parseData(data);
+           // if (data.results[componentSelector].address_components.length > 2) {
+           //     parseProvince++;
+           //     parseCountry++;
+           //     parseData(data);
+           // }
+           // else {
+           //     parseData(data);
+           // }
             getClients(province,country,city);
         })
     .fail(
