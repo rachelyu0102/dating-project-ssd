@@ -398,6 +398,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\UserProfile\" />
+    <Folder Include="Images\profile-cover\" />
     <Folder Include="Images\Uploads\UserActivityImages\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Chat\" />
