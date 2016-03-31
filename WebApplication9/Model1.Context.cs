@@ -12,6 +12,8 @@ namespace WebApplication9
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class SSDDatingEntities20 : DbContext
     {
@@ -35,7 +37,5 @@ namespace WebApplication9
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<ClientInterest> ClientInterests { get; set; }
         public virtual DbSet<Interest> Interests { get; set; }
-        public virtual DbSet<UserActivityImage> UserActivityImages { get; set; }
-        public virtual DbSet<UserMessage> UserMessages { get; set; }
     }
 }

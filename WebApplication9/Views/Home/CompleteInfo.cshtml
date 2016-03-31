@@ -53,12 +53,9 @@
 
             <div class="form-group col-md-10">             
                     <label>Location:</label><br />
-                    <select name="country" class="countries" id="countryId" ng-model="country" required>
-                        <option value="">Select Country</option>
-                    </select>
-                    <select name="province" class="states" id="stateId" ng-model="state" required>
-                        <option value="">Select State</option>
-                    </select>
+                <input name="country" type="text" class="countries" id="countryId" />
+                <input name="province" type="text" class="states" id="stateId" />
+                <input name="city" type="text" class="states" id="cityId" />
             </div>
 
             <div class="form-group">
@@ -99,5 +96,6 @@
 <script src="http://lab.iamrohit.in/js/location.js"></script>
 <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
 <script src="~/signalr/hubs"></script>
+<script defer src="~/Scripts/app.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 

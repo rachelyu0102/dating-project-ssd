@@ -18,6 +18,8 @@ namespace WebApplication9.ViewModels
         public DateTime birthdate { get; set; }
         [Display(Name = "Gender")]
         public string gender { get; set; }
+        [Display(Name = "city")]
+        public string city { get; set; }
         [Display(Name = "Province")]
         public string province { get; set; }
         [Display(Name = "Country")]

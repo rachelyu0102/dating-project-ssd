@@ -211,6 +211,7 @@ namespace WebApplication9
             client.email = clientInterestViewModel.email;
             client.country = clientInterestViewModel.country;
             client.province = clientInterestViewModel.province;
+            client.city = clientInterestViewModel.city;
             client.birthdate = clientInterestViewModel.birthdate;
 
             db.Clients.Add(client);

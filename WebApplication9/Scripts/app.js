@@ -28,26 +28,35 @@ function reverseGeoLocate(latitude,longitude)
     var reverGeo = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=false'
     var province;
     var country;
-    var selectorProvince = 0;
-    var selectorCountry = 1;
+    var city;
+    var parseProvince = 0;
+    var parseCity = 0;
+    var parseCountry = 1;
+    var componentSelector;
+    function parseData(location)
+    {
+        console.log(location);
+                province = location.results[1].address_components[3].long_name;
+                country = location.results[1].address_components[4].long_name;
+                city = location.results[1].address_components[1].long_name;
+
+    }
     $.getJSON(reverGeo,
         function (data) {
             if (data == null) {
                 $('#clientsResult').text('clients not found.');
                 return;
             }
-            console.log(data);
-            if (data.results[8].address_components.length > 2) {
-                province = data.results[8].address_components[selectorProvince + 1].long_name;
-                country = data.results[8].address_components[selectorCountry + 1].long_name;
-
+            componentSelector = data.results.length - 2;
+            if (data.results[componentSelector].address_components.length > 2) {
+                parseProvince++;
+                parseCountry++;
+                parseData(data);
             }
             else {
-                province = data.results[8].address_components[selectorProvince].long_name;
-                country = data.results[8].address_components[selectorCountry].long_name;
+                parseData(data);
             }
-            alert(country + ", " + province)
-            getClients(province,country);
+            getClients(province,country,city);
         })
     .fail(
         function (jqueryHeaderRequest, textStatus, err) {
@@ -55,20 +64,29 @@ function reverseGeoLocate(latitude,longitude)
         });
 }
 
-function getClients(province,country)
+function getClients(province,country,city)
 {
-    $.getJSON(url + "/" + province,
-        function (data) {
-            if (data.clients.length == 0) {
-                $('#clientsResult').text('clients not found.');
-                return;
-            }
-            callbackClients(data);
-        })
-    .fail(
-        function (jqueryHeaderRequest, textStatus, err) {
-            $('#clientsResult').text('Find error: ' + err);
-        });
+    var editCountry = $("#countryId");
+    var editState = $("#stateId");
+    var editCity = $("#cityId");
+    if (editCountry) {
+        editCountry.val(country);
+        editState.val(province);
+        editCity.val(city);
+        alert(country + " IN " + province + " IN " + city);
+    }
+        $.getJSON(url + "/" + province,
+            function (data) {
+                if (data.clients.length == 0) {
+                    $('#clientsResult').text('clients not found.');
+                    return;
+                }
+                callbackClients(data);
+            })
+        .fail(
+            function (jqueryHeaderRequest, textStatus, err) {
+                $('#clientsResult').text('Find error: ' + err);
+            });
 }
 
 function callbackClients(data) {
@@ -107,9 +125,5 @@ function callbackClients(data) {
         td3.innerHTML = parseInt((now - Date.parse(val.Age)) / (1000 * 60 * 60 * 24 * 365));
         tr2.appendChild(td3);
     });
-    //}
-    //For FindADate Autofill{
-
-    //}
 }
 

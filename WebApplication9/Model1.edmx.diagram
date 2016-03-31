@@ -26,7 +26,7 @@
         <AssociationConnector Association="SSDDatingModel.FK__UserMessa__recei__57C7FD4B" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.FK__UserMessa__sende__56D3D912" ManuallyRouted="false" />
         <AssociationConnector Association="SSDDatingModel.FK__ClientInt__inter__17E28260" ManuallyRouted="false" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

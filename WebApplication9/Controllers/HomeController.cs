@@ -21,7 +21,7 @@ namespace WebApplication9.Controllers
 
     public class HomeController : Controller
     {
-       
+
         Boolean UserNoFound;
         Boolean PasswordIncorrent;
         Boolean Locked;
@@ -134,7 +134,7 @@ namespace WebApplication9.Controllers
         }
 
         [Authorize]
-        public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder, string country, string state)
+        public ActionResult foundDates(String UserName, string searchString, string interestringString, string genderString, string sortOrder, string country, string state, string city)
         {
            IEnumerable <ClientDetailInfo> clients= repo.getAllClientsInOneLocation(UserName, searchString, interestringString, genderString, sortOrder, country, state);
 
@@ -254,9 +254,6 @@ namespace WebApplication9.Controllers
             ViewBag.sender = sender;
             ViewBag.receiver = receiver;
             ViewBag.newMessages = newMessages;
-          
-            return PartialView(userMessages);
-        }
 
         [Authorize]
         public ActionResult deleteLeaveMessage(string userName, int Id)
@@ -280,11 +277,11 @@ namespace WebApplication9.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String country, String state )
+        public ActionResult findADate(String userName, DateTime availableDate, DateTime timepicker1, String gender, String country, String state, String city )
         {
             repo.saveAvailableDate(userName, availableDate, timepicker1);
 
-            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Country = country, State = state});
+            return RedirectToAction("foundDates", new { UserName = userName, genderString = gender, Country = country, State = state, City = city});
             
         }
 
@@ -601,9 +598,9 @@ namespace WebApplication9.Controllers
                     message = "Upload failed";
                 }
 
-            return message;            
+            return message;
             }
-
+             
 
 
         public ActionResult ConfirmEmail(string userId, string code)
@@ -741,8 +738,8 @@ namespace WebApplication9.Controllers
 
         }
 
+      
 
-       
         public ActionResult AcceptAConversation(string sender, string receiver)
         {
             ViewBag.sender = sender;
@@ -756,237 +753,6 @@ namespace WebApplication9.Controllers
         }
 
 
-
-        [Authorize]
-        public ActionResult changecover(string Username, string ImageName)
-        {
-            if(ImageName == null || ImageName =="")
-            {
-                return RedirectToAction("UserProfile", new { userName = Username });
-            }
-
-            Client client = context.Clients.Find(Username);
-
-            if (client != null && ImageName !=null)
-            {
-                client.profilebackground = ImageName;
-                context.SaveChanges();
-            }
-
-            return RedirectToAction("UserProfile", new { userName = Username });
-        }
-
-
-        [Authorize]
-        public ActionResult loadUserActivityImages(string UserName, int? page)
-        {
-            const int PAGE_SIZE = 1;
-            int pageNumber = (page ?? 1);
-            ViewBag.hasActivityImages = false;
-            ViewBag.UserName = UserName;
-
-            IEnumerable<UserActivityImage> userActivityImages =
-             (from u in context.UserActivityImages where u.userName == UserName select u).ToList();
-
-            if (userActivityImages.Count() != 0)
-            {
-                ViewBag.hasActivityImages = true;
-            }
-
-            userActivityImages = userActivityImages.OrderByDescending(u=>u.uploadDate);
-            userActivityImages = userActivityImages.ToPagedList(pageNumber, PAGE_SIZE);
-
-            return PartialView(userActivityImages);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public ActionResult postActivityImages(IEnumerable<HttpPostedFileBase> files, string title, string username)
-        {
-            if (title == null || title=="")
-            {
-                TempData["uploadActivityError"] = "Please enter a title.";
-                return RedirectToAction("UserProfile", new { UserName = username });
-            }
-
-            if (files.First() == null || files.Count() > 4)
-            {
-                if(files.First() == null) {
-
-                    TempData["uploadActivityError"] = "Please upload at least one image.";
-                }
-                else
-                {
-                    TempData["uploadActivityError"] = "You can only upload 4 images one time.";
-                }
-                        
-                return RedirectToAction("UserProfile", new { UserName = username });
-            }
-
-            string CheckImgExtension = "";
-            string CheckContent = "";
-            bool valid = true;
-            foreach (var file in files)
-            {
-                CheckImgExtension = checkImgExtension(file);
-                CheckContent = checkImgContent(file);
-                if (CheckImgExtension == "Invalid Extension" || CheckContent == "invalid content")
-                {
-                    valid = false;
-                    TempData["uploadActivityError"] = "Please upload valid image";
-                    return RedirectToAction("UserProfile", new { UserName = username });
-                }
-            }
-
-            if (valid)
-            {
-                uploadActivityImages(files,username, title);
-            }
-
-            return RedirectToAction("UserProfile", new { UserName = username});
-        }
-
-
-
-        /*-- delete user activity image --*/
-        [Authorize]
-        public ActionResult deleteUserActivityImage(string UserName,int Id, int order)
-        {
-
-            UserActivityImage userActivityImage = context.UserActivityImages.Find(Id);
-            if (userActivityImage != null)
-            {
-                switch(order){
-                    case 1:
-                        userActivityImage.image1 = null;
-                        break;
-                    case 2:
-                        userActivityImage.image2 = null;
-                        break;
-                    case 3:
-                        userActivityImage.image3 = null;
-                        break;
-                    case 4:
-                        userActivityImage.image4 = null;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            //check if all the images have been deleted
-            if (!check_images_exists_in_one_activity(Id))
-            {
-                context.UserActivityImages.Remove(userActivityImage);
-            }
-
-            context.SaveChanges();
-            return RedirectToAction("UserProfile", new { UserName = UserName });
-        }
-
-
-
-        /*--- check extension --*/
-        string checkImgExtension(HttpPostedFileBase photo)
-        {
-            string extension = Path.GetExtension(photo.FileName).ToLower();
-            string message = "";
-            switch (extension)
-            {
-                case ".png":
-                case ".jpg":
-                case ".gif":break;
-                default:message = "Invalid Extension";
-               break;                  
-            }
-            return message;
-        }
-
-        /*-- check phote null or not ---*/
-        string checkImgContent(HttpPostedFileBase photo)
-        {
-            if (photo == null && photo.ContentLength <= 0)
-            {
-                return "invalid content";
-            }
-
-            return "valid content";
-        }
-
-
-        /*--user activity image upload---*/
-        void uploadActivityImages(IEnumerable<HttpPostedFileBase> photos, string UserName, string title)
-        {
-            int totolNumber = photos.Count();
-            UserActivityImage userActivityImage = new UserActivityImage();
-            userActivityImage.userName = UserName;
-            userActivityImage.title = title;
-            userActivityImage.uploadDate = DateTime.Now;
-            string time = DateTime.Now.Ticks.ToString();
-            int number = 1;
-            string dirUrl = "~/Images/Uploads/UserActivityImages/" + UserName;
-            string dirPath = Server.MapPath(dirUrl);
-            // Check for Directory, If not exist, then create it  
-            if (!Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-            }
-
-            foreach (var photo in photos) {
-                string extension = Path.GetExtension(photo.FileName).ToLower();
-                var fileName = time + number + extension;                               
-                var path = Path.Combine(Server.MapPath(dirUrl), fileName);
-                photo.SaveAs(path);
-
-                switch (number)
-                {
-                    case 1:
-                        userActivityImage.image1 = fileName;
-                        break;
-                    case 2:
-                        userActivityImage.image2 = fileName;
-                        break;
-                    case 3:
-                        userActivityImage.image3 = fileName;
-                        break;
-                    default:
-                        userActivityImage.image4 = fileName;
-                        break;
-                }
-                number++;             
-            }
-
-            context.UserActivityImages.Add(userActivityImage);
-            context.SaveChanges();
-        }
-
-
-        //check if all the images in one activity have been deleted
-        bool check_images_exists_in_one_activity(int Id)
-        {          
-            UserActivityImage userActivityImage = context.UserActivityImages.Find(Id);
-
-            if (userActivityImage.image1 != null)
-            {
-                return true;
-            }
-
-            if (userActivityImage.image2 != null)
-            {
-                return true;
-            }
-
-            if (userActivityImage.image3 != null)
-            {
-                return true;
-            }
-
-            if (userActivityImage.image4 != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
 
     }
 
