@@ -513,3 +513,25 @@ cursor:pointer;
     font-size:12px;
     margin-left:20px;
 }
+
+
+
+div#loadMessage .col-xs-12{
+    padding:0px;
+}
+
+#view-activity-images-pag-nav{
+    padding-left:0px;
+}
+
+
+footer{
+    height:50px;
+    border-top:1px solid #ddd;
+  
+}
+
+footer p{
+    padding-top:25px;
+    text-align:center;
+}

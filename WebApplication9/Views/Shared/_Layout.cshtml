@@ -81,7 +81,7 @@
                             var profile = (context.Clients.Find(User.Identity.Name)).profile;
                             if (profile != null)
                             {
-                                <a class="nav-profile-link"><img class="nav-profile-img" src="~/Images/Uploads/UserProfile/@profile" /></a>
+                                <a class="nav-profile-link" href="~/Home/UserProfile?userName=@User.Identity.Name"><img class="nav-profile-img" src="~/Images/Uploads/UserProfile/@profile" /></a>
                             }
                             else
                             {
@@ -119,6 +119,10 @@
 
         @RenderBody()
     
+    <footer class="col-xs-12">
+        
+        <p>Copayright &copy; @DateTime.Now.Year &nbsp; Instadate Inc. All rights reserved.</p>
+    </footer>
     <script src="http://lab.iamrohit.in/js/location.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
     <script src="~/signalr/hubs"></script>
