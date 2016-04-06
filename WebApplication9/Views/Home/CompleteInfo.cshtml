@@ -51,11 +51,12 @@
                 <input type="date" name="birthdate" class="form-control input-sm" ng-model="birthdate" required />
             </div>
 
-            <div class="form-group col-md-10">             
-                    <label>Location:</label><br />
-                <input name="country" type="text" class="countries" id="countryId" />
-                <input name="province" type="text" class="states" id="stateId" />
-                <input name="city" type="text" class="states" id="cityId" />
+            <div class="form-group col-md-10">     
+                <input name="country" type="hidden" class="countries" id="countryId" />
+                <input name="province" type="hidden" class="states" id="stateId" />
+                <input name="city" type="hidden" class="states" id="cityId" />
+                <input name="latitude" type="hidden" class="states" id="latitude" />
+                <input name="longitude" type="hidden" class="states" id="longitude" />
             </div>
 
             <div class="form-group">

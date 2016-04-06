@@ -213,6 +213,8 @@ namespace WebApplication9
             client.province = clientInterestViewModel.province;
             client.city = clientInterestViewModel.city;
             client.birthdate = clientInterestViewModel.birthdate;
+            client.latitude = clientInterestViewModel.latitude ;
+            client.longitude = clientInterestViewModel.longitude;
 
             db.Clients.Add(client);
             db.SaveChanges();

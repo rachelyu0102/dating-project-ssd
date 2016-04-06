@@ -188,6 +188,8 @@
                                 }
                                 <div class="square"><span class="username">@item.client.UserName</span><span class="age-square">@year</span></div>
                                 <div class="location-square">@item.client.province </div>
+                                <div style="display: none;" class="latLng">@item.client.latitude,@item.client.longitude </div>
+                                <div class="distance"> </div>
                                 @{
                                    
 
@@ -232,3 +234,6 @@
     @Html.PagedListPager(Model, page => Url.Action("Square", new { page,UserName= ViewBag.UserName,searchString = ViewBag.CurrentSearchString, interestString = ViewBag.CurrentInterestString, genderString = ViewBag.CurrentGenderString, sortOrder = ViewBag.CurrentSortOrder })
     )
 </div>
+<script defer src="~/Scripts/app.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?signed_in=true"></script>
