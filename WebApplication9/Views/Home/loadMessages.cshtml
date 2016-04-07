@@ -36,8 +36,8 @@
 
                     @if (User.Identity.Name == item.receiver)
                     {
-                        <div class="col-xs-2 col-xs-offset-10 view-per-message-delete">
-                            <a href="~/home/deleteLeaveMessage/?userName=@User.Identity.Name&&Id=@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
+                        <div class="col-xs-1 col-xs-offset-11 view-per-message-delete">
+                            <a href="~/home/deleteLeaveMessage/?userName=@User.Identity.Name&&Id=@item.Id"><i class="fa fa-trash-o"></i></a>
                         </div>
                     }
                 </div>

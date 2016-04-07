@@ -3,29 +3,30 @@
     
 }
 
-<h2>Prototype</h2>
+<div class="col-xs-12">
+    <h2>Documentation</h2>
 
 
-<p>
+    <p>
 
-    User accounts: <br />
-    Login: Felix Password: password <br />
-    Login: Mario Password: password <br />
-
-
+        User accounts: <br />
+        Login: Felix Password: password <br />
+        Login: Mario Password: password <br />
 
 
-    Our application will generate revenue through minimal advertisement and paid users. Our application is different from competitors because we implement 
-    an instant date feature which helps match the user with at a time which conveniences them.
-    <br />
-    <h3>Alternatives:</h3>
-    <ul>
-        <li>POF.com</li>
-        <li>Match.com</li>
-        <li>OKCupid.com</li>
-        <li>ChristianMingle.com</li>
-    </ul>
-</p>
+
+
+        Our application will generate revenue through minimal advertisement and paid users. Our application is different from competitors because we implement
+        an instant date feature which helps match the user with at a time which conveniences them.
+        <br />
+        <h3>Alternatives:</h3>
+        <ul>
+            <li>POF.com</li>
+            <li>Match.com</li>
+            <li>OKCupid.com</li>
+            <li>ChristianMingle.com</li>
+        </ul>
+    </p>
 
 <pre>
     -- Create a database named DatingDB and use this script to build it.
@@ -35,7 +36,6 @@
     DROP TABLE Interest;
     DROP TABLE Location;
     GO
-
     CREATE TABLE Location
     (
     locationID INTEGER PRIMARY KEY IDENTITY(1,1),
@@ -43,12 +43,9 @@
     province VARCHAR(20),
     country VARCHAR(20),
     )
-
     INSERT INTO Location VALUES ('Richmond', 'BC', 'Canada');
     INSERT INTO LOcation VALUES ( 'Vancouver', 'BC', 'Canada');
     INSERT INTO LOcation VALUES ( 'Burnaby', 'BC', 'Canada');
-
-
     GO
     CREATE TABLE Client(
     email VARCHAR(255),
@@ -68,8 +65,6 @@
     INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('John@hotmail.com','John','1990-01-01', 'male', 3);
     INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('Mary@hotmail.com','Mary','1990-01-01', 'female', 1);
     INSERT INTO Client (email, userName, birthdate, gender, locationID) VALUES ('Linda@hotmail.com','Linda','1990-01-01', 'female', 1);
-
-
     CREATE TABLE Availability(
     availableDate DATE,
     timeStart TIME,
@@ -80,16 +75,12 @@
     FOREIGN KEY (locationID) REFERENCES Client(locationID)
     );
     GO
-
     GO
-
-
     CREATE TABLE Interest
     (
     interest VARCHAR (20),
     PRIMARY KEY(interest)
     )
-
     INSERT INTO Interest VALUES('Movie');
     INSERT INTO Interest VALUES('Sports');
     INSERT INTO Interest VALUES('Travel');
@@ -97,14 +88,12 @@
     INSERT INTO Interest VALUES('Food');
     INSERT INTO Interest VALUES('Game');
     GO
-
     CREATE TABLE ClientInterest
     (
     userName VARCHAR(50) FOREIGN KEY REFERENCES Client(userName),
     interest VARCHAR(20) FOREIGN KEY REFERENCES Interest(interest),
     PRIMARY KEY(userName, interest)
     )
-
     INSERT INTO ClientInterest VALUES('Appleby','Movie');
     INSERT INTO ClientInterest VALUES('Appleby','Sports');
     INSERT INTO ClientInterest VALUES('Appleby','Food');
@@ -124,18 +113,17 @@
     INSERT INTO ClientInterest VALUES('Linda', 'Food');
     INSERT INTO ClientInterest VALUES('Linda', 'Travel');
     GO
-
     SELECT * FROM Client;
     SELECT * FROM Location;
     SELECT * FROM Interest;
     SELECT * FROM ClientInterest;
     GO
 </pre>
-<img src="~/Images/database.JPG" alt="Database" />
-<img src="~/Images/DatingERD.PNG" alt="ERD"/>
-<img src="~/Images/use_case.PNG" alt="USECASE" />
+    <img src="~/Images/DatabasePNG.PNG" style="width:80%" />
+    <img src="~/Images/DatingERD.PNG" alt="ERD" />
+    <img src="~/Images/use_case.PNG" alt="USECASE" />
 
-<h1>Essential/Non essential requirements</h1>
+    <h1>Essential/Non essential requirements</h1>
 <pre>
     Essential: 
 -	User login
@@ -158,9 +146,7 @@ Non-essential:
 -    Ease of use with simple user interface
 -    simple logo, pink, blue, and white colour scheme
 -    ASP.NET, SQLServer, Windows, Mobile responsiveness
-
-
 </pre>
 
-
+</div>
 

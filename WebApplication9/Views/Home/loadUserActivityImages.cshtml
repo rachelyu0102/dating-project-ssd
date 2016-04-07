@@ -91,10 +91,13 @@
                     }
 
                 </div>
+@if (User.Identity.Name == ViewBag.UserName)
+{
                 <div class="col-xs-12">
                     <div class="delete-images-toggle-button col-xs-offset-10"><i class="fa fa-trash-o"></i>
                     </div>
                </div>
+}
             </div>
 
                      }
