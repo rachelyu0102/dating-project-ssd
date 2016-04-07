@@ -55,6 +55,8 @@ function reverseGeoLocate(latitude,longitude)
             calculateDistances([originLatLng], [$(this).text()])
                .done(function (response) {
                    var results = response.rows[0].elements;
+                   console.log(results[0].distance.text);                 
+                   console.log(distance);
                    distance[index].innerHTML= results[0].distance.text;
                })
                .fail(function (status) {

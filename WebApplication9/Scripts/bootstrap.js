@@ -78,7 +78,10 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
 }(window.jQuery);
 
 /* ========================================================================
- * Bootstrap: alert.js v3.0.0
+ * Bootstrap: 
+
+
+.js v3.0.0
  * http://twbs.github.com/bootstrap/javascript.html#alerts
  * ========================================================================
  * Copyright 2013 Twitter, Inc.

@@ -904,7 +904,11 @@ th {
 .glyphicon-paste:before {
   content: "\e206";
 }
-.glyphicon-alert:before {
+.glyphicon-
+
+
+
+:before {
   content: "\e209";
 }
 .glyphicon-equalizer:before {
