@@ -128,8 +128,6 @@ namespace WebApplication9.Controllers
             int pageNumber = (page ?? 1);
 
             AllClients = AllClients.ToPagedList(pageNumber, PAGE_SIZE);
-
-
             ViewBag.interests = repo.getAllInterests();
             return View(AllClients);
           
