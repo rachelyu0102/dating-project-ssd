@@ -72,7 +72,7 @@ namespace WebApplication9.Controllers
 
                   //  Client client = context.Clients.Find(login.UserName);
                     Session["userProfile"] = context.Clients.Find(login.UserName).profile;
-
+                    
 
                     return RedirectToAction("Square", "Home", new { UserName = login.UserName });
                 }

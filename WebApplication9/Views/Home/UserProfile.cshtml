@@ -53,18 +53,21 @@
     <div>
         <span class="userName w3-justify" style="text-align:center">@Model.client.UserName </span>
 
+
+    
         @if (Session[Model.client.UserName] != null)
         {
             if (Session[Model.client.UserName].ToString() == "true")
             {
-                <span class="onlineStatus">online!</span>
+                <span class="onlineStatus">Online</span>
             }
         }
         else {
             <span class="onlineStatus">Offline</span>
         }
+   
     </div>
-
+   
     <div style="margin-top:16px">@Model.client.gender, @year</div>
     <div style="margin-top:5px">@Model.client.province, @Model.client.country</div>
     <div style="margin-top:5px">
@@ -201,6 +204,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 
@@ -208,7 +212,7 @@
 @if (!User.IsInRole("PaidUser") && User.Identity.Name == @Model.client.UserName)
 {
     <div id="upgradeFooter">
-        <p><a class="btn btn-info btn-sm" style="float:right; margin-right:10px; top:465px; right:0; position:absolute;" href="~/Home/Upgrade">Upgrade</a></p>
+        <p><a class="btn btn-info btn-sm" style="float:right; margin-right:10px; right:0; position:relative;" href="~/Home/Upgrade">Upgrade</a></p>
     </div>
 }
 
