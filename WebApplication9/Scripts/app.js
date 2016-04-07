@@ -55,8 +55,7 @@ function reverseGeoLocate(latitude,longitude)
             calculateDistances([originLatLng], [$(this).text()])
                .done(function (response) {
                    var results = response.rows[0].elements;
-                   console.log(results[0].distance.text);
-                   alert(index);
+                   console.log(results[0].distance.text);                 
                    console.log(distance);
                    distance[index].innerHTML= results[0].distance.text;
                })
@@ -110,7 +109,6 @@ function getClients(province,country,city)
         editCountry.val(country);
         editState.val(province);
         editCity.val(city);
-        alert(country + " IN " + province + " IN " + city);
     }
         $.getJSON(url + "/" + province,
             function (data) {
